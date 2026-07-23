@@ -1,1 +1,1142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menina Boutique - Catálogo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #fef5f8 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f5e6f0 0%, #ffe6f0 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 3px solid #8b3a62;
+            box-shadow: 0 8px 32px rgba(139, 58, 98, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #8b3a62;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            color: #d4698e;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-section {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-email {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #8b3a62;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.6s ease 0.2s both;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #8b3a62, #a83d7a);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s ease 0.3s both;
+            box-shadow: 0 4px 15px rgba(139, 58, 98, 0.3);
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(139, 58, 98, 0.4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #fef5f8 100%);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .login-box {
+            background: linear-gradient(135deg, #ffffff 0%, #fef5f8 100%);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(139, 58, 98, 0.2);
+            width: 100%;
+            max-width: 420px;
+            border: 2px solid rgba(212, 105, 142, 0.2);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-box h2 {
+            color: #8b3a62;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            color: #8b3a62;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            padding: 14px 16px;
+            border: 2px solid #f0d6e8;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #8b3a62;
+            box-shadow: 0 0 15px rgba(139, 58, 98, 0.2);
+            transform: translateY(-2px);
+            background: white;
+        }
+
+        .form-group input::placeholder {
+            color: #d4698e;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8b3a62, #a83d7a);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(139, 58, 98, 0.3);
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(139, 58, 98, 0.4);
+        }
+
+        .login-toggle {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .login-toggle a {
+            color: #8b3a62;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-toggle a:hover {
+            color: #d4698e;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #c94a5c;
+            font-weight: 600;
+            padding: 14px;
+            background: linear-gradient(135deg, rgba(201, 74, 92, 0.1), rgba(201, 74, 92, 0.05));
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid #c94a5c;
+            animation: slideIn 0.3s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .app-page {
+            display: none;
+        }
+
+        .app-page.active {
+            display: block;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding: 0 20px;
+            animation: fadeIn 0.8s ease 0.3s both;
+        }
+
+        .tab-btn {
+            padding: 12px 28px;
+            border: 2px solid transparent;
+            background-color: rgba(240, 214, 232, 0.5);
+            color: #8b3a62;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            background-color: rgba(240, 214, 232, 0.8);
+            border-color: #8b3a62;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #8b3a62, #a83d7a);
+            color: white;
+            border-color: #8b3a62;
+            box-shadow: 0 8px 20px rgba(139, 58, 98, 0.3);
+        }
+
+        .tab-btn.admin-only {
+            display: none;
+        }
+
+        .tab-btn.admin-only.visible {
+            display: inline-block;
+            animation: slideIn 0.3s ease;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .filters {
+            background: linear-gradient(135deg, rgba(245, 230, 240, 0.8), rgba(255, 230, 240, 0.8));
+            padding: 30px 20px;
+            border-bottom: 2px solid rgba(212, 105, 142, 0.2);
+            backdrop-filter: blur(10px);
+            margin-top: 20px;
+            animation: slideDown 0.6s ease 0.2s both;
+        }
+
+        .filters .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-end;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .filter-group label {
+            font-weight: 700;
+            color: #8b3a62;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group select {
+            padding: 10px 14px;
+            border: 2px solid rgba(212, 105, 142, 0.3);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-group select:hover {
+            border-color: #d4698e;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #8b3a62;
+            box-shadow: 0 0 12px rgba(139, 58, 98, 0.2);
+        }
+
+        .btn-reset {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #8b3a62, #a83d7a);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(139, 58, 98, 0.2);
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 58, 98, 0.3);
+        }
+
+        main {
+            padding: 60px 20px;
+            min-height: calc(100vh - 300px);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(254, 245, 248, 0.95));
+            border: 2px solid rgba(212, 105, 142, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            box-shadow: 0 10px 30px rgba(139, 58, 98, 0.1);
+            animation: slideUp 0.6s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(139, 58, 98, 0.25);
+            border-color: #d4698e;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #f5e6f0 0%, #ffe6f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: #d4698e;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-info h3 {
+            font-size: 1.3rem;
+            color: #8b3a62;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-size: 0.9rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            color: #555;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(212, 105, 142, 0.1);
+        }
+
+        .detail-item strong {
+            color: #8b3a62;
+            font-weight: 700;
+        }
+
+        .product-price {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            padding: 16px;
+            background: linear-gradient(135deg, #8b3a62, #a83d7a);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 15px rgba(139, 58, 98, 0.3);
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-delete {
+            background-color: #c94a5c;
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background-color: #a03a4a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201, 74, 92, 0.3);
+        }
+
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 80px 40px;
+            font-size: 1.1rem;
+            color: #999;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .no-products-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .form-container {
+            background: linear-gradient(135deg, rgba(254, 245, 248, 0.8), rgba(240, 214, 232, 0.5));
+            padding: 50px;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 15px 40px rgba(139, 58, 98, 0.1);
+            border: 2px solid rgba(212, 105, 142, 0.2);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.6s ease;
+        }
+
+        .form-title {
+            color: #8b3a62;
+            font-size: 2rem;
+            margin-bottom: 35px;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group select,
+        .form-group textarea {
+            padding: 14px 16px;
+            border: 2px solid rgba(212, 105, 142, 0.3);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b3a62;
+            box-shadow: 0 0 15px rgba(139, 58, 98, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .image-upload-section {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+        }
+
+        .upload-box {
+            flex: 1;
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .upload-label {
+            display: block;
+            padding: 40px;
+            border: 3px dashed rgba(139, 58, 98, 0.5);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            font-weight: 700;
+            color: #8b3a62;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .upload-label:hover {
+            border-color: #8b3a62;
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+        }
+
+        .image-preview {
+            width: 160px;
+            height: 160px;
+            border: 3px solid rgba(212, 105, 142, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            display: none;
+            background: linear-gradient(135deg, #f5e6f0 0%, #ffe6f0 100%);
+            align-items: center;
+            justify-content: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            grid-column: 1 / -1;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8b3a62, #a83d7a);
+            color: white;
+            box-shadow: 0 8px 20px rgba(139, 58, 98, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(139, 58, 98, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(212, 105, 142, 0.2);
+            color: #8b3a62;
+            border: 2px solid rgba(212, 105, 142, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(212, 105, 142, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .success-message {
+            color: #06a346;
+            font-weight: 700;
+            padding: 16px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(6, 163, 70, 0.1), rgba(6, 163, 70, 0.05));
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: none;
+            border-left: 4px solid #06a346;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 40px;
+            color: #8b3a62;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .spinner {
+            border: 5px solid rgba(212, 105, 142, 0.2);
+            border-top: 5px solid #8b3a62;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            background: linear-gradient(135deg, #8b3a62 0%, #6b2a4a 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-top: 3px solid rgba(212, 105, 142, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .header-content { flex-direction: column; gap: 15px; }
+            .tabs { gap: 10px; margin-top: 15px; }
+            .tab-btn { padding: 10px 20px; font-size: 0.85rem; }
+            .filters .container { flex-direction: column; align-items: stretch; }
+            .filter-group { min-width: unset; }
+            .filter-group select { width: 100%; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+            .form-container { padding: 30px; }
+            .form-title { font-size: 1.5rem; }
+            .image-upload-section { flex-direction: column; align-items: center; }
+            .login-box { padding: 30px; }
+            main { padding: 40px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.4rem; }
+            header .subtitle { font-size: 0.85rem; }
+            .products-grid { grid-template-columns: 1fr; gap: 15px; }
+            .tabs { gap: 8px; }
+            .tab-btn { padding: 8px 15px; font-size: 0.8rem; }
+            .btn { padding: 10px 20px; font-size: 0.85rem; }
+            .product-info { padding: 15px; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-page">
+        <header>
+            <h1>✨ Menina Boutique</h1>
+            <p class="subtitle">Sua Loja Online</p>
+        </header>
+
+        <div class="login-container">
+            <div class="login-box">
+                <h2 id="auth-title">🔐 Entrar</h2>
+                <div class="error-message" id="error-message"></div>
+
+                <div class="form-group">
+                    <label for="auth-email">📧 Email</label>
+                    <input type="email" id="auth-email" placeholder="seu@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="auth-password">🔑 Senha</label>
+                    <input type="password" id="auth-password" placeholder="Sua senha secreta">
+                </div>
+
+                <button class="btn-login" id="auth-btn" onclick="login()">Entrar</button>
+
+                <div class="login-toggle">
+                    <p>Não tem conta? <a onclick="alternarAuthMode()">Crie uma agora</a></p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Menina Boutique | Todos os direitos reservados</p>
+        </footer>
+    </div>
+
+    <div id="app-page">
+        <header>
+            <div class="header-content container">
+                <div>
+                    <h1>✨ Menina Boutique</h1>
+                    <p class="subtitle">Sua Loja Online</p>
+                </div>
+                <div class="user-section">
+                    <div class="user-email" id="user-email-display">👤 Carregando...</div>
+                    <button class="btn-logout" onclick="logout()">🚪 Sair</button>
+                </div>
+            </div>
+            <div class="tabs" id="header-tabs"></div>
+        </header>
+
+        <div id="catalogo" class="tab-content active">
+            <nav class="filters">
+                <div class="container">
+                    <div class="filter-group">
+                        <label for="category-filter">Categoria:</label>
+                        <select id="category-filter" onchange="aplicarFiltros()">
+                            <option value="">Todas</option>
+                            <option value="camiseta">Camiseta</option>
+                            <option value="calça">Calça</option>
+                            <option value="sapato">Sapato</option>
+                            <option value="vestido">Vestido</option>
+                            <option value="jaqueta">Jaqueta</option>
+                            <option value="acessório">Acessório</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="color-filter">Cor:</label>
+                        <select id="color-filter" onchange="aplicarFiltros()">
+                            <option value="">Todas</option>
+                            <option value="preto">Preto</option>
+                            <option value="branco">Branco</option>
+                            <option value="azul">Azul</option>
+                            <option value="rosa">Rosa</option>
+                            <option value="vinho">Vinho</option>
+                            <option value="cinza">Cinza</option>
+                            <option value="vermelho">Vermelho</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="size-filter">Tamanho:</label>
+                        <select id="size-filter" onchange="aplicarFiltros()">
+                            <option value="">Todos</option>
+                            <option value="PP">PP</option>
+                            <option value="P">P</option>
+                            <option value="M">M</option>
+                            <option value="G">G</option>
+                            <option value="GG">GG</option>
+                        </select>
+                    </div>
+                    <button class="btn-reset" onclick="limparFiltros()">🔄 Limpar</button>
+                </div>
+            </nav>
+
+            <main class="container">
+                <div id="products-container" class="products-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Carregando produtos...</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <div id="adicionar" class="tab-content">
+            <main class="container">
+                <div class="form-container">
+                    <h2 class="form-title">➕ Adicionar Novo Produto</h2>
+                    <div class="success-message" id="success-message">✅ Produto adicionado com sucesso!</div>
+
+                    <form id="form-produto">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="nome">Nome do Produto *</label>
+                                <input type="text" id="nome" placeholder="Ex: Camiseta Rosa Pastel" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="categoria">Categoria *</label>
+                                <select id="categoria" required>
+                                    <option value="">Selecione</option>
+                                    <option value="camiseta">Camiseta</option>
+                                    <option value="calça">Calça</option>
+                                    <option value="sapato">Sapato</option>
+                                    <option value="vestido">Vestido</option>
+                                    <option value="jaqueta">Jaqueta</option>
+                                    <option value="acessório">Acessório</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cor">Cor *</label>
+                                <select id="cor" required>
+                                    <option value="">Selecione</option>
+                                    <option value="preto">Preto</option>
+                                    <option value="branco">Branco</option>
+                                    <option value="azul">Azul</option>
+                                    <option value="rosa">Rosa</option>
+                                    <option value="vinho">Vinho</option>
+                                    <option value="cinza">Cinza</option>
+                                    <option value="vermelho">Vermelho</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tamanho">Tamanho *</label>
+                                <input type="text" id="tamanho" placeholder="Ex: M, G, 38" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="variacoes">Variações Disponíveis</label>
+                                <input type="text" id="variacoes" placeholder="Ex: P, M, G, GG">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="preco">Preço (R$) *</label>
+                                <input type="number" id="preco" placeholder="Ex: 99.90" min="0" step="0.01" required>
+                            </div>
+
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label for="descricao">Descrição</label>
+                                <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
+                            </div>
+
+                            <div class="image-upload-section">
+                                <div class="upload-box">
+                                    <label class="upload-label">
+                                        📸 Cole a URL da imagem (Imgur ou outra)
+                                    </label>
+                                    <input type="text" id="imagem" placeholder="https://i.imgur.com/...jpg" style="padding: 14px 16px; border: 2px solid rgba(212, 105, 142, 0.3); border-radius: 10px; font-size: 0.95rem; width: 100%; margin-top: 10px;">
+                                </div>
+                                <div id="image-preview" class="image-preview">
+                                    <img id="preview-img" src="" alt="Prévia">
+                                </div>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="submit" class="btn btn-primary">✨ Adicionar Produto</button>
+                                <button type="reset" class="btn btn-secondary">🔄 Limpar Formulário</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Menina Boutique | Todos os direitos reservados</p>
+        </footer>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
+            authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
+            projectId: "catalogo-roupas-8c13e",
+            storageBucket: "catalogo-roupas-8c13e.firebasestorage.app",
+            messagingSenderId: "154437834985",
+            appId: "1:154437834985:web:bcc927c454f87a4c1ab878"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let isSignUp = false;
+        let currentUser = null;
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('app-page').classList.add('active');
+                document.getElementById('user-email-display').textContent = `👤 ${user.email}`;
+                renderizarTabs();
+                renderizarProdutos();
+            } else {
+                currentUser = null;
+                document.getElementById('login-page').style.display = 'block';
+                document.getElementById('app-page').classList.remove('active');
+            }
+        });
+
+        function renderizarTabs() {
+            const tabsContainer = document.getElementById('header-tabs');
+            tabsContainer.innerHTML = `
+                <button class="tab-btn active" onclick="mostrarTab('catalogo', this)">👕 Catálogo</button>
+                <button class="tab-btn admin-only visible" onclick="mostrarTab('adicionar', this)">➕ Adicionar</button>
+            `;
+        }
+
+        function alternarAuthMode() {
+            isSignUp = !isSignUp;
+            document.getElementById('auth-title').textContent = isSignUp ? '📝 Criar Conta' : '🔐 Entrar';
+            document.getElementById('auth-btn').textContent = isSignUp ? 'Criar Conta' : 'Entrar';
+        }
+
+        async function login() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const errorDiv = document.getElementById('error-message');
+
+            if (!email || !password) {
+                errorDiv.textContent = '❌ Preencha todos os campos!';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            try {
+                if (isSignUp) {
+                    await auth.createUserWithEmailAndPassword(email, password);
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                }
+                document.getElementById('auth-email').value = '';
+                document.getElementById('auth-password').value = '';
+            } catch (error) {
+                errorDiv.textContent = '❌ ' + error.message;
+                errorDiv.classList.add('show');
+            }
+        }
+
+        function logout() {
+            auth.signOut();
+            isSignUp = false;
+        }
+
+        function mostrarTab(tabName, botao) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            botao.classList.add('active');
+        }
+
+        async function renderizarProdutos(filtrados = null) {
+            const container = document.getElementById('products-container');
+            try {
+                let produtos = filtrados;
+                if (!filtrados) {
+                    const snap = await db.collection('produtos').get();
+                    produtos = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
+                }
+
+                if (produtos.length === 0) {
+                    container.innerHTML = `<div class="no-products"><span class="no-products-icon">📦</span><p>Nenhum produto encontrado</p></div>`;
+                    return;
+                }
+
+                container.innerHTML = produtos.map(p => `
+                    <div class="product-card">
+                        <div class="product-image">${p.imagem ? `<img src="${p.imagem}" alt="${p.nome}">` : '👕'}</div>
+                        <div class="product-info">
+                            <h3>${p.nome}</h3>
+                            <div class="product-details">
+                                <div class="detail-item"><strong>Categoria:</strong> ${p.categoria}</div>
+                                <div class="detail-item"><strong>Cor:</strong> ${p.cor}</div>
+                                <div class="detail-item"><strong>Tamanho:</strong> ${p.tamanho}</div>
+                                ${p.variacoes ? `<div class="detail-item"><strong>Variações:</strong> ${p.variacoes}</div>` : ''}
+                                ${p.descricao ? `<div class="detail-item"><strong>Descrição:</strong><br>${p.descricao}</div>` : ''}
+                            </div>
+                            <div class="product-price">R$ ${parseFloat(p.preco).toFixed(2)}</div>
+                            ${currentUser ? `<div class="product-actions"><button class="btn-delete" onclick="deletarProduto('${p.id}')">🗑️ Deletar</button></div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function aplicarFiltros() {
+            const cat = document.getElementById('category-filter').value;
+            const cor = document.getElementById('color-filter').value;
+            const tam = document.getElementById('size-filter').value;
+
+            let query = db.collection('produtos');
+            if (cat) query = query.where('categoria', '==', cat);
+
+            const snap = await query.get();
+            let produtos = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
+
+            if (cor) produtos = produtos.filter(p => p.cor === cor);
+            if (tam) produtos = produtos.filter(p => p.tamanho === tam || (p.variacoes && p.variacoes.includes(tam)));
+
+            renderizarProdutos(produtos);
+        }
+
+        function limparFiltros() {
+            document.getElementById('category-filter').value = '';
+            document.getElementById('color-filter').value = '';
+            document.getElementById('size-filter').value = '';
+            renderizarProdutos();
+        }
+
+        async function deletarProduto(id) {
+            if (confirm('Deletar este produto?')) {
+                await db.collection('produtos').doc(id).delete();
+                renderizarProdutos();
+            }
+        }
+
+        document.getElementById('imagem').addEventListener('input', e => {
+            const url = e.target.value.trim();
+            if (url) {
+                document.getElementById('preview-img').src = url;
+                document.getElementById('preview-img').onload = () => {
+                    document.getElementById('image-preview').style.display = 'flex';
+                };
+                document.getElementById('preview-img').onerror = () => {
+                    document.getElementById('image-preview').style.display = 'none';
+                };
+            } else {
+                document.getElementById('image-preview').style.display = 'none';
+            }
+        });
+
+        document.getElementById('form-produto').addEventListener('submit', async e => {
+            e.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const categoria = document.getElementById('categoria').value;
+            const cor = document.getElementById('cor').value;
+            const tamanho = document.getElementById('tamanho').value;
+            const variacoes = document.getElementById('variacoes').value;
+            const preco = document.getElementById('preco').value;
+            const descricao = document.getElementById('descricao').value;
+            const imagem = document.getElementById('imagem').value;
+
+            try {
+                await db.collection('produtos').add({
+                    nome, categoria, cor, tamanho, variacoes, preco, descricao,
+                    imagem: imagem,
+                    dataCriacao: new Date()
+                });
+
+                const msg = document.getElementById('success-message');
+                msg.classList.add('show');
+                setTimeout(() => msg.classList.remove('show'), 3000);
+
+                document.getElementById('form-produto').reset();
+                document.getElementById('image-preview').style.display = 'none';
+                setTimeout(() => {
+                    document.querySelector('[onclick="mostrarTab(\'catalogo\', this)"]').click();
+                    renderizarProdutos();
+                }, 500);
+            } catch (error) {
+                alert('Erro: ' + error.message);
+            }
+        });
+
+        document.getElementById('auth-password').addEventListener('keypress', e => {
+            if (e.key === 'Enter') login();
+        });
+    </script>
+</body>
+</html>
