@@ -119,6 +119,40 @@
             padding: 30px 20px;
         }
 
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-pink);
+            border-bottom-color: var(--primary-pink);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         /* FORM ADMIN */
         .form-container {
             background: var(--white);
@@ -181,6 +215,87 @@
             min-height: 100px;
         }
 
+        /* VARIAÇÕES */
+        .variacoes-section {
+            background: var(--light-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .variacao-item {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .variacao-info {
+            flex: 1;
+        }
+
+        .variacao-texto {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .variacao-detalhes {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .btn-remove-variacao {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-variacao:hover {
+            background: #d32f2f;
+        }
+
+        .variacao-form {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .variacao-form input {
+            padding: 10px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .variacao-form button {
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .variacao-form button:hover {
+            background: #45a049;
+        }
+
+        /* IMAGENS */
         .images-upload {
             grid-column: 1 / -1;
             display: flex;
@@ -190,6 +305,24 @@
 
         .images-upload label {
             font-weight: 600;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--primary-pink);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: rgba(233, 30, 99, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: rgba(233, 30, 99, 0.1);
+        }
+
+        .upload-area input {
+            display: none;
         }
 
         .images-preview {
@@ -418,6 +551,88 @@
             margin-bottom: 15px;
         }
 
+        .modal-confirmacao {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-confirmacao.active {
+            display: flex;
+        }
+
+        .modal-body {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 400px;
+            text-align: center;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-body h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .modal-body p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-sim {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-sim:hover {
+            background: #45a049;
+        }
+
+        .btn-nao {
+            background: var(--border-color);
+            color: var(--text-dark);
+        }
+
+        .btn-nao:hover {
+            background: #d0d0d0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -434,6 +649,10 @@
 
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -459,109 +678,124 @@
 
     <!-- CONTAINER -->
     <div class="container">
-        <!-- FORMULÁRIO PARA ADICIONAR PRODUTO -->
-        <div class="form-container">
-            <h2 class="form-title">
-                <i class="fas fa-plus-circle"></i> Adicionar Novo Produto
-            </h2>
-            <form id="form-produto" onsubmit="adicionarProduto(event)">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="nome">Nome do Produto *</label>
-                        <input type="text" id="nome" placeholder="Ex: Camiseta Rosa Premium" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="categoria">Categoria *</label>
-                        <select id="categoria" required>
-                            <option value="">Selecione</option>
-                            <option value="camiseta">Camiseta</option>
-                            <option value="calça">Calça</option>
-                            <option value="sapato">Sapato</option>
-                            <option value="vestido">Vestido</option>
-                            <option value="jaqueta">Jaqueta</option>
-                            <option value="acessório">Acessório</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cor">Cor *</label>
-                        <select id="cor" required>
-                            <option value="">Selecione</option>
-                            <option value="preto">Preto</option>
-                            <option value="branco">Branco</option>
-                            <option value="azul">Azul</option>
-                            <option value="rosa">Rosa</option>
-                            <option value="vinho">Vinho</option>
-                            <option value="cinza">Cinza</option>
-                            <option value="vermelho">Vermelho</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="tamanho">Tamanho *</label>
-                        <input type="text" id="tamanho" placeholder="Ex: M, G, 38" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="preco">Preço (R$) *</label>
-                        <input type="number" id="preco" placeholder="Ex: 99.90" min="0" step="0.01" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="estoque">Quantidade em Estoque *</label>
-                        <input type="number" id="estoque" placeholder="Ex: 10" min="0" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="status-estoque">Status *</label>
-                        <select id="status-estoque" required>
-                            <option value="disponivel">Disponível</option>
-                            <option value="analise">Em análise com cliente</option>
-                            <option value="fora">Fora de Estoque</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="descricao">Descrição</label>
-                        <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="link-whatsapp">Link WhatsApp Personalizado (Opcional)</label>
-                        <input type="text" id="link-whatsapp" placeholder="Ex: message/CODIGO123 ou wa.me/numero">
-                        <small style="color: var(--text-light); font-size: 0.8rem;">💡 Deixe em branco para usar o link padrão</small>
-                    </div>
-
-                    <div class="images-upload">
-                        <label>Adicione Imagens do Produto (até 10 fotos)</label>
-                        <input type="text" id="single-image-url" placeholder="Cole a URL da imagem aqui (Imgur, Pinterest, etc)">
-                        <button type="button" onclick="adicionarImagem()" style="margin-top: 10px; padding: 10px; background: var(--primary-pink); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Adicionar Imagem</button>
-                        <div class="images-preview" id="images-preview"></div>
-                    </div>
-                </div>
-
-                <div class="form-buttons">
-                    <button type="submit" class="btn-submit">
-                        <i class="fas fa-plus"></i> Adicionar Produto
-                    </button>
-                    <button type="reset" class="btn-reset" onclick="limparForm()">
-                        <i class="fas fa-redo"></i> Limpar
-                    </button>
-                </div>
-            </form>
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="mudarTab('adicionar')">
+                <i class="fas fa-plus-circle"></i> Adicionar Produto
+            </button>
+            <button class="tab-btn" onclick="mudarTab('listar')">
+                <i class="fas fa-list"></i> Meus Produtos
+            </button>
         </div>
 
-        <!-- LISTA DE PRODUTOS -->
-        <div class="produtos-section">
-            <h2 class="section-title">
-                <i class="fas fa-list"></i> Produtos Cadastrados
-            </h2>
-            <div id="products-container" class="products-grid">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Carregando produtos...</p>
+        <!-- TAB ADICIONAR -->
+        <div id="tab-adicionar" class="tab-content active">
+            <div class="form-container">
+                <h2 class="form-title">
+                    <i class="fas fa-plus-circle"></i> Adicionar Novo Produto
+                </h2>
+                <form id="form-produto" onsubmit="adicionarProduto(event)">
+                    <div class="form-grid">
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="nome">Nome do Produto *</label>
+                            <input type="text" id="nome" placeholder="Ex: Camiseta Rosa Premium" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoria">Categoria *</label>
+                            <select id="categoria" required>
+                                <option value="">Selecione</option>
+                                <option value="camiseta">Camiseta</option>
+                                <option value="calça">Calça</option>
+                                <option value="sapato">Sapato</option>
+                                <option value="vestido">Vestido</option>
+                                <option value="jaqueta">Jaqueta</option>
+                                <option value="acessório">Acessório</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="descricao">Descrição</label>
+                            <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="link-whatsapp">Link WhatsApp (Opcional)</label>
+                            <input type="text" id="link-whatsapp" placeholder="Ex: message/CODIGO123">
+                        </div>
+                    </div>
+
+                    <!-- SEÇÃO DE VARIAÇÕES -->
+                    <div class="variacoes-section">
+                        <h3 style="margin-bottom: 15px; font-size: 1.1rem;">
+                            <i class="fas fa-palette"></i> Adicionar Variação (Tamanho, Cor, Preço)
+                        </h3>
+
+                        <div class="variacao-form">
+                            <input type="text" id="var-tamanho" placeholder="Tamanho (M, G, 38...)" required>
+                            <input type="text" id="var-cor" placeholder="Cor (Rosa, Azul...)" required>
+                            <input type="number" id="var-preco" placeholder="Preço (R$)" min="0" step="0.01" required>
+                            <button type="button" onclick="adicionarVariacao()">
+                                <i class="fas fa-plus"></i> Adicionar Variação
+                            </button>
+                        </div>
+
+                        <div id="variacoes-lista" style="margin-top: 15px;">
+                            <!-- Variações serão listadas aqui -->
+                        </div>
+                    </div>
+
+                    <!-- IMAGENS -->
+                    <div class="images-upload">
+                        <label>Adicione Imagens do Produto (até 10 fotos)</label>
+                        <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary-pink); margin-bottom: 10px; display: block;"></i>
+                            <p>Clique ou arraste as imagens aqui</p>
+                            <input type="file" id="file-input" accept="image/*" multiple onchange="adicionarImagensLocal()">
+                        </div>
+                        <div class="images-preview" id="images-preview"></div>
+                    </div>
+
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-plus"></i> Criar Produto
+                        </button>
+                        <button type="reset" class="btn-reset" onclick="limparForm()">
+                            <i class="fas fa-redo"></i> Limpar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- TAB LISTAR -->
+        <div id="tab-listar" class="tab-content">
+            <div class="produtos-section">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i> Produtos Cadastrados
+                </h2>
+                <div id="products-container" class="products-grid">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Carregando produtos...</p>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO -->
+    <div id="modal-confirmacao" class="modal-confirmacao">
+        <div class="modal-body">
+            <h3>Produto criado com sucesso! ✅</h3>
+            <p>Deseja adicionar outra variação para este mesmo produto?</p>
+            <div class="modal-buttons">
+                <button class="btn-sim" onclick="adicionarOutraVariacao()">
+                    <i class="fas fa-plus"></i> Sim, mais uma!
+                </button>
+                <button class="btn-nao" onclick="finalizarProduto()">
+                    <i class="fas fa-check"></i> Não, finalizar
+                </button>
             </div>
         </div>
     </div>
@@ -569,6 +803,7 @@
     <!-- SCRIPTS FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-storage.js"></script>
 
     <script>
         // FIREBASE CONFIG
@@ -583,12 +818,15 @@
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         // VARIÁVEIS GLOBAIS
         const ADMIN_PASSWORD = "59827630";
         const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1";
-        let imagemSelecionadas = [];
+        let variacoes = [];
+        let imagensLocais = [];
         let allProdutos = [];
+        let produtoAtualEmEdicao = null;
 
         // INICIALIZAÇÃO
         window.addEventListener('load', () => {
@@ -605,6 +843,19 @@
             }
         }
 
+        // TABS
+        function mudarTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tab === 'listar') {
+                carregarProdutos();
+            }
+        }
+
         // SAIR DO ADMIN
         function sairAdmin() {
             if (confirm('Tem certeza que quer sair do modo admin?')) {
@@ -612,30 +863,73 @@
             }
         }
 
-        // IMAGENS
-        function adicionarImagem() {
-            const url = document.getElementById('single-image-url').value.trim();
-            if (url) {
-                if (imagemSelecionadas.length < 10) {
-                    imagemSelecionadas.push(url);
-                    document.getElementById('single-image-url').value = '';
-                    renderizarImagensPreview();
-                } else {
-                    alert('Máximo de 10 imagens permitidas');
-                }
+        // VARIAÇÕES
+        function adicionarVariacao() {
+            const tamanho = document.getElementById('var-tamanho').value.trim();
+            const cor = document.getElementById('var-cor').value.trim();
+            const preco = document.getElementById('var-preco').value.trim();
+
+            if (!tamanho || !cor || !preco) {
+                alert('❌ Preencha todos os campos de variação!');
+                return;
             }
+
+            variacoes.push({ tamanho, cor, preco: parseFloat(preco) });
+
+            document.getElementById('var-tamanho').value = '';
+            document.getElementById('var-cor').value = '';
+            document.getElementById('var-preco').value = '';
+
+            renderizarVariacoes();
         }
 
-        function removerImagem(index) {
-            imagemSelecionadas.splice(index, 1);
-            renderizarImagensPreview();
+        function renderizarVariacoes() {
+            const lista = document.getElementById('variacoes-lista');
+            lista.innerHTML = variacoes.map((v, index) => `
+                <div class="variacao-item">
+                    <div class="variacao-info">
+                        <div class="variacao-texto">${v.tamanho} • ${v.cor}</div>
+                        <div class="variacao-detalhes">R$ ${v.preco.toFixed(2)}</div>
+                    </div>
+                    <button type="button" class="btn-remove-variacao" onclick="removerVariacao(${index})">
+                        <i class="fas fa-trash"></i> Remover
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removerVariacao(index) {
+            variacoes.splice(index, 1);
+            renderizarVariacoes();
+        }
+
+        // IMAGENS
+        function adicionarImagensLocal() {
+            const files = document.getElementById('file-input').files;
+            
+            for (let file of files) {
+                if (imagensLocais.length >= 10) {
+                    alert('Máximo de 10 imagens permitidas');
+                    break;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagensLocais.push({
+                        arquivo: file,
+                        preview: e.target.result
+                    });
+                    renderizarImagensPreview();
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         function renderizarImagensPreview() {
             const preview = document.getElementById('images-preview');
-            preview.innerHTML = imagemSelecionadas.map((img, index) => `
+            preview.innerHTML = imagensLocais.map((img, index) => `
                 <div class="image-preview-item">
-                    <img src="${img}" alt="Preview" onerror="this.src='https://via.placeholder.com/80x80?text=Erro'">
+                    <img src="${img.preview}" alt="Preview">
                     <button type="button" class="image-preview-remove" onclick="removerImagem(${index})">
                         <i class="fas fa-times"></i>
                     </button>
@@ -643,47 +937,101 @@
             `).join('');
         }
 
+        function removerImagem(index) {
+            imagensLocais.splice(index, 1);
+            renderizarImagensPreview();
+        }
+
         function limparForm() {
             document.getElementById('form-produto').reset();
-            imagemSelecionadas = [];
+            variacoes = [];
+            imagensLocais = [];
+            document.getElementById('var-tamanho').value = '';
+            document.getElementById('var-cor').value = '';
+            document.getElementById('var-preco').value = '';
+            document.getElementById('file-input').value = '';
+            renderizarVariacoes();
             renderizarImagensPreview();
+        }
+
+        // UPLOAD DE IMAGENS
+        async function uploadImagens() {
+            const urls = [];
+            
+            for (let img of imagensLocais) {
+                try {
+                    const ref = storage.ref(`produtos/${Date.now()}_${img.arquivo.name}`);
+                    const snapshot = await ref.put(img.arquivo);
+                    const url = await snapshot.ref.getDownloadURL();
+                    urls.push(url);
+                } catch (error) {
+                    console.error('Erro ao fazer upload:', error);
+                }
+            }
+
+            return urls;
         }
 
         // ADICIONAR PRODUTO
         async function adicionarProduto(e) {
             e.preventDefault();
 
-            if (imagemSelecionadas.length === 0) {
+            if (variacoes.length === 0) {
+                alert('❌ Adicione pelo menos uma variação!');
+                return;
+            }
+
+            if (imagensLocais.length === 0) {
                 alert('❌ Adicione pelo menos uma imagem!');
                 return;
             }
 
             try {
+                alert('⏳ Enviando imagens... por favor aguarde');
+
+                // Upload das imagens
+                const imagensUrls = await uploadImagens();
+
                 let linkWhatsapp = document.getElementById('link-whatsapp').value.trim();
                 if (!linkWhatsapp) {
                     linkWhatsapp = WHATSAPP_SUPPORT;
                 }
 
-                await db.collection('produtos').add({
+                // Criar documento do produto
+                const docRef = await db.collection('produtos').add({
                     nome: document.getElementById('nome').value,
                     categoria: document.getElementById('categoria').value,
-                    cor: document.getElementById('cor').value,
-                    tamanho: document.getElementById('tamanho').value,
-                    preco: parseFloat(document.getElementById('preco').value),
-                    estoque: parseInt(document.getElementById('estoque').value),
-                    status: document.getElementById('status-estoque').value,
                     descricao: document.getElementById('descricao').value,
-                    imagens: imagemSelecionadas,
+                    imagens: imagensUrls,
                     linkWhatsapp: linkWhatsapp,
+                    variacao: variacoes,
                     criadoEm: new Date()
                 });
 
-                alert('✅ Produto adicionado com sucesso!');
-                limparForm();
-                carregarProdutos();
+                // Mostrar modal de confirmação
+                document.getElementById('modal-confirmacao').classList.add('active');
+                produtoAtualEmEdicao = docRef.id;
+
             } catch (error) {
                 alert('❌ Erro ao adicionar produto: ' + error.message);
             }
+        }
+
+        function adicionarOutraVariacao() {
+            document.getElementById('modal-confirmacao').classList.remove('active');
+            limparForm();
+            document.getElementById('nome').value = document.getElementById('nome').value; // Mantém o nome
+            document.getElementById('categoria').value = document.getElementById('categoria').value;
+            document.getElementById('descricao').value = document.getElementById('descricao').value;
+            document.getElementById('var-tamanho').focus();
+        }
+
+        async function finalizarProduto() {
+            document.getElementById('modal-confirmacao').classList.remove('active');
+            alert('✅ Produto criado com sucesso!');
+            limparForm();
+            carregarProdutos();
+            mudarTab('listar');
         }
 
         // CARREGAR PRODUTOS
@@ -697,12 +1045,6 @@
                 renderizarProdutos();
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
-                document.getElementById('products-container').innerHTML = `
-                    <div class="no-products">
-                        <div class="no-products-icon">⚠️</div>
-                        <p>Erro ao carregar produtos</p>
-                    </div>
-                `;
             }
         }
 
@@ -720,27 +1062,33 @@
                 return;
             }
 
-            container.innerHTML = allProdutos.map(produto => `
-                <div class="product-card-admin">
-                    <div class="product-image-admin">
-                        <img src="${produto.imagens && produto.imagens[0] ? produto.imagens[0] : 'https://via.placeholder.com/250x200?text=Sem+Imagem'}" alt="${produto.nome}" onerror="this.src='https://via.placeholder.com/250x200?text=Erro'">
-                    </div>
-                    <div class="product-info-admin">
-                        <div class="product-name-admin">${produto.nome}</div>
-                        <div class="product-details-admin">${produto.categoria} • ${produto.cor}</div>
-                        <div class="product-price-admin">R$ ${parseFloat(produto.preco).toFixed(2)}</div>
-                        <div class="product-stock-admin">📦 Estoque: ${produto.estoque}</div>
-                        <div class="product-actions">
-                            <button class="btn-edit" onclick="editarProduto('${produto.id}')">
-                                <i class="fas fa-edit"></i> Editar
-                            </button>
-                            <button class="btn-delete" onclick="deletarProduto('${produto.id}', '${produto.nome}')">
-                                <i class="fas fa-trash"></i> Deletar
-                            </button>
+            container.innerHTML = allProdutos.map(produto => {
+                const precoMin = Math.min(...produto.variacao.map(v => v.preco));
+                const precoMax = Math.max(...produto.variacao.map(v => v.preco));
+                const precoDisplay = precoMin === precoMax ? `R$ ${precoMin.toFixed(2)}` : `R$ ${precoMin.toFixed(2)} - R$ ${precoMax.toFixed(2)}`;
+
+                return `
+                    <div class="product-card-admin">
+                        <div class="product-image-admin">
+                            <img src="${produto.imagens && produto.imagens[0] ? produto.imagens[0] : 'https://via.placeholder.com/250x200?text=Sem+Imagem'}" alt="${produto.nome}">
+                        </div>
+                        <div class="product-info-admin">
+                            <div class="product-name-admin">${produto.nome}</div>
+                            <div class="product-details-admin">${produto.categoria}</div>
+                            <div class="product-price-admin">${precoDisplay}</div>
+                            <div class="product-stock-admin">📦 ${produto.variacao.length} variação(ões)</div>
+                            <div class="product-actions">
+                                <button class="btn-edit" onclick="editarProduto('${produto.id}')">
+                                    <i class="fas fa-edit"></i> Editar
+                                </button>
+                                <button class="btn-delete" onclick="deletarProduto('${produto.id}', '${produto.nome}')">
+                                    <i class="fas fa-trash"></i> Deletar
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // EDITAR PRODUTO
@@ -748,41 +1096,48 @@
             const produto = allProdutos.find(p => p.id === produtoId);
             if (!produto) return;
 
-            // Preenche o formulário com os dados do produto
             document.getElementById('nome').value = produto.nome;
             document.getElementById('categoria').value = produto.categoria;
-            document.getElementById('cor').value = produto.cor;
-            document.getElementById('tamanho').value = produto.tamanho;
-            document.getElementById('preco').value = produto.preco;
-            document.getElementById('estoque').value = produto.estoque;
-            document.getElementById('status-estoque').value = produto.status;
-            document.getElementById('descricao').value = produto.descricao;
+            document.getElementById('descricao').value = produto.descricao || '';
             document.getElementById('link-whatsapp').value = produto.linkWhatsapp || '';
-            imagemSelecionadas = produto.imagens || [];
+            variacoes = [...produto.variacao];
+            imagensLocais = produto.imagens.map(url => ({ preview: url, isUrl: true }));
+
+            renderizarVariacoes();
             renderizarImagensPreview();
 
-            // Muda o botão pra "Atualizar"
             const form = document.getElementById('form-produto');
-            form.onsubmit = (e) => {
-                e.preventDefault();
-                atualizarProduto(produtoId);
-            };
+            form.onsubmit = (e) => atualizarProduto(e, produtoId);
 
-            const btnSubmit = form.querySelector('.btn-submit');
-            btnSubmit.innerHTML = '<i class="fas fa-save"></i> Atualizar Produto';
+            form.querySelector('.btn-submit').innerHTML = '<i class="fas fa-save"></i> Atualizar Produto';
 
-            // Scroll para o formulário
             document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+            mudarTab('adicionar');
         }
 
         // ATUALIZAR PRODUTO
-        async function atualizarProduto(produtoId) {
-            if (imagemSelecionadas.length === 0) {
-                alert('❌ Adicione pelo menos uma imagem!');
+        async function atualizarProduto(e, produtoId) {
+            e.preventDefault();
+
+            if (variacoes.length === 0) {
+                alert('❌ Adicione pelo menos uma variação!');
                 return;
             }
 
             try {
+                let imagensUrls = imagensLocais.map(img => img.isUrl ? img.preview : null).filter(Boolean);
+
+                // Upload das novas imagens
+                const novasImagens = imagensLocais.filter(img => !img.isUrl);
+                if (novasImagens.length > 0) {
+                    const novasUrls = await Promise.all(novasImagens.map(async (img) => {
+                        const ref = storage.ref(`produtos/${Date.now()}_${img.arquivo.name}`);
+                        const snapshot = await ref.put(img.arquivo);
+                        return await snapshot.ref.getDownloadURL();
+                    }));
+                    imagensUrls = imagensUrls.concat(novasUrls);
+                }
+
                 let linkWhatsapp = document.getElementById('link-whatsapp').value.trim();
                 if (!linkWhatsapp) {
                     linkWhatsapp = WHATSAPP_SUPPORT;
@@ -791,34 +1146,27 @@
                 await db.collection('produtos').doc(produtoId).update({
                     nome: document.getElementById('nome').value,
                     categoria: document.getElementById('categoria').value,
-                    cor: document.getElementById('cor').value,
-                    tamanho: document.getElementById('tamanho').value,
-                    preco: parseFloat(document.getElementById('preco').value),
-                    estoque: parseInt(document.getElementById('estoque').value),
-                    status: document.getElementById('status-estoque').value,
                     descricao: document.getElementById('descricao').value,
-                    imagens: imagemSelecionadas,
-                    linkWhatsapp: linkWhatsapp
+                    imagens: imagensUrls,
+                    linkWhatsapp: linkWhatsapp,
+                    variacao: variacoes
                 });
 
                 alert('✅ Produto atualizado com sucesso!');
                 limparForm();
                 carregarProdutos();
                 resetarFormulario();
+                mudarTab('listar');
             } catch (error) {
-                alert('❌ Erro ao atualizar produto: ' + error.message);
+                alert('❌ Erro ao atualizar: ' + error.message);
             }
         }
 
         // RESETAR FORMULÁRIO
         function resetarFormulario() {
             const form = document.getElementById('form-produto');
-            form.onsubmit = (e) => {
-                e.preventDefault();
-                adicionarProduto(e);
-            };
-            const btnSubmit = form.querySelector('.btn-submit');
-            btnSubmit.innerHTML = '<i class="fas fa-plus"></i> Adicionar Produto';
+            form.onsubmit = (e) => adicionarProduto(e);
+            form.querySelector('.btn-submit').innerHTML = '<i class="fas fa-plus"></i> Criar Produto';
         }
 
         // DELETAR PRODUTO
@@ -830,7 +1178,7 @@
                 alert('✅ Produto deletado com sucesso!');
                 carregarProdutos();
             } catch (error) {
-                alert('❌ Erro ao deletar produto: ' + error.message);
+                alert('❌ Erro ao deletar: ' + error.message);
             }
         }
     </script>
