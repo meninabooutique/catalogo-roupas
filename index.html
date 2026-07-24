@@ -55,12 +55,21 @@
             letter-spacing: 1px;
         }
 
+        header .admin-name {
+            font-size: 0.85rem;
+            color: #8b3a62;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .user-section {
@@ -69,18 +78,11 @@
             align-items: center;
         }
 
-        .user-email {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #8b3a62;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.6s ease 0.2s both;
+        .user-section.hidden {
+            display: none;
         }
 
-        .btn-logout {
+        .btn-admin {
             background: linear-gradient(135deg, #8b3a62, #a83d7a);
             color: white;
             border: none;
@@ -91,9 +93,10 @@
             transition: all 0.3s ease;
             animation: fadeIn 0.6s ease 0.3s both;
             box-shadow: 0 4px 15px rgba(139, 58, 98, 0.3);
+            font-size: 0.9rem;
         }
 
-        .btn-logout:hover {
+        .btn-admin:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(139, 58, 98, 0.4);
         }
@@ -109,199 +112,40 @@
             padding: 0 20px;
         }
 
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-            background: linear-gradient(135deg, #ffffff 0%, #fef5f8 100%);
-            animation: fadeIn 0.8s ease;
-        }
-
-        .login-box {
-            background: linear-gradient(135deg, #ffffff 0%, #fef5f8 100%);
-            padding: 50px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(139, 58, 98, 0.2);
-            width: 100%;
-            max-width: 420px;
-            border: 2px solid rgba(212, 105, 142, 0.2);
+        .search-section {
+            background: linear-gradient(135deg, rgba(245, 230, 240, 0.8), rgba(255, 230, 240, 0.8));
+            padding: 30px 20px;
+            border-bottom: 2px solid rgba(212, 105, 142, 0.2);
             backdrop-filter: blur(10px);
-            animation: slideUp 0.8s ease;
+            margin-top: 20px;
+            animation: slideDown 0.6s ease 0.2s both;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .login-box h2 {
-            color: #8b3a62;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            font-weight: 700;
-            color: #8b3a62;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input {
-            padding: 14px 16px;
-            border: 2px solid #f0d6e8;
-            border-radius: 10px;
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(212, 105, 142, 0.3);
+            border-radius: 30px;
             font-size: 1rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 15px rgba(139, 58, 98, 0.1);
         }
 
-        .form-group input:focus {
+        .search-input:focus {
             outline: none;
             border-color: #8b3a62;
-            box-shadow: 0 0 15px rgba(139, 58, 98, 0.2);
-            transform: translateY(-2px);
-            background: white;
+            box-shadow: 0 8px 25px rgba(139, 58, 98, 0.2);
         }
 
-        .form-group input::placeholder {
+        .search-input::placeholder {
             color: #d4698e;
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #8b3a62, #a83d7a);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 20px rgba(139, 58, 98, 0.3);
-        }
-
-        .btn-login:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(139, 58, 98, 0.4);
-        }
-
-        .login-toggle {
-            text-align: center;
-            margin-top: 25px;
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        .login-toggle a {
-            color: #8b3a62;
-            cursor: pointer;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .login-toggle a:hover {
-            color: #d4698e;
-            text-decoration: underline;
-        }
-
-        .error-message {
-            color: #c94a5c;
-            font-weight: 600;
-            padding: 14px;
-            background: linear-gradient(135deg, rgba(201, 74, 92, 0.1), rgba(201, 74, 92, 0.05));
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-            border-left: 4px solid #c94a5c;
-            animation: slideIn 0.3s ease;
-        }
-
-        .error-message.show {
-            display: block;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .app-page {
-            display: none;
-        }
-
-        .app-page.active {
-            display: block;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            padding: 0 20px;
-            animation: fadeIn 0.8s ease 0.3s both;
-        }
-
-        .tab-btn {
-            padding: 12px 28px;
-            border: 2px solid transparent;
-            background-color: rgba(240, 214, 232, 0.5);
-            color: #8b3a62;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-            font-size: 0.95rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .tab-btn:hover {
-            transform: translateY(-2px);
-            background-color: rgba(240, 214, 232, 0.8);
-            border-color: #8b3a62;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, #8b3a62, #a83d7a);
-            color: white;
-            border-color: #8b3a62;
-            box-shadow: 0 8px 20px rgba(139, 58, 98, 0.3);
-        }
-
-        .tab-btn.admin-only {
-            display: none;
-        }
-
-        .tab-btn.admin-only.visible {
-            display: inline-block;
-            animation: slideIn 0.3s ease;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.6s ease;
-        }
-
-        .tab-content.active {
-            display: block;
         }
 
         .filters {
@@ -309,7 +153,6 @@
             padding: 30px 20px;
             border-bottom: 2px solid rgba(212, 105, 142, 0.2);
             backdrop-filter: blur(10px);
-            margin-top: 20px;
             animation: slideDown 0.6s ease 0.2s both;
         }
 
@@ -493,6 +336,11 @@
             cursor: pointer;
             font-weight: 700;
             transition: all 0.3s ease;
+            display: none;
+        }
+
+        .btn-delete.admin-visible {
+            display: block;
         }
 
         .btn-delete:hover {
@@ -525,6 +373,11 @@
             border: 2px solid rgba(212, 105, 142, 0.2);
             backdrop-filter: blur(10px);
             animation: slideUp 0.6s ease;
+            display: none;
+        }
+
+        .form-container.visible {
+            display: block;
         }
 
         .form-title {
@@ -543,6 +396,21 @@
             margin-bottom: 25px;
         }
 
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            color: #8b3a62;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
         .form-group select,
         .form-group textarea {
             padding: 14px 16px;
@@ -555,6 +423,7 @@
             font-family: inherit;
         }
 
+        .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
@@ -577,31 +446,6 @@
 
         .upload-box {
             flex: 1;
-        }
-
-        .upload-input {
-            display: none;
-        }
-
-        .upload-label {
-            display: block;
-            padding: 40px;
-            border: 3px dashed rgba(139, 58, 98, 0.5);
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
-            font-weight: 700;
-            color: #8b3a62;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-        }
-
-        .upload-label:hover {
-            border-color: #8b3a62;
-            background: rgba(255, 255, 255, 0.95);
-            transform: translateY(-2px);
         }
 
         .image-preview {
@@ -704,6 +548,16 @@
             100% { transform: rotate(360deg); }
         }
 
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         footer {
             background: linear-gradient(135deg, #8b3a62 0%, #6b2a4a 100%);
             color: white;
@@ -718,8 +572,6 @@
         @media (max-width: 768px) {
             header h1 { font-size: 1.8rem; }
             .header-content { flex-direction: column; gap: 15px; }
-            .tabs { gap: 10px; margin-top: 15px; }
-            .tab-btn { padding: 10px 20px; font-size: 0.85rem; }
             .filters .container { flex-direction: column; align-items: stretch; }
             .filter-group { min-width: unset; }
             .filter-group select { width: 100%; }
@@ -727,7 +579,6 @@
             .form-container { padding: 30px; }
             .form-title { font-size: 1.5rem; }
             .image-upload-section { flex-direction: column; align-items: center; }
-            .login-box { padding: 30px; }
             main { padding: 40px 20px; }
         }
 
@@ -735,8 +586,6 @@
             header h1 { font-size: 1.4rem; }
             header .subtitle { font-size: 0.85rem; }
             .products-grid { grid-template-columns: 1fr; gap: 15px; }
-            .tabs { gap: 8px; }
-            .tab-btn { padding: 8px 15px; font-size: 0.8rem; }
             .btn { padding: 10px 20px; font-size: 0.85rem; }
             .product-info { padding: 15px; }
             .form-grid { grid-template-columns: 1fr; }
@@ -744,197 +593,159 @@
     </style>
 </head>
 <body>
-    <div id="login-page">
-        <header>
-            <h1>✨ Menina Boutique</h1>
-            <p class="subtitle">Sua Loja Online</p>
-        </header>
-
-        <div class="login-container">
-            <div class="login-box">
-                <h2 id="auth-title">🔐 Entrar</h2>
-                <div class="error-message" id="error-message"></div>
-
-                <div class="form-group">
-                    <label for="auth-email">📧 Email</label>
-                    <input type="email" id="auth-email" placeholder="seu@email.com">
-                </div>
-
-                <div class="form-group">
-                    <label for="auth-password">🔑 Senha</label>
-                    <input type="password" id="auth-password" placeholder="Sua senha secreta">
-                </div>
-
-                <button class="btn-login" id="auth-btn" onclick="login()">Entrar</button>
-
-                <div class="login-toggle">
-                    <p>Não tem conta? <a onclick="alternarAuthMode()">Crie uma agora</a></p>
-                </div>
+    <header>
+        <div class="header-content container">
+            <div>
+                <h1>✨ Menina Boutique</h1>
+                <p class="subtitle">Sua Loja Online</p>
+                <p class="admin-name" id="admin-name" style="display: none;">👤 Marcia</p>
+            </div>
+            <div class="user-section" id="admin-section">
+                <button class="btn-admin" onclick="toggleAdminMode()">🔧 Modo Admin</button>
             </div>
         </div>
+    </header>
 
-        <footer>
-            <p>&copy; 2024 Menina Boutique | Todos os direitos reservados</p>
-        </footer>
+    <div class="search-section">
+        <div class="search-container">
+            <input type="text" id="search-input" class="search-input" placeholder="🔍 Buscar roupa, cor, tamanho..." onkeyup="buscarProdutosInteligente()">
+        </div>
     </div>
 
-    <div id="app-page">
-        <header>
-            <div class="header-content container">
-                <div>
-                    <h1>✨ Menina Boutique</h1>
-                    <p class="subtitle">Sua Loja Online</p>
+    <nav class="filters">
+        <div class="container">
+            <div class="filter-group">
+                <label for="category-filter">Categoria:</label>
+                <select id="category-filter" onchange="aplicarFiltros()">
+                    <option value="">Todas</option>
+                    <option value="camiseta">Camiseta</option>
+                    <option value="calça">Calça</option>
+                    <option value="sapato">Sapato</option>
+                    <option value="vestido">Vestido</option>
+                    <option value="jaqueta">Jaqueta</option>
+                    <option value="acessório">Acessório</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="color-filter">Cor:</label>
+                <select id="color-filter" onchange="aplicarFiltros()">
+                    <option value="">Todas</option>
+                    <option value="preto">Preto</option>
+                    <option value="branco">Branco</option>
+                    <option value="azul">Azul</option>
+                    <option value="rosa">Rosa</option>
+                    <option value="vinho">Vinho</option>
+                    <option value="cinza">Cinza</option>
+                    <option value="vermelho">Vermelho</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="size-filter">Tamanho:</label>
+                <select id="size-filter" onchange="aplicarFiltros()">
+                    <option value="">Todos</option>
+                    <option value="PP">PP</option>
+                    <option value="P">P</option>
+                    <option value="M">M</option>
+                    <option value="G">G</option>
+                    <option value="GG">GG</option>
+                </select>
+            </div>
+            <button class="btn-reset" onclick="limparFiltros()">🔄 Limpar</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div id="products-container" class="products-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Carregando produtos...</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="form-container" id="form-container">
+        <h2 class="form-title">➕ Adicionar Novo Produto</h2>
+        <div class="success-message" id="success-message">✅ Produto adicionado com sucesso!</div>
+
+        <form id="form-produto">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="nome">Nome do Produto *</label>
+                    <input type="text" id="nome" placeholder="Ex: Camiseta Rosa Pastel" required>
                 </div>
-                <div class="user-section">
-                    <div class="user-email" id="user-email-display">👤 Carregando...</div>
-                    <button class="btn-logout" onclick="logout()">🚪 Sair</button>
+
+                <div class="form-group">
+                    <label for="categoria">Categoria *</label>
+                    <select id="categoria" required>
+                        <option value="">Selecione</option>
+                        <option value="camiseta">Camiseta</option>
+                        <option value="calça">Calça</option>
+                        <option value="sapato">Sapato</option>
+                        <option value="vestido">Vestido</option>
+                        <option value="jaqueta">Jaqueta</option>
+                        <option value="acessório">Acessório</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cor">Cor *</label>
+                    <select id="cor" required>
+                        <option value="">Selecione</option>
+                        <option value="preto">Preto</option>
+                        <option value="branco">Branco</option>
+                        <option value="azul">Azul</option>
+                        <option value="rosa">Rosa</option>
+                        <option value="vinho">Vinho</option>
+                        <option value="cinza">Cinza</option>
+                        <option value="vermelho">Vermelho</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tamanho">Tamanho *</label>
+                    <input type="text" id="tamanho" placeholder="Ex: M, G, 38" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="variacoes">Variações Disponíveis</label>
+                    <input type="text" id="variacoes" placeholder="Ex: P, M, G, GG">
+                </div>
+
+                <div class="form-group">
+                    <label for="preco">Preço (R$) *</label>
+                    <input type="number" id="preco" placeholder="Ex: 99.90" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="descricao">Descrição</label>
+                    <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
+                </div>
+
+                <div class="image-upload-section">
+                    <div class="upload-box">
+                        <label style="font-weight: 700; color: #8b3a62; font-size: 0.95rem;">
+                            📸 Cole a URL da imagem (Imgur ou outra)
+                        </label>
+                        <input type="text" id="imagem" placeholder="https://i.imgur.com/...jpg" style="padding: 14px 16px; border: 2px solid rgba(212, 105, 142, 0.3); border-radius: 10px; width: 100%; font-size: 0.95rem; margin-top: 8px;">
+                    </div>
+                    <div id="image-preview" class="image-preview">
+                        <img id="preview-img" src="" alt="Prévia">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">✨ Adicionar Produto</button>
+                    <button type="reset" class="btn btn-secondary">🔄 Limpar Formulário</button>
                 </div>
             </div>
-            <div class="tabs" id="header-tabs"></div>
-        </header>
-
-        <div id="catalogo" class="tab-content active">
-            <nav class="filters">
-                <div class="container">
-                    <div class="filter-group">
-                        <label for="category-filter">Categoria:</label>
-                        <select id="category-filter" onchange="aplicarFiltros()">
-                            <option value="">Todas</option>
-                            <option value="camiseta">Camiseta</option>
-                            <option value="calça">Calça</option>
-                            <option value="sapato">Sapato</option>
-                            <option value="vestido">Vestido</option>
-                            <option value="jaqueta">Jaqueta</option>
-                            <option value="acessório">Acessório</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="color-filter">Cor:</label>
-                        <select id="color-filter" onchange="aplicarFiltros()">
-                            <option value="">Todas</option>
-                            <option value="preto">Preto</option>
-                            <option value="branco">Branco</option>
-                            <option value="azul">Azul</option>
-                            <option value="rosa">Rosa</option>
-                            <option value="vinho">Vinho</option>
-                            <option value="cinza">Cinza</option>
-                            <option value="vermelho">Vermelho</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="size-filter">Tamanho:</label>
-                        <select id="size-filter" onchange="aplicarFiltros()">
-                            <option value="">Todos</option>
-                            <option value="PP">PP</option>
-                            <option value="P">P</option>
-                            <option value="M">M</option>
-                            <option value="G">G</option>
-                            <option value="GG">GG</option>
-                        </select>
-                    </div>
-                    <button class="btn-reset" onclick="limparFiltros()">🔄 Limpar</button>
-                </div>
-            </nav>
-
-            <main class="container">
-                <div id="products-container" class="products-grid">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Carregando produtos...</p>
-                    </div>
-                </div>
-            </main>
-        </div>
-
-        <div id="adicionar" class="tab-content">
-            <main class="container">
-                <div class="form-container">
-                    <h2 class="form-title">➕ Adicionar Novo Produto</h2>
-                    <div class="success-message" id="success-message">✅ Produto adicionado com sucesso!</div>
-
-                    <form id="form-produto">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="nome">Nome do Produto *</label>
-                                <input type="text" id="nome" placeholder="Ex: Camiseta Rosa Pastel" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="categoria">Categoria *</label>
-                                <select id="categoria" required>
-                                    <option value="">Selecione</option>
-                                    <option value="camiseta">Camiseta</option>
-                                    <option value="calça">Calça</option>
-                                    <option value="sapato">Sapato</option>
-                                    <option value="vestido">Vestido</option>
-                                    <option value="jaqueta">Jaqueta</option>
-                                    <option value="acessório">Acessório</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="cor">Cor *</label>
-                                <select id="cor" required>
-                                    <option value="">Selecione</option>
-                                    <option value="preto">Preto</option>
-                                    <option value="branco">Branco</option>
-                                    <option value="azul">Azul</option>
-                                    <option value="rosa">Rosa</option>
-                                    <option value="vinho">Vinho</option>
-                                    <option value="cinza">Cinza</option>
-                                    <option value="vermelho">Vermelho</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="tamanho">Tamanho *</label>
-                                <input type="text" id="tamanho" placeholder="Ex: M, G, 38" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="variacoes">Variações Disponíveis</label>
-                                <input type="text" id="variacoes" placeholder="Ex: P, M, G, GG">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="preco">Preço (R$) *</label>
-                                <input type="number" id="preco" placeholder="Ex: 99.90" min="0" step="0.01" required>
-                            </div>
-
-                            <div class="form-group" style="grid-column: 1 / -1;">
-                                <label for="descricao">Descrição</label>
-                                <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
-                            </div>
-
-                            <div class="image-upload-section">
-                                <div class="upload-box">
-                                    <label class="upload-label">
-                                        📸 Cole a URL da imagem (Imgur ou outra)
-                                    </label>
-                                    <input type="text" id="imagem" placeholder="https://i.imgur.com/...jpg" style="padding: 14px 16px; border: 2px solid rgba(212, 105, 142, 0.3); border-radius: 10px; width: 100%; font-size: 0.95rem;">
-                                </div>
-                                <div id="image-preview" class="image-preview">
-                                    <img id="preview-img" src="" alt="Prévia">
-                                </div>
-                            </div>
-
-                            <div class="button-group">
-                                <button type="submit" class="btn btn-primary">✨ Adicionar Produto</button>
-                                <button type="reset" class="btn btn-secondary">🔄 Limpar Formulário</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </main>
-        </div>
-
-        <footer>
-            <p>&copy; 2024 Menina Boutique | Todos os direitos reservados</p>
-        </footer>
+        </form>
     </div>
+
+    <footer>
+        <p>&copy; 2024 Menina Boutique | Todos os direitos reservados</p>
+    </footer>
 
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
 
     <script>
@@ -948,101 +759,86 @@
         };
 
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
         const db = firebase.firestore();
 
-        let isSignUp = false;
-        let currentUser = null;
+        let adminMode = false;
+        let allProdutos = [];
+        const ADMIN_USER = "Marcia";
+        const ADMIN_PASSWORD = "59827630";
 
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('login-page').style.display = 'none';
-                document.getElementById('app-page').classList.add('active');
-                document.getElementById('user-email-display').textContent = `👤 ${user.email}`;
-                renderizarTabs();
-                renderizarProdutos();
-            } else {
-                currentUser = null;
-                document.getElementById('login-page').style.display = 'block';
-                document.getElementById('app-page').classList.remove('active');
+        // Verificar se a senha é correta
+        function toggleAdminMode() {
+            const senha = prompt("Digite a senha do admin:");
+            if (senha === ADMIN_PASSWORD) {
+                adminMode = !adminMode;
+                document.getElementById('form-container').classList.toggle('visible');
+                document.getElementById('admin-name').style.display = adminMode ? 'block' : 'none';
+                document.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.classList.toggle('admin-visible');
+                });
+                alert(adminMode ? `✅ Bem-vinda ${ADMIN_USER}! Modo Admin Ativado` : '❌ Modo Admin Desativado');
+            } else if (senha !== null) {
+                alert('❌ Senha incorreta!');
             }
-        });
-
-        function renderizarTabs() {
-            const tabsContainer = document.getElementById('header-tabs');
-            tabsContainer.innerHTML = `
-                <button class="tab-btn active" onclick="mostrarTab('catalogo', this)">👕 Catálogo</button>
-                <button class="tab-btn admin-only visible" onclick="mostrarTab('adicionar', this)">➕ Adicionar</button>
-            `;
         }
 
-        function alternarAuthMode() {
-            isSignUp = !isSignUp;
-            document.getElementById('auth-title').textContent = isSignUp ? '📝 Criar Conta' : '🔐 Entrar';
-            document.getElementById('auth-btn').textContent = isSignUp ? 'Criar Conta' : 'Entrar';
-        }
-
-        async function login() {
-            const email = document.getElementById('auth-email').value;
-            const password = document.getElementById('auth-password').value;
-            const errorDiv = document.getElementById('error-message');
-
-            if (!email || !password) {
-                errorDiv.textContent = '❌ Preencha todos os campos!';
-                errorDiv.classList.add('show');
+        // Busca inteligente com suporte a palavras parciais
+        function buscarProdutosInteligente() {
+            const termo = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (termo === '') {
+                renderizarProdutos(allProdutos);
                 return;
             }
 
-            try {
-                if (isSignUp) {
-                    await auth.createUserWithEmailAndPassword(email, password);
-                } else {
-                    await auth.signInWithEmailAndPassword(email, password);
-                }
-                errorDiv.classList.remove('show');
-            } catch (error) {
-                errorDiv.textContent = `❌ Erro: ${error.message}`;
-                errorDiv.classList.add('show');
-            }
+            const filtrados = allProdutos.filter(produto => {
+                const nome = produto.nome.toLowerCase();
+                const categoria = produto.categoria.toLowerCase();
+                const cor = produto.cor.toLowerCase();
+                const tamanho = produto.tamanho.toLowerCase();
+                const descricao = produto.descricao ? produto.descricao.toLowerCase() : '';
+
+                // Verificar correspondência parcial em qualquer campo
+                return nome.includes(termo) || 
+                       categoria.includes(termo) || 
+                       cor.includes(termo) || 
+                       tamanho.includes(termo) ||
+                       descricao.includes(termo);
+            });
+
+            renderizarProdutos(filtrados);
         }
 
-        function logout() {
-            auth.signOut();
-        }
-
-        function mostrarTab(tabName, button) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(c => c.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(b => b.classList.remove('active'));
-            button.classList.add('active');
-        }
-
-        async function renderizarProdutos() {
+        async function renderizarProdutos(produtos = null) {
             const container = document.getElementById('products-container');
             try {
-                const snapshot = await db.collection('produtos').get();
-                if (snapshot.empty) {
+                if (produtos === null) {
+                    const snapshot = await db.collection('produtos').get();
+                    allProdutos = [];
+                    snapshot.forEach(doc => {
+                        allProdutos.push({ id: doc.id, ...doc.data() });
+                    });
+                } else {
+                    allProdutos = produtos;
+                }
+
+                if (allProdutos.length === 0) {
                     container.innerHTML = `
                         <div class="no-products">
                             <span class="no-products-icon">📦</span>
-                            <p>Nenhum produto adicionado ainda. Comece a vender!</p>
+                            <p>Nenhum produto encontrado. Volte mais tarde!</p>
                         </div>
                     `;
                     return;
                 }
 
                 container.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const produto = doc.data();
+                allProdutos.forEach(produto => {
                     const card = document.createElement('div');
                     card.className = 'product-card';
                     card.innerHTML = `
                         <div class="product-image">
-                            ${produto.imagem ? `<img src="${produto.imagem}" alt="${produto.nome}">` : '👗'}
+                            ${produto.imagem ? `<img src="${produto.imagem}" alt="${produto.nome}" onerror="this.style.display='none'">` : '👗'}
                         </div>
                         <div class="product-info">
                             <h3>${produto.nome}</h3>
@@ -1060,9 +856,10 @@
                                     <span>${produto.tamanho}</span>
                                 </div>
                             </div>
+                            ${produto.descricao ? `<p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">${produto.descricao}</p>` : ''}
                             <div class="product-price">R$ ${parseFloat(produto.preco).toFixed(2)}</div>
                             <div class="product-actions">
-                                <button class="btn-delete" onclick="deletarProduto('${doc.id}')">🗑️ Deletar</button>
+                                <button class="btn-delete" onclick="deletarProduto('${produto.id}')">🗑️ Deletar</button>
                             </div>
                         </div>
                     `;
@@ -1120,26 +917,26 @@
         }
 
         function aplicarFiltros() {
-            renderizarProdutos();
+            const categoria = document.getElementById('category-filter').value.toLowerCase();
+            const cor = document.getElementById('color-filter').value.toLowerCase();
+            const tamanho = document.getElementById('size-filter').value.toLowerCase();
+
+            const filtrados = allProdutos.filter(p => {
+                return (categoria === '' || p.categoria.toLowerCase() === categoria) &&
+                       (cor === '' || p.cor.toLowerCase() === cor) &&
+                       (tamanho === '' || p.tamanho.toLowerCase() === tamanho);
+            });
+
+            renderizarProdutos(filtrados);
         }
 
         function limparFiltros() {
             document.getElementById('category-filter').value = '';
             document.getElementById('color-filter').value = '';
             document.getElementById('size-filter').value = '';
+            document.getElementById('search-input').value = '';
             renderizarProdutos();
         }
-
-        document.getElementById('imagem').addEventListener('change', function() {
-            const preview = document.getElementById('image-preview');
-            const previewImg = document.getElementById('preview-img');
-            if (this.value) {
-                previewImg.src = this.value;
-                preview.style.display = 'flex';
-            } else {
-                preview.style.display = 'none';
-            }
-        });
 
         document.getElementById('imagem').addEventListener('input', function() {
             const preview = document.getElementById('image-preview');
@@ -1151,6 +948,9 @@
                 preview.style.display = 'none';
             }
         });
+
+        // Carregar produtos ao iniciar
+        renderizarProdutos();
     </script>
 </body>
 </html>
