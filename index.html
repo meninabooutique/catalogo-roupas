@@ -63,7 +63,43 @@
             color: var(--white);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .logo-text span:first-child {
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0.9;
         }
 
         .search-bar {
@@ -1061,6 +1097,7 @@
             border-radius: 12px;
             display: none;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
         }
 
         .form-container.visible {
@@ -1348,11 +1385,25 @@
             .btn-share-whatsapp {
                 width: 100%;
             }
+
+            .logo-text {
+                display: none;
+            }
+
+            .logo {
+                gap: 8px;
+                font-size: 1.4rem;
+            }
         }
 
         @media (max-width: 480px) {
             .logo {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
+            }
+
+            .logo-image {
+                width: 40px;
+                height: 40px;
             }
 
             .search-bar {
@@ -1392,9 +1443,14 @@
     <!-- HEADER -->
     <header>
         <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-shopping-bag"></i>
-                ✨ Menina Boutique
+            <div class="logo" onclick="window.location.href='/'">
+                <div class="logo-image">
+                    <img src="https://i.imgur.com/LOGO-MENINA-BOUTIQUE.jpg" alt="Menina Boutique Logo">
+                </div>
+                <div class="logo-text">
+                    <span>✨</span>
+                    <span>Menina Boutique</span>
+                </div>
             </div>
             <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Buscar produtos...">
@@ -1750,10 +1806,9 @@
         let imagemSelecionadas = [];
 
         const ADMIN_PASSWORD = "59827630";
-        const WHATSAPP_NUMBER = "5585987654321"; // Substitua pelo seu número
+        const WHATSAPP_NUMBER = "5585987654321";
 
         // INICIALIZAÇÃO
-        window.addEventListener('hashchange', verificarAdmin);
         window.addEventListener('load', () => {
             verificarAdmin();
             carregarProdutos();
@@ -1764,15 +1819,17 @@
             });
         });
 
-        // ADMIN
+        // ADMIN - CORREÇÃO IMPORTANTE
         function verificarAdmin() {
-            if (window.location.hash === '#admin') {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('admin') === 'true') {
                 const senha = prompt("🔐 Digite a senha do admin:");
                 if (senha === ADMIN_PASSWORD) {
                     ativarModoAdmin();
+                    window.history.replaceState({}, document.title, window.location.pathname);
                 } else if (senha !== null) {
                     alert('❌ Senha incorreta!');
-                    window.location.hash = '';
+                    window.location.href = window.location.pathname;
                 }
             }
         }
@@ -1794,7 +1851,7 @@
             document.getElementById('btn-sair-admin').classList.remove('visible');
             document.getElementById('filters-section').classList.add('visible');
             document.getElementById('products-container').style.display = 'grid';
-            window.location.hash = '';
+            window.location.href = window.location.pathname;
             carregarProdutos();
         }
 
@@ -1821,7 +1878,7 @@
             const preview = document.getElementById('images-preview');
             preview.innerHTML = imagemSelecionadas.map((img, index) => `
                 <div class="image-preview-item">
-                    <img src="${img}" alt="Preview">
+                    <img src="${img}" alt="Preview" onerror="this.src='https://via.placeholder.com/80x80?text=Erro'">
                     <button type="button" class="image-preview-remove" onclick="removerImagem(${index})">
                         <i class="fas fa-times"></i>
                     </button>
@@ -1847,6 +1904,12 @@
                 renderizarProdutos();
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
+                document.getElementById('products-container').innerHTML = `
+                    <div class="no-products">
+                        <div class="no-products-icon">⚠️</div>
+                        <p>Erro ao carregar produtos. Tente novamente mais tarde.</p>
+                    </div>
+                `;
             }
         }
 
@@ -1872,7 +1935,7 @@
                 return `
                     <div class="product-card" onclick="abrirModal('${produto.id}')">
                         <div class="product-image">
-                            <img src="${produto.imagens && produto.imagens[0] ? produto.imagens[0] : 'https://via.placeholder.com/300x300?text=Sem+Imagem'}" alt="${produto.nome}">
+                            <img src="${produto.imagens && produto.imagens[0] ? produto.imagens[0] : 'https://via.placeholder.com/300x300?text=Sem+Imagem'}" alt="${produto.nome}" onerror="this.src='https://via.placeholder.com/300x300?text=Erro'">
                             <div class="product-badge ${stockStatus === 'error' ? 'error' : (stockStatus === 'warning' ? 'warning' : '')}" style="display: ${produto.estoque === 0 ? 'block' : 'none'};">
                                 FORA DE ESTOQUE
                             </div>
@@ -1989,7 +2052,7 @@
             const thumbnails = document.getElementById('gallery-thumbnails');
             thumbnails.innerHTML = imagens.map((img, index) => `
                 <div class="gallery-thumbnail ${index === currentImageIndex ? 'active' : ''}" onclick="mudarImagemGaleria(${index})">
-                    <img src="${img}" alt="Thumb ${index + 1}">
+                    <img src="${img}" alt="Thumb ${index + 1}" onerror="this.src='https://via.placeholder.com/70x70?text=Erro'">
                 </div>
             `).join('');
         }
@@ -2106,7 +2169,7 @@
                 cartItemsDiv.innerHTML = cartItems.map((item, index) => `
                     <div class="cart-item">
                         <div class="cart-item-image">
-                            <img src="${item.imagem}" alt="${item.nome}">
+                            <img src="${item.imagem}" alt="${item.nome}" onerror="this.src='https://via.placeholder.com/70x70?text=Erro'">
                         </div>
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.nome}</div>
@@ -2171,7 +2234,6 @@
         }
 
         function toggleFavorites() {
-            // Funcionalidade de favoritos
             alert('❤️ Favoritos ainda em desenvolvimento!');
         }
 
