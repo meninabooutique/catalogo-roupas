@@ -721,7 +721,7 @@
         <div class="header-content">
             <div class="logo">
                 <div class="logo-image">
-                    <img src="https://i.imgur.com/LOGO-MENINA-BOUTIQUE.jpg" alt="Menina Boutique Logo">
+                    <img src="assets/logo-menina-boutique.svg" alt="Menina Boutique Logo">
                 </div>
                 <span>Admin</span>
             </div>
@@ -855,9 +855,9 @@
     </div>
 
     <!-- SCRIPTS FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-storage-compat.js"></script>
 
     <script>
         // FIREBASE CONFIG
@@ -875,7 +875,7 @@
         const storage = firebase.storage();
 
         // VARIÁVEIS GLOBAIS
-        const ADMIN_PASSWORD = "59827630";
+        const ADMIN_USERS = { kauan: "59827630", cleomar: "59827630" };
         const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1";
         let variacoes = [];
         let imagensLocais = [];
@@ -897,9 +897,11 @@
 
         // VERIFICAÇÃO DE ADMIN
         function verificarAdmin() {
-            const senha = prompt("🔐 Digite a senha do admin:");
-            if (senha !== ADMIN_PASSWORD) {
-                alert('❌ Senha incorreta!');
+            const usuario = prompt("🔐 Usuário do administrador (Kauan ou Cleomar):");
+            if (usuario === null) { window.location.href = 'index.html'; return; }
+            const senha = prompt("🔐 Digite a senha:");
+            if (ADMIN_USERS[usuario.trim().toLowerCase()] !== senha) {
+                alert('❌ Usuário ou senha incorretos!');
                 window.location.href = 'index.html';
             }
         }
@@ -1019,10 +1021,10 @@
         }
 
         // UPLOAD DE IMAGENS
-        async function uploadImagens() {
+        async function uploadImagens(imagens = imagensLocais.filter(img => !img.isUrl)) {
             const urls = [];
             
-            for (let img of imagensLocais) {
+            for (let img of imagens) {
                 try {
                     const nomeArquivo = `${Date.now()}_${Math.random().toString(36).substring(7)}_${img.arquivo.name}`;
                     const ref = storage.ref(`produtos/${nomeArquivo}`);
@@ -1200,7 +1202,7 @@
                 // Upload das novas imagens
                 const novasImagens = imagensLocais.filter(img => !img.isUrl);
                 if (novasImagens.length > 0) {
-                    const novasUrls = await uploadImagens();
+                    const novasUrls = await uploadImagens(novasImagens);
                     imagensUrls = imagensUrls.concat(novasUrls);
                 }
 
