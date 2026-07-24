@@ -72,18 +72,8 @@
             gap: 20px;
         }
 
-        .user-section {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .user-section.hidden {
-            display: none;
-        }
-
-        .btn-admin {
-            background: linear-gradient(135deg, #8b3a62, #a83d7a);
+        .btn-sair-admin {
+            background: linear-gradient(135deg, #c94a5c, #d95f6f);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -91,14 +81,18 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            animation: fadeIn 0.6s ease 0.3s both;
-            box-shadow: 0 4px 15px rgba(139, 58, 98, 0.3);
+            box-shadow: 0 4px 15px rgba(201, 74, 92, 0.3);
             font-size: 0.9rem;
+            display: none;
         }
 
-        .btn-admin:hover {
+        .btn-sair-admin.visible {
+            display: block;
+        }
+
+        .btn-sair-admin:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(139, 58, 98, 0.4);
+            box-shadow: 0 6px 20px rgba(201, 74, 92, 0.4);
         }
 
         @keyframes fadeIn {
@@ -154,6 +148,10 @@
             border-bottom: 2px solid rgba(212, 105, 142, 0.2);
             backdrop-filter: blur(10px);
             animation: slideDown 0.6s ease 0.2s both;
+        }
+
+        .filters.hidden {
+            display: none;
         }
 
         .filters .container {
@@ -223,6 +221,11 @@
         main {
             padding: 60px 20px;
             min-height: calc(100vh - 300px);
+        }
+
+        main.admin-mode {
+            padding: 40px 20px;
+            min-height: auto;
         }
 
         .products-grid {
@@ -368,7 +371,8 @@
             background: linear-gradient(135deg, rgba(254, 245, 248, 0.8), rgba(240, 214, 232, 0.5));
             padding: 50px;
             border-radius: 20px;
-            margin: 40px 0;
+            margin: 40px auto;
+            max-width: 800px;
             box-shadow: 0 15px 40px rgba(139, 58, 98, 0.1);
             border: 2px solid rgba(212, 105, 142, 0.2);
             backdrop-filter: blur(10px);
@@ -598,21 +602,19 @@
             <div>
                 <h1>✨ Menina Boutique</h1>
                 <p class="subtitle">Sua Loja Online</p>
-                <p class="admin-name" id="admin-name" style="display: none;">👤 Marcia</p>
+                <p class="admin-name" id="admin-name" style="display: none;">👤 Marcia - Modo Admin Ativado</p>
             </div>
-            <div class="user-section" id="admin-section">
-                <button class="btn-admin" onclick="toggleAdminMode()">🔧 Modo Admin</button>
-            </div>
+            <button class="btn-sair-admin" id="btn-sair-admin" onclick="sairModoAdmin()">🚪 Sair do Admin</button>
         </div>
     </header>
 
-    <div class="search-section">
+    <div class="search-section" id="search-section">
         <div class="search-container">
             <input type="text" id="search-input" class="search-input" placeholder="🔍 Buscar roupa, cor, tamanho..." onkeyup="buscarProdutosInteligente()">
         </div>
     </div>
 
-    <nav class="filters">
+    <nav class="filters" id="filters">
         <div class="container">
             <div class="filter-group">
                 <label for="category-filter">Categoria:</label>
@@ -654,7 +656,7 @@
         </div>
     </nav>
 
-    <main class="container">
+    <main class="container" id="main-content">
         <div id="products-container" class="products-grid">
             <div class="loading">
                 <div class="spinner"></div>
@@ -766,20 +768,57 @@
         const ADMIN_USER = "Marcia";
         const ADMIN_PASSWORD = "59827630";
 
-        // Verificar se a senha é correta
-        function toggleAdminMode() {
-            const senha = prompt("Digite a senha do admin:");
+        // Verificar hash na URL ao carregar
+        window.addEventListener('hashchange', verificarAdmin);
+        window.addEventListener('load', verificarAdmin);
+
+        function verificarAdmin() {
+            if (window.location.hash === '#admin') {
+                solicitarSenhaAdmin();
+            } else {
+                if (adminMode) {
+                    sairModoAdmin();
+                }
+            }
+        }
+
+        function solicitarSenhaAdmin() {
+            const senha = prompt("🔐 Digite a senha do admin:");
             if (senha === ADMIN_PASSWORD) {
-                adminMode = !adminMode;
-                document.getElementById('form-container').classList.toggle('visible');
-                document.getElementById('admin-name').style.display = adminMode ? 'block' : 'none';
-                document.querySelectorAll('.btn-delete').forEach(btn => {
-                    btn.classList.toggle('admin-visible');
-                });
-                alert(adminMode ? `✅ Bem-vinda ${ADMIN_USER}! Modo Admin Ativado` : '❌ Modo Admin Desativado');
+                ativarModoAdmin();
             } else if (senha !== null) {
                 alert('❌ Senha incorreta!');
+                window.location.hash = '';
             }
+        }
+
+        function ativarModoAdmin() {
+            adminMode = true;
+            document.getElementById('form-container').classList.add('visible');
+            document.getElementById('admin-name').style.display = 'block';
+            document.getElementById('btn-sair-admin').classList.add('visible');
+            document.getElementById('search-section').classList.add('hidden');
+            document.getElementById('filters').classList.add('hidden');
+            document.getElementById('main-content').classList.add('admin-mode');
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.classList.add('admin-visible');
+            });
+            alert(`✅ Bem-vinda ${ADMIN_USER}! Modo Admin Ativado`);
+        }
+
+        function sairModoAdmin() {
+            adminMode = false;
+            document.getElementById('form-container').classList.remove('visible');
+            document.getElementById('admin-name').style.display = 'none';
+            document.getElementById('btn-sair-admin').classList.remove('visible');
+            document.getElementById('search-section').classList.remove('hidden');
+            document.getElementById('filters').classList.remove('hidden');
+            document.getElementById('main-content').classList.remove('admin-mode');
+            document.querySelectorAll('.btn-delete').forEach(btn => {
+                btn.classList.remove('admin-visible');
+            });
+            window.location.hash = '';
+            renderizarProdutos();
         }
 
         // Busca inteligente com suporte a palavras parciais
