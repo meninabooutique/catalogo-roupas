@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Menina Boutique - Catálogo</title>
     <style>
         * {
@@ -910,7 +911,7 @@
                                     <label class="upload-label">
                                         📸 Cole a URL da imagem (Imgur ou outra)
                                     </label>
-                                    <input type="text" id="imagem" placeholder="https://i.imgur.com/...jpg" style="padding: 14px 16px; border: 2px solid rgba(212, 105, 142, 0.3); border-radius: 10px; font-size: 0.95rem; width: 100%; margin-top: 10px;">
+                                    <input type="text" id="imagem" placeholder="https://i.imgur.com/...jpg" style="padding: 14px 16px; border: 2px solid rgba(212, 105, 142, 0.3); border-radius: 10px; width: 100%; font-size: 0.95rem;">
                                 </div>
                                 <div id="image-preview" class="image-preview">
                                     <img id="preview-img" src="" alt="Prévia">
@@ -999,77 +1000,127 @@
                 } else {
                     await auth.signInWithEmailAndPassword(email, password);
                 }
-                document.getElementById('auth-email').value = '';
-                document.getElementById('auth-password').value = '';
+                errorDiv.classList.remove('show');
             } catch (error) {
-                errorDiv.textContent = '❌ ' + error.message;
+                errorDiv.textContent = `❌ Erro: ${error.message}`;
                 errorDiv.classList.add('show');
             }
         }
 
         function logout() {
             auth.signOut();
-            isSignUp = false;
         }
 
-        function mostrarTab(tabName, botao) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        function mostrarTab(tabName, button) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            botao.classList.add('active');
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            button.classList.add('active');
         }
 
-        async function renderizarProdutos(filtrados = null) {
+        async function renderizarProdutos() {
             const container = document.getElementById('products-container');
             try {
-                let produtos = filtrados;
-                if (!filtrados) {
-                    const snap = await db.collection('produtos').get();
-                    produtos = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
-                }
-
-                if (produtos.length === 0) {
-                    container.innerHTML = `<div class="no-products"><span class="no-products-icon">📦</span><p>Nenhum produto encontrado</p></div>`;
+                const snapshot = await db.collection('produtos').get();
+                if (snapshot.empty) {
+                    container.innerHTML = `
+                        <div class="no-products">
+                            <span class="no-products-icon">📦</span>
+                            <p>Nenhum produto adicionado ainda. Comece a vender!</p>
+                        </div>
+                    `;
                     return;
                 }
 
-                container.innerHTML = produtos.map(p => `
-                    <div class="product-card">
-                        <div class="product-image">${p.imagem ? `<img src="${p.imagem}" alt="${p.nome}">` : '👕'}</div>
-                        <div class="product-info">
-                            <h3>${p.nome}</h3>
-                            <div class="product-details">
-                                <div class="detail-item"><strong>Categoria:</strong> ${p.categoria}</div>
-                                <div class="detail-item"><strong>Cor:</strong> ${p.cor}</div>
-                                <div class="detail-item"><strong>Tamanho:</strong> ${p.tamanho}</div>
-                                ${p.variacoes ? `<div class="detail-item"><strong>Variações:</strong> ${p.variacoes}</div>` : ''}
-                                ${p.descricao ? `<div class="detail-item"><strong>Descrição:</strong><br>${p.descricao}</div>` : ''}
-                            </div>
-                            <div class="product-price">R$ ${parseFloat(p.preco).toFixed(2)}</div>
-                            ${currentUser ? `<div class="product-actions"><button class="btn-delete" onclick="deletarProduto('${p.id}')">🗑️ Deletar</button></div>` : ''}
+                container.innerHTML = '';
+                snapshot.forEach(doc => {
+                    const produto = doc.data();
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <div class="product-image">
+                            ${produto.imagem ? `<img src="${produto.imagem}" alt="${produto.nome}">` : '👗'}
                         </div>
-                    </div>
-                `).join('');
-            } catch (e) {
-                console.error(e);
+                        <div class="product-info">
+                            <h3>${produto.nome}</h3>
+                            <div class="product-details">
+                                <div class="detail-item">
+                                    <strong>Categoria:</strong>
+                                    <span>${produto.categoria}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Cor:</strong>
+                                    <span>${produto.cor}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <strong>Tamanho:</strong>
+                                    <span>${produto.tamanho}</span>
+                                </div>
+                            </div>
+                            <div class="product-price">R$ ${parseFloat(produto.preco).toFixed(2)}</div>
+                            <div class="product-actions">
+                                <button class="btn-delete" onclick="deletarProduto('${doc.id}')">🗑️ Deletar</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                container.innerHTML = `<div class="no-products">Erro ao carregar produtos</div>`;
             }
         }
 
-        async function aplicarFiltros() {
-            const cat = document.getElementById('category-filter').value;
-            const cor = document.getElementById('color-filter').value;
-            const tam = document.getElementById('size-filter').value;
+        document.getElementById('form-produto').addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-            let query = db.collection('produtos');
-            if (cat) query = query.where('categoria', '==', cat);
+            const nome = document.getElementById('nome').value;
+            const categoria = document.getElementById('categoria').value;
+            const cor = document.getElementById('cor').value;
+            const tamanho = document.getElementById('tamanho').value;
+            const preco = document.getElementById('preco').value;
+            const descricao = document.getElementById('descricao').value;
+            const imagem = document.getElementById('imagem').value;
 
-            const snap = await query.get();
-            let produtos = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
+            try {
+                await db.collection('produtos').add({
+                    nome,
+                    categoria,
+                    cor,
+                    tamanho,
+                    preco: parseFloat(preco),
+                    descricao,
+                    imagem,
+                    criadoEm: new Date()
+                });
 
-            if (cor) produtos = produtos.filter(p => p.cor === cor);
-            if (tam) produtos = produtos.filter(p => p.tamanho === tam || (p.variacoes && p.variacoes.includes(tam)));
+                document.getElementById('success-message').classList.add('show');
+                setTimeout(() => {
+                    document.getElementById('success-message').classList.remove('show');
+                }, 3000);
 
-            renderizarProdutos(produtos);
+                document.getElementById('form-produto').reset();
+                renderizarProdutos();
+            } catch (error) {
+                alert('Erro ao adicionar produto: ' + error.message);
+            }
+        });
+
+        async function deletarProduto(id) {
+            if (confirm('Tem certeza que deseja deletar?')) {
+                try {
+                    await db.collection('produtos').doc(id).delete();
+                    renderizarProdutos();
+                } catch (error) {
+                    alert('Erro ao deletar: ' + error.message);
+                }
+            }
+        }
+
+        function aplicarFiltros() {
+            renderizarProdutos();
         }
 
         function limparFiltros() {
@@ -1079,63 +1130,26 @@
             renderizarProdutos();
         }
 
-        async function deletarProduto(id) {
-            if (confirm('Deletar este produto?')) {
-                await db.collection('produtos').doc(id).delete();
-                renderizarProdutos();
-            }
-        }
-
-        document.getElementById('imagem').addEventListener('input', e => {
-            const url = e.target.value.trim();
-            if (url) {
-                document.getElementById('preview-img').src = url;
-                document.getElementById('preview-img').onload = () => {
-                    document.getElementById('image-preview').style.display = 'flex';
-                };
-                document.getElementById('preview-img').onerror = () => {
-                    document.getElementById('image-preview').style.display = 'none';
-                };
+        document.getElementById('imagem').addEventListener('change', function() {
+            const preview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-img');
+            if (this.value) {
+                previewImg.src = this.value;
+                preview.style.display = 'flex';
             } else {
-                document.getElementById('image-preview').style.display = 'none';
+                preview.style.display = 'none';
             }
         });
 
-        document.getElementById('form-produto').addEventListener('submit', async e => {
-            e.preventDefault();
-            const nome = document.getElementById('nome').value;
-            const categoria = document.getElementById('categoria').value;
-            const cor = document.getElementById('cor').value;
-            const tamanho = document.getElementById('tamanho').value;
-            const variacoes = document.getElementById('variacoes').value;
-            const preco = document.getElementById('preco').value;
-            const descricao = document.getElementById('descricao').value;
-            const imagem = document.getElementById('imagem').value;
-
-            try {
-                await db.collection('produtos').add({
-                    nome, categoria, cor, tamanho, variacoes, preco, descricao,
-                    imagem: imagem,
-                    dataCriacao: new Date()
-                });
-
-                const msg = document.getElementById('success-message');
-                msg.classList.add('show');
-                setTimeout(() => msg.classList.remove('show'), 3000);
-
-                document.getElementById('form-produto').reset();
-                document.getElementById('image-preview').style.display = 'none';
-                setTimeout(() => {
-                    document.querySelector('[onclick="mostrarTab(\'catalogo\', this)"]').click();
-                    renderizarProdutos();
-                }, 500);
-            } catch (error) {
-                alert('Erro: ' + error.message);
+        document.getElementById('imagem').addEventListener('input', function() {
+            const preview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-img');
+            if (this.value) {
+                previewImg.src = this.value;
+                preview.style.display = 'flex';
+            } else {
+                preview.style.display = 'none';
             }
-        });
-
-        document.getElementById('auth-password').addEventListener('keypress', e => {
-            if (e.key === 'Enter') login();
         });
     </script>
 </body>
