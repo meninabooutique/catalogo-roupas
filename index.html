@@ -363,32 +363,6 @@
             background: var(--warning);
         }
 
-        .product-heart {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255,255,255,0.9);
-            border: none;
-            cursor: pointer;
-            font-size: 1.3rem;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-
-        .product-heart:hover {
-            transform: scale(1.1);
-        }
-
-        .product-heart.favorited {
-            color: var(--error);
-        }
-
         .product-info {
             padding: 15px;
         }
@@ -741,25 +715,6 @@
             background: var(--primary-pink);
             color: white;
             border-color: var(--primary-pink);
-        }
-
-        .color-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--border-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .color-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .color-btn.active {
-            border-color: var(--text-dark);
-            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-pink);
         }
 
         .quantity-selector {
@@ -1458,9 +1413,6 @@
             </div>
             <div class="header-icons">
                 <div class="admin-info" id="admin-info">👤 Marcia</div>
-                <button class="icon-btn" onclick="toggleFavorites()" title="Meus Favoritos">
-                    <i class="far fa-heart"></i>
-                </button>
                 <button class="icon-btn" onclick="toggleCart()" title="Carrinho">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-badge" id="cart-badge" style="display: none;">0</span>
@@ -1616,6 +1568,12 @@
                     <div class="form-group">
                         <label for="descricao">Descrição</label>
                         <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="link-whatsapp">Link WhatsApp Personalizado (Opcional)</label>
+                        <input type="text" id="link-whatsapp" placeholder="Ex: message/CODIGO123 ou wa.me/numero - SEM o https://wa.me/">
+                        <small style="color: var(--text-light); font-size: 0.8rem;">💡 Cole apenas o link, será formatado automaticamente. Deixe em branco para usar o link padrão de suporte.</small>
                     </div>
 
                     <div class="images-upload">
@@ -1800,36 +1758,32 @@
         let allProdutos = [];
         let filteredProdutos = [];
         let cartItems = [];
-        let favoritos = [];
         let currentProduct = null;
         let currentImageIndex = 0;
         let imagemSelecionadas = [];
 
         const ADMIN_PASSWORD = "59827630";
-        const WHATSAPP_NUMBER = "5585987654321";
+        const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1"; // Link de suporte
 
         // INICIALIZAÇÃO
         window.addEventListener('load', () => {
             verificarAdmin();
             carregarProdutos();
             carregarCarrinho();
-            carregarFavoritos();
             document.getElementById('filter-price').addEventListener('input', (e) => {
                 document.getElementById('price-value').textContent = `R$ ${e.target.value}`;
             });
         });
 
-        // ADMIN - CORREÇÃO IMPORTANTE
+        // ADMIN
         function verificarAdmin() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('admin') === 'true') {
+            if (window.location.pathname.includes('admin.html') || window.location.pathname.includes('admin')) {
                 const senha = prompt("🔐 Digite a senha do admin:");
                 if (senha === ADMIN_PASSWORD) {
                     ativarModoAdmin();
-                    window.history.replaceState({}, document.title, window.location.pathname);
                 } else if (senha !== null) {
                     alert('❌ Senha incorreta!');
-                    window.location.href = window.location.pathname;
+                    window.location.href = '/';
                 }
             }
         }
@@ -1851,7 +1805,7 @@
             document.getElementById('btn-sair-admin').classList.remove('visible');
             document.getElementById('filters-section').classList.add('visible');
             document.getElementById('products-container').style.display = 'grid';
-            window.location.href = window.location.pathname;
+            window.location.href = '/';
             carregarProdutos();
         }
 
@@ -1927,10 +1881,7 @@
             }
 
             container.innerHTML = filteredProdutos.map(produto => {
-                const estaNoCarrinho = cartItems.some(item => item.id === produto.id);
-                const isFavorito = favoritos.includes(produto.id);
                 const stockStatus = produto.estoque > 5 ? 'success' : (produto.estoque > 0 ? 'warning' : 'error');
-                const stockBadge = produto.estoque === 0 ? '❌ Fora de Estoque' : (produto.status === 'analise' ? '⏳ Em análise' : '✅ Em estoque');
 
                 return `
                     <div class="product-card" onclick="abrirModal('${produto.id}')">
@@ -1939,9 +1890,6 @@
                             <div class="product-badge ${stockStatus === 'error' ? 'error' : (stockStatus === 'warning' ? 'warning' : '')}" style="display: ${produto.estoque === 0 ? 'block' : 'none'};">
                                 FORA DE ESTOQUE
                             </div>
-                            <button class="product-heart ${isFavorito ? 'favorited' : ''}" onclick="event.stopPropagation(); toggleFavoritoItem('${produto.id}')">
-                                <i class="fas fa-heart"></i>
-                            </button>
                         </div>
                         <div class="product-info">
                             <h3 class="product-name">${produto.nome}</h3>
@@ -1970,6 +1918,13 @@
             }
 
             try {
+                let linkWhatsapp = document.getElementById('link-whatsapp').value.trim();
+                
+                // Se não colocou link, usa o link de suporte
+                if (!linkWhatsapp) {
+                    linkWhatsapp = WHATSAPP_SUPPORT;
+                }
+
                 await db.collection('produtos').add({
                     nome: document.getElementById('nome').value,
                     categoria: document.getElementById('categoria').value,
@@ -1980,6 +1935,7 @@
                     status: document.getElementById('status-estoque').value,
                     descricao: document.getElementById('descricao').value,
                     imagens: imagemSelecionadas,
+                    linkWhatsapp: linkWhatsapp,
                     criadoEm: new Date()
                 });
 
@@ -2000,13 +1956,11 @@
 
             currentImageIndex = 0;
 
-            // Preencher dados do modal
             document.getElementById('modal-title').textContent = currentProduct.nome;
             document.getElementById('modal-price').textContent = `R$ ${parseFloat(currentProduct.preco).toFixed(2)}`;
             document.getElementById('modal-description').textContent = currentProduct.descricao || 'Sem descrição';
             document.getElementById('modal-stock').textContent = `${currentProduct.estoque} unidades em estoque`;
 
-            // Stock indicator
             const indicator = document.getElementById('stock-indicator');
             if (currentProduct.estoque === 0) {
                 indicator.className = 'stock-indicator error';
@@ -2016,7 +1970,6 @@
                 indicator.className = 'stock-indicator';
             }
 
-            // Stock alert
             const alertDiv = document.getElementById('modal-stock-alert');
             if (currentProduct.status === 'analise') {
                 alertDiv.style.display = 'flex';
@@ -2028,13 +1981,8 @@
                 alertDiv.style.display = 'none';
             }
 
-            // Galeria
             renderizarGaleria();
-
-            // Tamanhos e cores
             renderizarSeletores();
-
-            // Quantiddade
             document.getElementById('quantity-input').value = 1;
 
             document.getElementById('product-modal').classList.add('active');
@@ -2083,14 +2031,12 @@
         }
 
         function renderizarSeletores() {
-            // Tamanhos
             const sizes = [currentProduct.tamanho];
             const sizeOptions = document.getElementById('size-options');
             sizeOptions.innerHTML = sizes.map(size => `
                 <button type="button" class="selector-btn active" data-size="${size}">${size}</button>
             `).join('');
 
-            // Cores
             const colors = [currentProduct.cor];
             const colorOptions = document.getElementById('color-options');
             colorOptions.innerHTML = colors.map(color => `
@@ -2210,33 +2156,6 @@
             }
         }
 
-        // FAVORITOS
-        function toggleFavoritoItem(produtoId) {
-            const index = favoritos.indexOf(produtoId);
-            if (index > -1) {
-                favoritos.splice(index, 1);
-            } else {
-                favoritos.push(produtoId);
-            }
-            salvarFavoritos();
-            renderizarProdutos();
-        }
-
-        function salvarFavoritos() {
-            localStorage.setItem('favoritosMeniaBoutique', JSON.stringify(favoritos));
-        }
-
-        function carregarFavoritos() {
-            const saved = localStorage.getItem('favoritosMeniaBoutique');
-            if (saved) {
-                favoritos = JSON.parse(saved);
-            }
-        }
-
-        function toggleFavorites() {
-            alert('❤️ Favoritos ainda em desenvolvimento!');
-        }
-
         // PESQUISA E FILTROS
         function buscar() {
             aplicarFiltros();
@@ -2266,7 +2185,6 @@
                 return matchSearch && matchCategory && matchColor && matchSize && matchPrice;
             });
 
-            // Ordenação
             if (sort === 'menor-preco') {
                 filteredProdutos.sort((a, b) => a.preco - b.preco);
             } else if (sort === 'maior-preco') {
@@ -2312,10 +2230,9 @@
             mensagem += `💰 *TOTAL: R$ ${total.toFixed(2)}*\n\n`;
             mensagem += `⏰ Confirme disponibilidade!`;
 
-            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+            const whatsappURL = `https://wa.me/${WHATSAPP_SUPPORT}?text=${encodeURIComponent(mensagem)}`;
             window.open(whatsappURL, '_blank');
 
-            // Salvar no histórico
             const historico = JSON.parse(localStorage.getItem('historicoMeniaBoutique') || '[]');
             historico.push({
                 data: new Date().toLocaleString(),
@@ -2324,7 +2241,6 @@
             });
             localStorage.setItem('historicoMeniaBoutique', JSON.stringify(historico));
 
-            // Limpar carrinho
             cartItems = [];
             salvarCarrinho();
             atualizarCarrinho();
@@ -2345,13 +2261,15 @@
             }
             mensagem += `Tenho interesse! 😊`;
 
-            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+            // Usa o link personalizado do produto, se houver. Senão, usa o link de suporte
+            const linkWhatsapp = currentProduct.linkWhatsapp || WHATSAPP_SUPPORT;
+            const whatsappURL = `https://wa.me/${linkWhatsapp}?text=${encodeURIComponent(mensagem)}`;
             window.open(whatsappURL, '_blank');
         }
 
         function abrirWhatsApp() {
             const mensagem = `Olá! Tenho uma dúvida sobre os produtos. Pode me ajudar?`;
-            const whatsappURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`;
+            const whatsappURL = `https://wa.me/${WHATSAPP_SUPPORT}?text=${encodeURIComponent(mensagem)}`;
             window.open(whatsappURL, '_blank');
         }
     </script>
