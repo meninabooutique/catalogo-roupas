@@ -51,6 +51,7 @@
             justify-content: space-between;
             align-items: center;
             gap: 20px;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -125,6 +126,7 @@
             gap: 10px;
             margin-bottom: 30px;
             border-bottom: 2px solid var(--border-color);
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -233,10 +235,12 @@
             justify-content: space-between;
             align-items: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         .variacao-info {
             flex: 1;
+            min-width: 150px;
         }
 
         .variacao-texto {
@@ -269,7 +273,7 @@
             padding: 15px;
             border-radius: 8px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 12px;
             margin-bottom: 15px;
         }
@@ -289,6 +293,7 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
+            grid-column: 1 / -1;
         }
 
         .variacao-form button:hover {
@@ -563,6 +568,7 @@
             align-items: center;
             justify-content: center;
             animation: fadeIn 0.3s ease;
+            padding: 20px;
         }
 
         .modal-confirmacao.active {
@@ -633,6 +639,35 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
+        .alert-box {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-box.show {
+            display: block;
+        }
+
+        .alert-box.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-box.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-box.loading {
+            background: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -641,6 +676,7 @@
 
             .admin-controls {
                 width: 100%;
+                justify-content: space-between;
             }
 
             .products-grid {
@@ -654,6 +690,28 @@
             .tabs {
                 flex-wrap: wrap;
             }
+
+            .tab-btn {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+
+            .variacao-form {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 15px 10px;
+            }
+
+            .form-container {
+                padding: 20px 15px;
+            }
+
+            .modal-body {
+                padding: 20px;
+                margin: 0 10px;
+            }
         }
     </style>
 </head>
@@ -665,7 +723,7 @@
                 <div class="logo-image">
                     <img src="https://i.imgur.com/LOGO-MENINA-BOUTIQUE.jpg" alt="Menina Boutique Logo">
                 </div>
-                <span>Menina Boutique - Admin</span>
+                <span>Admin</span>
             </div>
             <div class="admin-controls">
                 <div class="admin-info">👤 Marcia</div>
@@ -678,6 +736,9 @@
 
     <!-- CONTAINER -->
     <div class="container">
+        <!-- ALERT BOX -->
+        <div id="alert-box" class="alert-box"></div>
+
         <!-- TABS -->
         <div class="tabs">
             <button class="tab-btn active" onclick="mudarTab('adicionar')">
@@ -703,23 +764,15 @@
 
                         <div class="form-group">
                             <label for="categoria">Categoria *</label>
-                            <select id="categoria" required>
-                                <option value="">Selecione</option>
-                                <option value="camiseta">Camiseta</option>
-                                <option value="calça">Calça</option>
-                                <option value="sapato">Sapato</option>
-                                <option value="vestido">Vestido</option>
-                                <option value="jaqueta">Jaqueta</option>
-                                <option value="acessório">Acessório</option>
-                            </select>
+                            <input type="text" id="categoria" placeholder="Ex: Camiseta, Calça, Vestido..." required>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="grid-column: 1 / -1;">
                             <label for="descricao">Descrição</label>
                             <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="grid-column: 1 / -1;">
                             <label for="link-whatsapp">Link WhatsApp (Opcional)</label>
                             <input type="text" id="link-whatsapp" placeholder="Ex: message/CODIGO123">
                         </div>
@@ -728,13 +781,14 @@
                     <!-- SEÇÃO DE VARIAÇÕES -->
                     <div class="variacoes-section">
                         <h3 style="margin-bottom: 15px; font-size: 1.1rem;">
-                            <i class="fas fa-palette"></i> Adicionar Variação (Tamanho, Cor, Preço)
+                            <i class="fas fa-palette"></i> Adicionar Variação (Tamanho, Cor, Preço, Estoque)
                         </h3>
 
                         <div class="variacao-form">
                             <input type="text" id="var-tamanho" placeholder="Tamanho (M, G, 38...)" required>
                             <input type="text" id="var-cor" placeholder="Cor (Rosa, Azul...)" required>
                             <input type="number" id="var-preco" placeholder="Preço (R$)" min="0" step="0.01" required>
+                            <input type="number" id="var-estoque" placeholder="Estoque" min="0" required>
                             <button type="button" onclick="adicionarVariacao()">
                                 <i class="fas fa-plus"></i> Adicionar Variação
                             </button>
@@ -750,7 +804,7 @@
                         <label>Adicione Imagens do Produto (até 10 fotos)</label>
                         <div class="upload-area" onclick="document.getElementById('file-input').click()">
                             <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary-pink); margin-bottom: 10px; display: block;"></i>
-                            <p>Clique ou arraste as imagens aqui</p>
+                            <p><strong>Clique aqui</strong> ou arraste as imagens</p>
                             <input type="file" id="file-input" accept="image/*" multiple onchange="adicionarImagensLocal()">
                         </div>
                         <div class="images-preview" id="images-preview"></div>
@@ -826,13 +880,20 @@
         let variacoes = [];
         let imagensLocais = [];
         let allProdutos = [];
-        let produtoAtualEmEdicao = null;
 
         // INICIALIZAÇÃO
         window.addEventListener('load', () => {
             verificarAdmin();
             carregarProdutos();
         });
+
+        // ALERT
+        function mostrarAlerta(mensagem, tipo) {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.textContent = mensagem;
+            alertBox.className = `alert-box show ${tipo}`;
+            setTimeout(() => alertBox.classList.remove('show'), 5000);
+        }
 
         // VERIFICAÇÃO DE ADMIN
         function verificarAdmin() {
@@ -868,17 +929,19 @@
             const tamanho = document.getElementById('var-tamanho').value.trim();
             const cor = document.getElementById('var-cor').value.trim();
             const preco = document.getElementById('var-preco').value.trim();
+            const estoque = document.getElementById('var-estoque').value.trim();
 
-            if (!tamanho || !cor || !preco) {
-                alert('❌ Preencha todos os campos de variação!');
+            if (!tamanho || !cor || !preco || !estoque) {
+                mostrarAlerta('❌ Preencha todos os campos de variação!', 'error');
                 return;
             }
 
-            variacoes.push({ tamanho, cor, preco: parseFloat(preco) });
+            variacoes.push({ tamanho, cor, preco: parseFloat(preco), estoque: parseInt(estoque) });
 
             document.getElementById('var-tamanho').value = '';
             document.getElementById('var-cor').value = '';
             document.getElementById('var-preco').value = '';
+            document.getElementById('var-estoque').value = '';
 
             renderizarVariacoes();
         }
@@ -889,7 +952,7 @@
                 <div class="variacao-item">
                     <div class="variacao-info">
                         <div class="variacao-texto">${v.tamanho} • ${v.cor}</div>
-                        <div class="variacao-detalhes">R$ ${v.preco.toFixed(2)}</div>
+                        <div class="variacao-detalhes">R$ ${v.preco.toFixed(2)} • Estoque: ${v.estoque}</div>
                     </div>
                     <button type="button" class="btn-remove-variacao" onclick="removerVariacao(${index})">
                         <i class="fas fa-trash"></i> Remover
@@ -909,7 +972,7 @@
             
             for (let file of files) {
                 if (imagensLocais.length >= 10) {
-                    alert('Máximo de 10 imagens permitidas');
+                    mostrarAlerta('⚠️ Máximo de 10 imagens permitidas', 'error');
                     break;
                 }
 
@@ -949,6 +1012,7 @@
             document.getElementById('var-tamanho').value = '';
             document.getElementById('var-cor').value = '';
             document.getElementById('var-preco').value = '';
+            document.getElementById('var-estoque').value = '';
             document.getElementById('file-input').value = '';
             renderizarVariacoes();
             renderizarImagensPreview();
@@ -960,12 +1024,14 @@
             
             for (let img of imagensLocais) {
                 try {
-                    const ref = storage.ref(`produtos/${Date.now()}_${img.arquivo.name}`);
+                    const nomeArquivo = `${Date.now()}_${Math.random().toString(36).substring(7)}_${img.arquivo.name}`;
+                    const ref = storage.ref(`produtos/${nomeArquivo}`);
                     const snapshot = await ref.put(img.arquivo);
                     const url = await snapshot.ref.getDownloadURL();
                     urls.push(url);
                 } catch (error) {
                     console.error('Erro ao fazer upload:', error);
+                    mostrarAlerta('❌ Erro ao fazer upload de imagem', 'error');
                 }
             }
 
@@ -977,20 +1043,25 @@
             e.preventDefault();
 
             if (variacoes.length === 0) {
-                alert('❌ Adicione pelo menos uma variação!');
+                mostrarAlerta('❌ Adicione pelo menos uma variação!', 'error');
                 return;
             }
 
             if (imagensLocais.length === 0) {
-                alert('❌ Adicione pelo menos uma imagem!');
+                mostrarAlerta('❌ Adicione pelo menos uma imagem!', 'error');
                 return;
             }
 
             try {
-                alert('⏳ Enviando imagens... por favor aguarde');
+                mostrarAlerta('⏳ Enviando imagens... por favor aguarde', 'loading');
 
                 // Upload das imagens
                 const imagensUrls = await uploadImagens();
+
+                if (imagensUrls.length === 0) {
+                    mostrarAlerta('❌ Erro ao fazer upload das imagens', 'error');
+                    return;
+                }
 
                 let linkWhatsapp = document.getElementById('link-whatsapp').value.trim();
                 if (!linkWhatsapp) {
@@ -998,37 +1069,33 @@
                 }
 
                 // Criar documento do produto
-                const docRef = await db.collection('produtos').add({
+                await db.collection('produtos').add({
                     nome: document.getElementById('nome').value,
                     categoria: document.getElementById('categoria').value,
                     descricao: document.getElementById('descricao').value,
                     imagens: imagensUrls,
                     linkWhatsapp: linkWhatsapp,
-                    variacao: variacoes,
+                    variacoes: variacoes,
                     criadoEm: new Date()
                 });
 
                 // Mostrar modal de confirmação
                 document.getElementById('modal-confirmacao').classList.add('active');
-                produtoAtualEmEdicao = docRef.id;
 
             } catch (error) {
-                alert('❌ Erro ao adicionar produto: ' + error.message);
+                mostrarAlerta('❌ Erro: ' + error.message, 'error');
             }
         }
 
         function adicionarOutraVariacao() {
             document.getElementById('modal-confirmacao').classList.remove('active');
             limparForm();
-            document.getElementById('nome').value = document.getElementById('nome').value; // Mantém o nome
-            document.getElementById('categoria').value = document.getElementById('categoria').value;
-            document.getElementById('descricao').value = document.getElementById('descricao').value;
             document.getElementById('var-tamanho').focus();
         }
 
         async function finalizarProduto() {
             document.getElementById('modal-confirmacao').classList.remove('active');
-            alert('✅ Produto criado com sucesso!');
+            mostrarAlerta('✅ Produto criado com sucesso!', 'success');
             limparForm();
             carregarProdutos();
             mudarTab('listar');
@@ -1045,6 +1112,7 @@
                 renderizarProdutos();
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
+                mostrarAlerta('❌ Erro ao carregar produtos', 'error');
             }
         }
 
@@ -1063,8 +1131,8 @@
             }
 
             container.innerHTML = allProdutos.map(produto => {
-                const precoMin = Math.min(...produto.variacao.map(v => v.preco));
-                const precoMax = Math.max(...produto.variacao.map(v => v.preco));
+                const precoMin = Math.min(...produto.variacoes.map(v => v.preco));
+                const precoMax = Math.max(...produto.variacoes.map(v => v.preco));
                 const precoDisplay = precoMin === precoMax ? `R$ ${precoMin.toFixed(2)}` : `R$ ${precoMin.toFixed(2)} - R$ ${precoMax.toFixed(2)}`;
 
                 return `
@@ -1076,7 +1144,7 @@
                             <div class="product-name-admin">${produto.nome}</div>
                             <div class="product-details-admin">${produto.categoria}</div>
                             <div class="product-price-admin">${precoDisplay}</div>
-                            <div class="product-stock-admin">📦 ${produto.variacao.length} variação(ões)</div>
+                            <div class="product-stock-admin">📦 ${produto.variacoes.length} variação(ões)</div>
                             <div class="product-actions">
                                 <button class="btn-edit" onclick="editarProduto('${produto.id}')">
                                     <i class="fas fa-edit"></i> Editar
@@ -1100,7 +1168,7 @@
             document.getElementById('categoria').value = produto.categoria;
             document.getElementById('descricao').value = produto.descricao || '';
             document.getElementById('link-whatsapp').value = produto.linkWhatsapp || '';
-            variacoes = [...produto.variacao];
+            variacoes = JSON.parse(JSON.stringify(produto.variacoes));
             imagensLocais = produto.imagens.map(url => ({ preview: url, isUrl: true }));
 
             renderizarVariacoes();
@@ -1120,21 +1188,19 @@
             e.preventDefault();
 
             if (variacoes.length === 0) {
-                alert('❌ Adicione pelo menos uma variação!');
+                mostrarAlerta('❌ Adicione pelo menos uma variação!', 'error');
                 return;
             }
 
             try {
-                let imagensUrls = imagensLocais.map(img => img.isUrl ? img.preview : null).filter(Boolean);
+                mostrarAlerta('⏳ Atualizando produto...', 'loading');
+
+                let imagensUrls = imagensLocais.filter(img => img.isUrl).map(img => img.preview);
 
                 // Upload das novas imagens
                 const novasImagens = imagensLocais.filter(img => !img.isUrl);
                 if (novasImagens.length > 0) {
-                    const novasUrls = await Promise.all(novasImagens.map(async (img) => {
-                        const ref = storage.ref(`produtos/${Date.now()}_${img.arquivo.name}`);
-                        const snapshot = await ref.put(img.arquivo);
-                        return await snapshot.ref.getDownloadURL();
-                    }));
+                    const novasUrls = await uploadImagens();
                     imagensUrls = imagensUrls.concat(novasUrls);
                 }
 
@@ -1149,16 +1215,16 @@
                     descricao: document.getElementById('descricao').value,
                     imagens: imagensUrls,
                     linkWhatsapp: linkWhatsapp,
-                    variacao: variacoes
+                    variacoes: variacoes
                 });
 
-                alert('✅ Produto atualizado com sucesso!');
+                mostrarAlerta('✅ Produto atualizado!', 'success');
                 limparForm();
                 carregarProdutos();
                 resetarFormulario();
                 mudarTab('listar');
             } catch (error) {
-                alert('❌ Erro ao atualizar: ' + error.message);
+                mostrarAlerta('❌ Erro ao atualizar: ' + error.message, 'error');
             }
         }
 
@@ -1175,10 +1241,10 @@
 
             try {
                 await db.collection('produtos').doc(produtoId).delete();
-                alert('✅ Produto deletado com sucesso!');
+                mostrarAlerta('✅ Produto deletado!', 'success');
                 carregarProdutos();
             } catch (error) {
-                alert('❌ Erro ao deletar: ' + error.message);
+                mostrarAlerta('❌ Erro ao deletar: ' + error.message, 'error');
             }
         }
     </script>
