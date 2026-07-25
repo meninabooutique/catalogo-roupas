@@ -220,31 +220,7 @@
         }
 
         /* FILTROS */
-        .filters-toggle-btn {
-            position: fixed;
-            bottom: 90px;
-            right: 20px;
-            z-index: 998;
-            background: var(--card);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            transition: all 0.3s ease;
-        }
 
-        .filters-toggle-btn:hover {
-            background: var(--gold);
-            color: #000;
-            transform: scale(1.1);
-        }
 
         .filters-section {
             background: var(--card);
@@ -370,6 +346,43 @@
 
         .filter-chip.selected .check {
             display: inline;
+        }
+
+
+        .sort-select-wrap {
+            position: relative;
+            margin-top: 8px;
+        }
+
+        .sort-select-wrap select {
+            width: 100%;
+            padding: 10px 36px 10px 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: #100f14;
+            color: var(--text-dark);
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: all 0.2s;
+        }
+
+        .sort-select-wrap select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .sort-select-wrap::after {
+            content: '\25BE';
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+            font-size: 1rem;
+            pointer-events: none;
         }
 
         .filter-price-row {
@@ -1913,6 +1926,9 @@
                 <button onclick="buscar()"><i class="fas fa-search"></i></button>
             </div>
             <div class="header-icons">
+                <button class="icon-btn" onclick="toggleFilters()" title="Filtros" style="font-size:1.1rem;">
+                    <i class="fas fa-sliders-h"></i>
+                </button>
                 <button class="icon-btn" onclick="toggleCart()" title="Carrinho">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="cart-badge" id="cart-badge" style="display: none;">0</span>
@@ -2370,11 +2386,7 @@
             atualizarContadorFiltros();
         }
 
-        function selecionarOrdenacao(el) {
-            document.querySelectorAll('.sort-chip').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            filtrosAtivos.ordenacao = el.dataset.sort;
-        }
+
 
         function atualizarContadorFiltros() {
             const total = filtrosAtivos.categorias.length + filtrosAtivos.tamanhos.length +
@@ -2403,7 +2415,7 @@
             const q = document.getElementById('search-input').value.toLowerCase();
             const priceMin = parseFloat(document.getElementById('filter-price-min').value) || 0;
             const priceMax = parseFloat(document.getElementById('filter-price-max').value) || 999999;
-            const sort = filtrosAtivos.ordenacao;
+            const sort = document.getElementById('filter-sort-select').value || filtrosAtivos.ordenacao;
 
             filtrosAtivos.precoMin = priceMin;
             filtrosAtivos.precoMax = priceMax;
@@ -2442,8 +2454,8 @@
             document.getElementById('filter-price-min').value = '';
             document.getElementById('filter-price-max').value = '';
             document.getElementById('search-input').value = '';
-            document.querySelectorAll('.sort-chip').forEach(c => c.classList.remove('selected'));
-            document.querySelector('.sort-chip[data-sort="popular"]').classList.add('selected');
+            
+            document.getElementById('filter-sort-select').value = 'popular';
             filteredProdutos = [...allProdutos];
             renderizarProdutos();
             renderizarChipsFiltros();
