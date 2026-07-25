@@ -2517,8 +2517,22 @@
         function renderizarImagensPreview() { document.getElementById('images-preview').innerHTML = imagemSelecionadas.map((img,i) => `<div class="image-preview-item"><img src="${esc(img)}" alt="Preview"><button type="button" class="image-preview-remove" onclick="removerImagem(${i})">×</button></div>`).join(''); }
         function limparForm() { document.getElementById('form-produto').reset(); imagemSelecionadas=[]; renderizarImagensPreview(); }
         async function carregarProdutos() {
-            try { const snapshot = await db.collection('produtos').get(); allProdutos = snapshot.docs.map(doc => ({id:doc.id,...doc.data()})); filteredProdutos=[...allProdutos]; renderizarProdutos(); }
-            catch (error) { console.error(error); document.getElementById('products-container').innerHTML='<div class="no-products"><div class="no-products-icon">⚠️</div><p>Não foi possível carregar os produtos.</p></div>'; }
+            console.log('[DEBUG] carregarProdutos iniciado');
+            const container = document.getElementById('products-container');
+            try {
+                console.log('[DEBUG] Buscando produtos do Firestore...');
+                const snapshot = await db.collection('produtos').get();
+                console.log('[DEBUG] Snapshot recebido, docs:', snapshot.docs.length);
+                allProdutos = snapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
+                console.log('[DEBUG] allProdutos populado:', allProdutos.length, 'produtos');
+                filteredProdutos = [...allProdutos];
+                console.log('[DEBUG] Chamando renderizarProdutos...');
+                renderizarProdutos();
+                console.log('[DEBUG] renderizarProdutos concluído');
+            } catch (error) {
+                console.error('[DEBUG] ERRO em carregarProdutos:', error);
+                if (container) container.innerHTML = '<div class="no-products"><div class="no-products-icon">⚠️</div><p>Erro ao carregar: ' + error.message + '</p></div>';
+            }
         }
         function renderizarProdutos() {
             const container=document.getElementById('products-container');
