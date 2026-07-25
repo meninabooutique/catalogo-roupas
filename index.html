@@ -2334,13 +2334,13 @@
             const catContainer = document.getElementById('cat-filters');
             catContainer.innerHTML = CATEGORIAS_DISPONIVEIS.map(cat => {
                 const selected = filtrosAtivos.categorias.includes(cat.toLowerCase()) ? 'selected' : '';
-                return '<label class="filter-chip ' + selected + '" onclick="toggleCategoria(this, '' + cat.toLowerCase() + '')"><span class="check">✓</span> ' + cat + '</label>';
+                return '<label class="filter-chip ' + selected + '" onclick="toggleCategoria(this, \'' + cat.toLowerCase() + '\')"><span class="check">✓</span> ' + cat + '</label>';
             }).join('');
 
             const sizeContainer = document.getElementById('size-filters');
             sizeContainer.innerHTML = TAMANHOS_DISPONIVEIS.map(t => {
                 const selected = filtrosAtivos.tamanhos.includes(t.toLowerCase()) ? 'selected' : '';
-                return '<label class="filter-chip ' + selected + '" onclick="toggleTamanho(this, '' + t.toLowerCase() + '')"><span class="check">✓</span> ' + t + '</label>';
+                return '<label class="filter-chip ' + selected + '" onclick="toggleTamanho(this, \'' + t.toLowerCase() + '\')"><span class="check">✓</span> ' + t + '</label>';
             }).join('');
 
             atualizarContadorFiltros();
