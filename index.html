@@ -1459,6 +1459,132 @@
                 font-size: 0.75rem;
             }
         }
+
+        /* MODAL CONFIRMAÇÃO PEDIDO */
+        .modal-pedido-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.82);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-pedido-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-pedido-card {
+            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
+            border: 1px solid var(--gold);
+            border-radius: 16px;
+            padding: 30px 28px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2);
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-pedido-overlay.active .modal-pedido-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-pedido-icon {
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+        }
+
+        .modal-pedido-card h3 {
+            color: var(--gold);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: Georgia, serif;
+        }
+
+        .modal-pedido-card p {
+            color: var(--text-light);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .modal-pedido-card p strong {
+            color: var(--text-dark);
+        }
+
+        .modal-pedido-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-pedido-actions .btn-modal-primary {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: #000;
+            border: 1px solid var(--gold);
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-pedido-actions .btn-modal-primary:hover {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(212,175,55,0.3);
+        }
+
+        .modal-pedido-actions .btn-modal-secondary {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .modal-pedido-actions .btn-modal-secondary:hover {
+            border-color: var(--gold);
+            background: rgba(212,175,55,0.08);
+        }
+
+        .modal-pedido-actions .btn-modal-cancel {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            padding: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .modal-pedido-actions .btn-modal-cancel:hover {
+            color: var(--text-dark);
+        }
+
+        @media (max-width: 480px) {
+            .modal-pedido-card {
+                padding: 22px 18px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1633,12 +1759,6 @@
                         <textarea id="descricao" placeholder="Descreva seu produto..."></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="link-whatsapp">Link WhatsApp Personalizado (Opcional)</label>
-                        <input type="text" id="link-whatsapp" placeholder="Ex: message/CODIGO123 ou wa.me/numero - SEM o https://wa.me/">
-                        <small style="color: var(--text-light); font-size: 0.8rem;">💡 Cole apenas o link, será formatado automaticamente. Deixe em branco para usar o link padrão de suporte.</small>
-                    </div>
-
                     <div class="images-upload">
                         <label>Adicione Imagens do Produto (até 10 fotos)</label>
                         <input type="text" id="image-urls" placeholder="Cole a URL da imagem e pressione Enter para adicionar outra. Ex: https://imgur.com/...jpg" multiple style="display: none;">
@@ -1806,6 +1926,71 @@
         </div>
     </footer>
 
+
+    <!-- MODAL CONFIRMAÇÃO PEDIDO -->
+    <div class="modal-pedido-overlay" id="modal-confirmar-pedido">
+        <div class="modal-pedido-card">
+            <div class="modal-pedido-icon">🛍️</div>
+            <h3>Confirmar Pedido</h3>
+            <p>Você está prestes a enviar seu pedido pelo WhatsApp. Deseja continuar?</p>
+            <div class="modal-pedido-actions">
+                <button class="btn-modal-primary" onclick="confirmarPedido()">
+                    <i class="fab fa-whatsapp"></i> Sim, enviar pedido
+                </button>
+                <button class="btn-modal-cancel" onclick="fecharModalConfirmacao()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PERGUNTA EMPRÉSTIMO -->
+    <div class="modal-pedido-overlay" id="modal-emprestimo">
+        <div class="modal-pedido-card">
+            <div class="modal-pedido-icon">👗</div>
+            <h3>Experimentar como Empréstimo?</h3>
+            <p>Deseja <strong>experimentar a peça como empréstimo</strong> antes de decidir pela compra? Assim você pode provar em casa e nos devolver se não ficar bom.</p>
+            <div class="modal-pedido-actions">
+                <button class="btn-modal-primary" onclick="responderEmprestimo(true)">
+                    <i class="fas fa-hand-holding-heart"></i> Sim, quero experimentar
+                </button>
+                <button class="btn-modal-secondary" onclick="responderEmprestimo(false)">
+                    Não, quero comprar direto
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMAÇÃO PRODUTO ÚNICO -->
+    <div class="modal-pedido-overlay" id="modal-confirmar-produto">
+        <div class="modal-pedido-card">
+            <div class="modal-pedido-icon">💬</div>
+            <h3>Enviar Mensagem</h3>
+            <p>Deseja enviar os detalhes deste produto pelo WhatsApp?</p>
+            <div class="modal-pedido-actions">
+                <button class="btn-modal-primary" onclick="confirmarProdutoUnico()">
+                    <i class="fab fa-whatsapp"></i> Sim, enviar
+                </button>
+                <button class="btn-modal-cancel" onclick="fecharModalProdutoUnico()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EMPRÉSTIMO PRODUTO ÚNICO -->
+    <div class="modal-pedido-overlay" id="modal-emprestimo-produto">
+        <div class="modal-pedido-card">
+            <div class="modal-pedido-icon">👗</div>
+            <h3>Experimentar como Empréstimo?</h3>
+            <p>Deseja pedir para <strong>experimentar esta peça como empréstimo</strong>? Assim você prova em casa antes de decidir.</p>
+            <div class="modal-pedido-actions">
+                <button class="btn-modal-primary" onclick="responderEmprestimoProduto(true)">
+                    <i class="fas fa-hand-holding-heart"></i> Sim, quero experimentar
+                </button>
+                <button class="btn-modal-secondary" onclick="responderEmprestimoProduto(false)">
+                    Não, só quero me informar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- SCRIPTS FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
@@ -1926,7 +2111,111 @@
         function toggleCart(){document.getElementById('cart-sidebar').classList.toggle('active');} function adicionarAoCarrinho(){const quantidade=+document.getElementById('quantity-input').value;if(!selectedVariation.estoque){alert('Produto indisponível.');return;}const imgCart=selectedVariation.foto||(Array.isArray(currentProduct.imagens)?currentProduct.imagens[0]:'')||'';const item={id:currentProduct.id,nome:currentProduct.nome,preco:+selectedVariation.preco,quantidade,tamanho:selectedVariation.tamanho,cor:selectedVariation.cor,imagem:imgCart};const existing=cartItems.find(x=>x.id===item.id&&x.tamanho===item.tamanho&&x.cor===item.cor);if(existing)existing.quantidade+=quantidade;else cartItems.push(item);salvarCarrinho();atualizarCarrinho();fecharModal();alert('✅ Adicionado ao carrinho!');}
         function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoMeninaBoutique',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoMeninaBoutique')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
         function buscar(){aplicarFiltros();document.getElementById('filters-section').scrollIntoView({behavior:'smooth'});} function aplicarFiltros(){const q=document.getElementById('search-input').value.toLowerCase(),c=document.getElementById('filter-category').value.toLowerCase(),color=document.getElementById('filter-color').value.toLowerCase(),size=document.getElementById('filter-size').value.toLowerCase(),max=+document.getElementById('filter-price').value,sort=document.getElementById('filter-sort').value;filteredProdutos=allProdutos.filter(p=>{const vs=productVariations(p);return (!q||[p.nome,p.categoria,p.descricao,...vs.flatMap(v=>[v.cor,v.tamanho])].join(' ').toLowerCase().includes(q))&&(!c||String(p.categoria).toLowerCase()===c)&&(!color||vs.some(v=>String(v.cor).toLowerCase()===color))&&(!size||vs.some(v=>String(v.tamanho).toLowerCase().includes(size)))&&vs.some(v=>+v.preco<=max);});if(sort==='menor-preco')filteredProdutos.sort((a,b)=>Math.min(...productVariations(a).map(v=>v.preco))-Math.min(...productVariations(b).map(v=>v.preco)));if(sort==='maior-preco')filteredProdutos.sort((a,b)=>Math.max(...productVariations(b).map(v=>v.preco))-Math.max(...productVariations(a).map(v=>v.preco)));renderizarProdutos();} function limparFiltros(){document.querySelectorAll('#search-input').forEach(e=>e.value='');['filter-category','filter-color','filter-size'].forEach(id=>document.getElementById(id).value='');document.getElementById('filter-price').value=500;document.getElementById('price-value').textContent='R$ 500';filteredProdutos=[...allProdutos];renderizarProdutos();}
-        function finalizarPedido(){if(!cartItems.length)return;let text='🛍️ *Olá! Gostaria de comprar:*\n\n'+cartItems.map((x,i)=>`📦 *${i+1}. ${x.nome}*\n• Tamanho: ${x.tamanho}\n• Cor: ${x.cor}\n• Quantidade: ${x.quantidade}\n• Valor: ${brl(x.preco*x.quantidade)}`).join('\n\n');text+=`\n\n💰 *TOTAL: ${brl(cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0))}*`;window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent(text)}`,'_blank');} function compartilharWhatsApp(){if(!currentProduct)return;window.open(`${getWhatsAppUrl(currentProduct.linkWhatsapp)}?text=${encodeURIComponent(`Olá! Tenho interesse em *${currentProduct.nome}* 😊`)}`,'_blank');} function abrirWhatsApp(){window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent('Olá! Tenho uma dúvida sobre os produtos.')}`,'_blank');}
+        /* ============================================================
+           FLUXO DE PEDIDO VIA WHATSAPP
+           ============================================================ */
+
+        // Estado temporário para o fluxo de confirmação
+        let _pendenteEmprestimo = false;  // true = carrinho, false = compra
+        let _pendenteTipoEmprestimo = ''; // 'carrinho' ou 'produto'
+
+        // --- CARRINHO: finalizarPedido inicia o fluxo ---
+        function finalizarPedido() {
+            if (!cartItems.length) return;
+            // Abre o modal de confirmação
+            document.getElementById('modal-confirmar-pedido').classList.add('active');
+        }
+
+        function fecharModalConfirmacao() {
+            document.getElementById('modal-confirmar-pedido').classList.remove('active');
+        }
+
+        function confirmarPedido() {
+            document.getElementById('modal-confirmar-pedido').classList.remove('active');
+            _pendenteTipoEmprestimo = 'carrinho';
+            // Pergunta sobre empréstimo
+            document.getElementById('modal-emprestimo').classList.add('active');
+        }
+
+        function responderEmprestimo(sim) {
+            document.getElementById('modal-emprestimo').classList.remove('active');
+            _pendenteEmprestimo = sim;
+            enviarMensagemCarrinho(sim);
+        }
+
+        function enviarMensagemCarrinho(emprestimo) {
+            if (!cartItems.length) return;
+
+            const totalItens = cartItems.reduce((s, x) => s + x.quantidade, 0);
+            const totalValor = cartItems.reduce((s, x) => s + x.preco * x.quantidade, 0);
+
+            let itens = cartItems.map((x, i) => {
+                return `*${i + 1}. ${x.nome}*\n   📏 ${x.tamanho}  |  🎨 ${x.cor}  |  Qtd: ${x.quantidade}  |  ${brl(x.preco * x.quantidade)}`;
+            }).join('\n\n');
+
+            let texto = `✨ *Olá! Vim do site da Menina Boutique* ✨\n\n`;
+            texto += `Selecionei os seguintes produtos e gostaria de mais informações:\n\n`;
+            texto += `🛒 *Meus itens:*\n\n${itens}\n\n`;
+            texto += `━━━━━━━━━━━━━━━━━\n`;
+            texto += `📦 *Total (${totalItens} ${totalItens === 1 ? 'peça' : 'peças'}):* 💰 *${brl(totalValor)}*\n`;
+            texto += `━━━━━━━━━━━━━━━━━`;
+
+            if (emprestimo) {
+                texto += `\n\n🤝 *Gostaria de experimentar as peças como empréstimo.*\nPoderiam me orientar sobre como funciona o processo de empréstimo/prova?`;
+            } else {
+                texto += `\n\nPoderiam me informar sobre *disponibilidade*, *formas de pagamento* e *prazo de entrega*? 😊`;
+            }
+
+            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent(texto)}`, '_blank');
+        }
+
+        // --- PRODUTO ÚNICO: compartilharWhatsApp inicia o fluxo ---
+        function compartilharWhatsApp() {
+            if (!currentProduct) return;
+            document.getElementById('modal-confirmar-produto').classList.add('active');
+        }
+
+        function fecharModalProdutoUnico() {
+            document.getElementById('modal-confirmar-produto').classList.remove('active');
+        }
+
+        function confirmarProdutoUnico() {
+            document.getElementById('modal-confirmar-produto').classList.remove('active');
+            _pendenteTipoEmprestimo = 'produto';
+            document.getElementById('modal-emprestimo-produto').classList.add('active');
+        }
+
+        function responderEmprestimoProduto(sim) {
+            document.getElementById('modal-emprestimo-produto').classList.remove('active');
+            enviarMensagemProdutoUnico(sim);
+        }
+
+        function enviarMensagemProdutoUnico(emprestimo) {
+            if (!currentProduct || !selectedVariation) return;
+
+            const quantidade = +document.getElementById('quantity-input').value || 1;
+            const preco = selectedVariation.preco;
+
+            let texto = `✨ *Olá! Vim do site da Menina Boutique* ✨\n\n`;
+            texto += `Me interessei pelo seguinte produto:\n\n`;
+            texto += `👗 *Produto:* ${currentProduct.nome}\n`;
+            texto += `📏 *Tamanho:* ${selectedVariation.tamanho}\n`;
+            texto += `🎨 *Cor:* ${selectedVariation.cor}\n`;
+            texto += `💰 *Valor:* ${brl(preco)}\n`;
+            texto += `🔢 *Quantidade:* ${quantidade}`;
+
+            if (emprestimo) {
+                texto += `\n\n🤝 *Gostaria de experimentar esta peça como empréstimo.*\nPoderiam me orientar sobre como funciona?`;
+            } else {
+                texto += `\n\nPoderiam me informar sobre *disponibilidade* e *formas de pagamento*? 😊`;
+            }
+
+            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent(texto)}`, '_blank');
+        }
+
+        function abrirWhatsApp() {
+            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent('Olá! Vim pelo site da Menina Boutique e tenho uma dúvida. Poderiam me ajudar? 😊')}`, '_blank');
+        }
     </script>
 </body>
 </html>
