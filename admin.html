@@ -544,7 +544,7 @@
             margin-top: 2px;
         }
 
-        .variacao-form button {
+        .variacao-form > button {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
             color: #000;
             border: none;
@@ -556,9 +556,190 @@
             grid-column: 1 / -1;
         }
 
-        .variacao-form button:hover {
+        .variacao-form > button:hover {
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             transform: translateY(-1px);
+        }
+
+        .variacao-form > button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hidden { display: none !important; }
+
+        .var-count-badge {
+            display: inline-block;
+            min-width: 24px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: var(--gold);
+            color: #000;
+            font-size: .8rem;
+            font-weight: 800;
+            text-align: center;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+
+        .quick-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .quick-chips button {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 999px;
+            padding: 3px 9px;
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .quick-chips button:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-limpar-foto {
+            margin-top: 8px;
+            background: transparent;
+            border: 1px solid var(--error);
+            color: var(--error);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: .8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .var-foto-upload.dragover {
+            background: rgba(212,175,55,.22);
+            border-style: solid;
+        }
+
+        .input-erro {
+            border-color: var(--error) !important;
+            animation: shakeX .3s;
+        }
+
+        @keyframes shakeX {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .variacao-item.editando {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(212,175,55,.25);
+        }
+
+        .variacao-acoes {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .btn-edit-variacao {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-edit-variacao:hover { background: var(--gold); color: #000; }
+
+        .modo-edicao-banner {
+            background: rgba(212,175,55,.12);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 15px;
+            font-size: .9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .modo-edicao-banner button {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 6px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .admin-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .admin-toolbar input {
+            flex: 1;
+            min-width: 180px;
+            padding: 10px 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: #141319;
+            color: var(--text-dark);
+            font-size: .95rem;
+        }
+
+        .admin-toolbar input:focus { outline: none; border-color: var(--gold); }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #100f14;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .stat-card span {
+            font-size: .78rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .badge-sem-estoque {
+            display: inline-block;
+            background: var(--error);
+            color: #fff;
+            border-radius: 4px;
+            padding: 2px 7px;
+            font-size: .7rem;
+            font-weight: 700;
+            margin-left: 6px;
         }
 
         .form-buttons {
@@ -846,10 +1027,14 @@
         <!-- TAB ADICIONAR -->
         <div id="tab-adicionar" class="tab-content active">
             <div class="form-container">
-                <h2 class="form-title">
+                <h2 class="form-title" id="form-titulo">
                     <i class="fas fa-plus-circle"></i> Adicionar Novo Produto
                 </h2>
-                <form id="form-produto" onsubmit="adicionarProduto(event)">
+                <div id="modo-edicao-banner" class="modo-edicao-banner hidden">
+                    <span><i class="fas fa-pen"></i> Você está editando um produto existente.</span>
+                    <button type="button" onclick="limparForm()">Cancelar edição</button>
+                </div>
+                <form id="form-produto" novalidate>
                     <div class="form-grid">
                         <div class="form-group" style="grid-column: 1 / -1;">
                             <label for="nome">Nome do Produto *</label>
@@ -876,40 +1061,46 @@
                     <div class="variacoes-section">
                         <h3 style="margin-bottom: 15px; font-size: 1.1rem;">
                             <i class="fas fa-palette" style="color:var(--gold);"></i> Variações (Tamanho · Cor · Preço · Estoque · Foto)
+                            <span id="var-count-badge" class="var-count-badge">0</span>
                         </h3>
                         <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:15px;">
-                            <i class="fas fa-info-circle" style="color:var(--gold);"></i> Cada variação precisa de uma foto. A galeria do produto no catálogo é montada automaticamente com essas fotos, que mudam ao selecionar cor/tamanho.
+                            <i class="fas fa-info-circle" style="color:var(--gold);"></i> Preencha os campos abaixo e clique em <strong>Adicionar Variação</strong>. A foto é opcional, mas recomendada — a galeria do catálogo é montada com as fotos das variações.
                         </p>
 
                         <div class="variacao-form">
                             <div class="var-field">
-                                <label>Tamanho</label>
-                                <input type="text" id="var-tamanho" placeholder="M, G, 38..." required>
+                                <label>Tamanho *</label>
+                                <input type="text" id="var-tamanho" placeholder="M, G, 38..." autocomplete="off">
+                                <div class="quick-chips" id="chips-tamanho"></div>
                             </div>
                             <div class="var-field">
-                                <label>Cor</label>
-                                <input type="text" id="var-cor" placeholder="Rosa, Azul..." required>
+                                <label>Cor *</label>
+                                <input type="text" id="var-cor" placeholder="Rosa, Azul..." autocomplete="off">
+                                <div class="quick-chips" id="chips-cor"></div>
                             </div>
                             <div class="var-field">
-                                <label>Preço (R$)</label>
-                                <input type="number" id="var-preco" placeholder="0,00" min="0" step="0.01" required>
+                                <label>Preço (R$) *</label>
+                                <input type="number" id="var-preco" placeholder="0,00" min="0" step="0.01" inputmode="decimal">
                             </div>
                             <div class="var-field">
-                                <label>Estoque</label>
-                                <input type="number" id="var-estoque" placeholder="0" min="0" required>
+                                <label>Estoque *</label>
+                                <input type="number" id="var-estoque" placeholder="0" min="0" step="1" inputmode="numeric">
                             </div>
                             <div class="var-field var-foto">
                                 <label>Foto desta variação (opcional)</label>
-                                <label class="var-foto-upload" for="var-foto">
+                                <label class="var-foto-upload" for="var-foto" id="var-foto-drop">
                                     <img id="var-foto-preview" class="var-foto-preview" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" style="background:var(--border-color);">
                                     <div class="var-foto-text">
-                                        <i class="fas fa-camera"></i> Selecionar foto
-                                        <small>JPG, PNG ou WebP · A foto desta cor/tamanho aparece na loja</small>
+                                        <span id="var-foto-label"><i class="fas fa-camera"></i> Selecionar foto</span>
+                                        <small>Clique ou arraste aqui · JPG, PNG ou WebP (a imagem é otimizada automaticamente)</small>
                                     </div>
-                                    <input type="file" id="var-foto" accept="image/*" onchange="previaFotoVariacao(event)">
+                                    <input type="file" id="var-foto" accept="image/*">
                                 </label>
+                                <button type="button" class="btn-limpar-foto hidden" id="btn-limpar-foto" onclick="limparFotoVariacao()">
+                                    <i class="fas fa-times"></i> Remover foto selecionada
+                                </button>
                             </div>
-                            <button type="button" onclick="adicionarVariacao()">
+                            <button type="button" id="btn-add-variacao" onclick="adicionarVariacao()">
                                 <i class="fas fa-plus"></i> Adicionar Variação
                             </button>
                         </div>
@@ -940,6 +1131,13 @@
                 <h2 class="form-title">
                     <i class="fas fa-tags"></i> Produtos Cadastrados
                 </h2>
+                <div class="admin-stats" id="admin-stats"></div>
+                <div class="admin-toolbar">
+                    <input type="search" id="busca-produtos" placeholder="🔎 Buscar por nome ou categoria..." oninput="renderizarProdutos()">
+                    <button type="button" class="btn-reset" style="flex:0 0 auto;padding:10px 16px;" onclick="carregarProdutos()">
+                        <i class="fas fa-sync"></i> Atualizar
+                    </button>
+                </div>
                 <div class="products-grid" id="products-container"></div>
             </div>
         </div>
@@ -975,51 +1173,76 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        let variacoes = [];
-        let variacaoFotoArquivo = null;
-        let variacaoFotoPreview = null;
+        /* ============================================================
+           ESTADO
+           ============================================================ */
+        let variacoes = [];              // variações do produto em edição/criação
+        let variacaoFotoDataUrl = null;  // foto (dataURL comprimido) da variação em digitação
         let allProdutos = [];
+        let editandoProdutoId = null;    // id do produto em edição (null = novo)
+        let editandoVariacaoIdx = null;  // índice da variação em edição (null = nova)
+        let salvando = false;
 
-        // INICIALIZAÇÃO
-        window.addEventListener('load', () => {
-            if (verificarAdmin()) {
-                carregarProdutos();
-            }
-        });
+        const TAMANHOS_RAPIDOS = ['PP', 'P', 'M', 'G', 'GG', 'XG', 'Único'];
+        const CORES_RAPIDAS = ['Preto', 'Branco', 'Rosa', 'Azul', 'Vermelho', 'Bege'];
+        const IMG_VAZIA = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
-        // ALERT
-        function mostrarAlerta(mensagem, tipo) {
-            const alertBox = document.getElementById('alert-box');
-            alertBox.textContent = mensagem;
-            alertBox.className = `alert-box show ${tipo}`;
-            setTimeout(() => alertBox.classList.remove('show'), 5000);
+        /* ============================================================
+           HELPERS
+           ============================================================ */
+        const $ = id => document.getElementById(id);
+
+        function esc(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         }
 
-        // LOGIN (integrado, sem popup)
+        function brl(v) {
+            return Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        let alertTimer = null;
+        function mostrarAlerta(mensagem, tipo) {
+            const alertBox = $('alert-box');
+            alertBox.textContent = mensagem;
+            alertBox.className = `alert-box show ${tipo || ''}`;
+            clearTimeout(alertTimer);
+            if (tipo !== 'loading') {
+                alertTimer = setTimeout(() => alertBox.classList.remove('show'), 4500);
+            }
+        }
+
+        function marcarErro(el) {
+            if (!el) return;
+            el.classList.add('input-erro');
+            setTimeout(() => el.classList.remove('input-erro'), 1200);
+        }
+
+        /* ============================================================
+           LOGIN
+           ============================================================ */
         function verificarAdmin() {
-            const ok = sessionStorage.getItem('mb_admin_ok');
-            if (ok === '1') {
-                document.getElementById('login-overlay').classList.add('hidden');
+            if (sessionStorage.getItem('mb_admin_ok') === '1') {
+                $('login-overlay').classList.add('hidden');
                 return true;
             }
-            document.getElementById('login-overlay').classList.remove('hidden');
-            document.getElementById('login-senha').focus();
+            $('login-overlay').classList.remove('hidden');
+            setTimeout(() => $('login-senha').focus(), 100);
             return false;
         }
 
         function fazerLogin(e) {
             e.preventDefault();
-            const senha = document.getElementById('login-senha').value;
-            const err = document.getElementById('login-error');
+            const senha = $('login-senha').value;
+            const err = $('login-error');
             if (String(senha) === ADMIN_SENHA) {
                 sessionStorage.setItem('mb_admin_ok', '1');
                 err.textContent = '';
-                document.getElementById('login-overlay').classList.add('hidden');
-                carregarProdutos();
+                $('login-overlay').classList.add('hidden');
+                iniciarPainel();
             } else {
                 err.textContent = '❌ Senha incorreta. Tente novamente.';
-                document.getElementById('login-senha').value = '';
-                document.getElementById('login-senha').focus();
+                $('login-senha').value = '';
+                $('login-senha').focus();
             }
         }
 
@@ -1030,319 +1253,578 @@
             }
         }
 
-        // TABS
+        /* ============================================================
+           TABS
+           ============================================================ */
         function mudarTab(tab, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(`tab-${tab}`).classList.add('active');
+            $(`tab-${tab}`).classList.add('active');
             if (btn) btn.classList.add('active');
             else document.querySelector(`.tab-btn[data-tab="${tab}"]`)?.classList.add('active');
-            if (tab === 'listar') carregarProdutos();
+            if (tab === 'listar') renderizarProdutos();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // FOTO DA VARIAÇÃO (preview)
-        function previaFotoVariacao(e) {
-            const file = e.target.files && e.target.files[0];
+        /* ============================================================
+           FOTO DA VARIAÇÃO — comprime no navegador e guarda como dataURL.
+           Não depende do Firebase Storage (que exige plano/CORS),
+           então funciona sempre. Se o Storage estiver disponível,
+           a imagem é enviada para lá no momento de salvar o produto.
+           ============================================================ */
+        function comprimirImagem(file, maxLado = 1000, qualidade = 0.82) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onerror = () => reject(new Error('Não foi possível ler o arquivo.'));
+                reader.onload = () => {
+                    const img = new Image();
+                    img.onerror = () => reject(new Error('Arquivo de imagem inválido.'));
+                    img.onload = () => {
+                        let { width, height } = img;
+                        const escala = Math.min(1, maxLado / Math.max(width, height));
+                        width = Math.round(width * escala);
+                        height = Math.round(height * escala);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', qualidade));
+                    };
+                    img.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function processarArquivoFoto(file) {
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                variacaoFotoArquivo = file;
-                variacaoFotoPreview = ev.target.result;
-                document.getElementById('var-foto-preview').src = ev.target.result;
-            };
-            reader.readAsDataURL(file);
+            if (!/^image\//.test(file.type)) {
+                mostrarAlerta('❌ Selecione um arquivo de imagem (JPG, PNG ou WebP).', 'error');
+                return;
+            }
+            try {
+                mostrarAlerta('⏳ Processando foto...', 'loading');
+                let dataUrl = await comprimirImagem(file);
+                // Garante que caiba no limite de 1MB por documento do Firestore
+                let q = 0.8;
+                while (dataUrl.length > 380000 && q > 0.35) {
+                    q -= 0.12;
+                    dataUrl = await comprimirImagem(file, 800, q);
+                }
+                variacaoFotoDataUrl = dataUrl;
+                $('var-foto-preview').src = dataUrl;
+                $('var-foto-label').innerHTML = '<i class="fas fa-check" style="color:var(--gold)"></i> Foto pronta';
+                $('btn-limpar-foto').classList.remove('hidden');
+                mostrarAlerta('✅ Foto carregada!', 'success');
+            } catch (err) {
+                console.error(err);
+                mostrarAlerta('❌ Erro ao processar a foto: ' + err.message, 'error');
+            }
         }
 
         function limparFotoVariacao() {
-            variacaoFotoArquivo = null;
-            variacaoFotoPreview = null;
-            const inp = document.getElementById('var-foto');
+            variacaoFotoDataUrl = null;
+            const inp = $('var-foto');
             if (inp) inp.value = '';
-            const img = document.getElementById('var-foto-preview');
-            if (img) img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            $('var-foto-preview').src = IMG_VAZIA;
+            $('var-foto-label').innerHTML = '<i class="fas fa-camera"></i> Selecionar foto';
+            $('btn-limpar-foto').classList.add('hidden');
         }
 
-        // VARIAÇÕES
-        async function adicionarVariacao() {
-            const tamanho = document.getElementById('var-tamanho').value.trim();
-            const cor = document.getElementById('var-cor').value.trim();
-            const preco = document.getElementById('var-preco').value.trim();
-            const estoque = document.getElementById('var-estoque').value.trim();
-
-            if (!tamanho || !cor || !preco || !estoque) {
-                mostrarAlerta('❌ Preencha todos os campos de variação!', 'error');
-                return;
+        /* Envia dataURLs para o Firebase Storage se possível; senão mantém o dataURL */
+        async function publicarFotos(lista) {
+            if (!storage) return lista;
+            const out = [];
+            for (const v of lista) {
+                const copia = { ...v };
+                if (copia.foto && copia.foto.startsWith('data:')) {
+                    try {
+                        const nome = `variacoes/${Date.now()}_${Math.random().toString(36).slice(2, 9)}.jpg`;
+                        const ref = storage.ref(nome);
+                        const snap = await ref.putString(copia.foto, 'data_url');
+                        copia.foto = await snap.ref.getDownloadURL();
+                    } catch (err) {
+                        // Storage indisponível: segue com o dataURL (o catálogo exibe normalmente)
+                        console.warn('Storage indisponível, mantendo imagem embutida:', err.message);
+                    }
+                }
+                out.push(copia);
             }
-            if (!variacaoFotoArquivo) {
-                mostrarAlerta('❌ Adicione uma foto para esta variação!', 'error');
-                return;
+            return out;
+        }
+
+        /* ============================================================
+           VARIAÇÕES
+           ============================================================ */
+        function lerCamposVariacao() {
+            return {
+                tamanhoEl: $('var-tamanho'),
+                corEl: $('var-cor'),
+                precoEl: $('var-preco'),
+                estoqueEl: $('var-estoque')
+            };
+        }
+
+        function adicionarVariacao() {
+            const { tamanhoEl, corEl, precoEl, estoqueEl } = lerCamposVariacao();
+            const tamanho = tamanhoEl.value.trim();
+            const cor = corEl.value.trim();
+            const precoRaw = precoEl.value.trim().replace(',', '.');
+            const estoqueRaw = estoqueEl.value.trim();
+
+            if (!tamanho) { marcarErro(tamanhoEl); tamanhoEl.focus(); return mostrarAlerta('❌ Informe o tamanho da variação.', 'error'); }
+            if (!cor) { marcarErro(corEl); corEl.focus(); return mostrarAlerta('❌ Informe a cor da variação.', 'error'); }
+
+            const preco = parseFloat(precoRaw);
+            if (!precoRaw || isNaN(preco) || preco < 0) { marcarErro(precoEl); precoEl.focus(); return mostrarAlerta('❌ Informe um preço válido.', 'error'); }
+
+            const estoque = parseInt(estoqueRaw, 10);
+            if (estoqueRaw === '' || isNaN(estoque) || estoque < 0) { marcarErro(estoqueEl); estoqueEl.focus(); return mostrarAlerta('❌ Informe o estoque (pode ser 0).', 'error'); }
+
+            // Impede duplicidade de tamanho + cor
+            const chave = (tamanho + '|' + cor).toLowerCase();
+            const duplicada = variacoes.findIndex((v, i) =>
+                i !== editandoVariacaoIdx &&
+                ((v.tamanho || '') + '|' + (v.cor || '')).toLowerCase() === chave
+            );
+            if (duplicada >= 0) {
+                marcarErro(tamanhoEl); marcarErro(corEl);
+                return mostrarAlerta('❌ Já existe uma variação com esse tamanho e cor.', 'error');
             }
 
-            let fotoUrl = null;
-            try {
-                mostrarAlerta('⏳ Enviando foto da variação...', 'loading');
-                const nomeArquivo = `variacoes/${Date.now()}_${Math.random().toString(36).substring(7)}_${variacaoFotoArquivo.name}`;
-                const ref = storage.ref(nomeArquivo);
-                const snapshot = await ref.put(variacaoFotoArquivo);
-                fotoUrl = await snapshot.ref.getDownloadURL();
-            } catch (err) {
-                console.error(err);
-                mostrarAlerta('❌ Erro ao enviar foto da variação', 'error');
-                return;
-            }
-
-            variacoes.push({
+            const nova = {
                 tamanho,
                 cor,
-                preco: parseFloat(preco),
-                estoque: parseInt(estoque),
-                foto: fotoUrl
-            });
+                preco: Math.round(preco * 100) / 100,
+                estoque,
+                foto: variacaoFotoDataUrl || (editandoVariacaoIdx !== null ? (variacoes[editandoVariacaoIdx].foto || null) : null)
+            };
 
-            document.getElementById('var-tamanho').value = '';
-            document.getElementById('var-cor').value = '';
-            document.getElementById('var-preco').value = '';
-            document.getElementById('var-estoque').value = '';
-            limparFotoVariacao();
+            if (editandoVariacaoIdx !== null) {
+                variacoes[editandoVariacaoIdx] = nova;
+                mostrarAlerta('✅ Variação atualizada!', 'success');
+            } else {
+                variacoes.push(nova);
+                mostrarAlerta('✅ Variação adicionada!', 'success');
+            }
+
+            editandoVariacaoIdx = null;
+            $('btn-add-variacao').innerHTML = '<i class="fas fa-plus"></i> Adicionar Variação';
+            limparCamposVariacao();
             renderizarVariacoes();
-            mostrarAlerta('✅ Variação adicionada!', 'success');
+            tamanhoEl.focus();
+        }
+
+        function limparCamposVariacao() {
+            $('var-tamanho').value = '';
+            $('var-cor').value = '';
+            $('var-preco').value = '';
+            $('var-estoque').value = '';
+            limparFotoVariacao();
+        }
+
+        function editarVariacao(index) {
+            const v = variacoes[index];
+            if (!v) return;
+            editandoVariacaoIdx = index;
+            $('var-tamanho').value = v.tamanho || '';
+            $('var-cor').value = v.cor || '';
+            $('var-preco').value = v.preco ?? '';
+            $('var-estoque').value = v.estoque ?? '';
+            if (v.foto) {
+                variacaoFotoDataUrl = v.foto;
+                $('var-foto-preview').src = v.foto;
+                $('var-foto-label').innerHTML = '<i class="fas fa-check" style="color:var(--gold)"></i> Foto atual';
+                $('btn-limpar-foto').classList.remove('hidden');
+            } else {
+                limparFotoVariacao();
+            }
+            $('btn-add-variacao').innerHTML = '<i class="fas fa-save"></i> Salvar alterações da variação';
+            renderizarVariacoes();
+            $('var-tamanho').focus();
+            document.querySelector('.variacao-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function removerVariacao(index) {
+            const v = variacoes[index];
+            if (!v) return;
+            if (!confirm(`Remover a variação "${v.tamanho} • ${v.cor}"?`)) return;
+            variacoes.splice(index, 1);
+            if (editandoVariacaoIdx === index) {
+                editandoVariacaoIdx = null;
+                $('btn-add-variacao').innerHTML = '<i class="fas fa-plus"></i> Adicionar Variação';
+                limparCamposVariacao();
+            }
+            renderizarVariacoes();
+            mostrarAlerta('🗑️ Variação removida.', 'warning');
         }
 
         function renderizarVariacoes() {
-            const lista = document.getElementById('variacoes-lista');
+            const lista = $('variacoes-lista');
+            $('var-count-badge').textContent = variacoes.length;
             if (variacoes.length === 0) {
-                lista.innerHTML = '<p style="color:var(--text-light);font-size:0.9rem;text-align:center;padding:10px;">Nenhuma variação adicionada ainda.</p>';
+                lista.innerHTML = '<p style="color:var(--text-light);font-size:0.9rem;text-align:center;padding:14px;border:1px dashed var(--border-color);border-radius:8px;">Nenhuma variação adicionada ainda. Adicione pelo menos uma para criar o produto.</p>';
                 return;
             }
             lista.innerHTML = variacoes.map((v, index) => `
-                <div class="variacao-item">
+                <div class="variacao-item ${editandoVariacaoIdx === index ? 'editando' : ''}">
                     <div class="variacao-info">
                         <div class="variacao-thumb ${v.foto ? '' : 'placeholder'}">
-                            ${v.foto
-                                ? `<img src="${v.foto}" alt="${v.tamanho} ${v.cor}">`
-                                : '<i class="fas fa-image"></i>'}
+                            ${v.foto ? `<img src="${esc(v.foto)}" alt="${esc(v.tamanho)} ${esc(v.cor)}">` : '<i class="fas fa-image"></i>'}
                         </div>
                         <div>
                             <div class="variacao-texto">${esc(v.tamanho)} • ${esc(v.cor)}</div>
-                            <div class="variacao-detalhes">R$ ${Number(v.preco).toFixed(2)} • Estoque: ${v.estoque}${v.foto ? ' • 📷 com foto' : ''}</div>
+                            <div class="variacao-detalhes">
+                                ${brl(v.preco)} • Estoque: ${Number(v.estoque || 0)}
+                                ${Number(v.estoque || 0) === 0 ? '<span class="badge-sem-estoque">SEM ESTOQUE</span>' : ''}
+                                ${v.foto ? ' • 📷' : ' • sem foto'}
+                            </div>
                         </div>
                     </div>
-                    <button type="button" class="btn-remove-variacao" onclick="removerVariacao(${index})">
-                        <i class="fas fa-trash"></i> Remover
-                    </button>
+                    <div class="variacao-acoes">
+                        <button type="button" class="btn-edit-variacao" onclick="editarVariacao(${index})">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <button type="button" class="btn-remove-variacao" onclick="removerVariacao(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
             `).join('');
         }
 
-        function removerVariacao(index) {
-            variacoes.splice(index, 1);
-            renderizarVariacoes();
-        }
-
-        function esc(s) {
-            return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        }
-
+        /* ============================================================
+           FORMULÁRIO DO PRODUTO
+           ============================================================ */
         function limparForm() {
-            document.getElementById('form-produto').reset();
+            $('form-produto').reset();
             variacoes = [];
-            limparFotoVariacao();
-            document.getElementById('var-tamanho').value = '';
-            document.getElementById('var-cor').value = '';
-            document.getElementById('var-preco').value = '';
-            document.getElementById('var-estoque').value = '';
+            editandoProdutoId = null;
+            editandoVariacaoIdx = null;
+            limparCamposVariacao();
             renderizarVariacoes();
-            resetarFormulario();
+            $('btn-add-variacao').innerHTML = '<i class="fas fa-plus"></i> Adicionar Variação';
+            $('modo-edicao-banner').classList.add('hidden');
+            $('form-titulo').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar Novo Produto';
+            document.querySelector('.btn-submit').innerHTML = '<i class="fas fa-plus"></i> Criar Produto';
         }
 
-        // Galeria = fotos das variações
-        function galeriaDoProduto() {
-            return variacoes.map(v => v.foto).filter(Boolean);
-        }
-
-        // ADICIONAR PRODUTO
-        async function adicionarProduto(e) {
-            e.preventDefault();
+        function validarProduto() {
+            const nomeEl = $('nome');
+            const categoriaEl = $('categoria');
+            if (!nomeEl.value.trim()) { marcarErro(nomeEl); nomeEl.focus(); mudarTab('adicionar'); mostrarAlerta('❌ Informe o nome do produto.', 'error'); return false; }
+            if (!categoriaEl.value.trim()) { marcarErro(categoriaEl); categoriaEl.focus(); mostrarAlerta('❌ Informe a categoria do produto.', 'error'); return false; }
             if (variacoes.length === 0) {
-                mostrarAlerta('❌ Adicione ao menos uma variação!', 'error');
-                return;
+                mostrarAlerta('❌ Adicione ao menos uma variação antes de salvar!', 'error');
+                document.querySelector('.variacao-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                marcarErro($('var-tamanho'));
+                return false;
             }
-            if (!variacoes.every(v => v.foto)) {
-                mostrarAlerta('❌ Todas as variações precisam ter foto!', 'error');
-                return;
+            if (editandoVariacaoIdx !== null) {
+                mostrarAlerta('⚠️ Finalize a edição da variação (clique em "Salvar alterações da variação").', 'warning');
+                return false;
             }
+            return true;
+        }
+
+        async function salvarProduto(e) {
+            if (e) e.preventDefault();
+            if (salvando) return;
+            if (!validarProduto()) return;
+
+            const btn = document.querySelector('.btn-submit');
+            const htmlOriginal = btn.innerHTML;
+            salvando = true;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
+
             try {
                 mostrarAlerta('⏳ Salvando produto...', 'loading');
-                let linkWhatsapp = document.getElementById('link-whatsapp').value.trim();
-                if (!linkWhatsapp) linkWhatsapp = WHATSAPP_SUPPORT;
+                const variacoesFinais = await publicarFotos(variacoes);
+                const galeria = [...new Set(variacoesFinais.map(v => v.foto).filter(Boolean))];
+                let linkWhatsapp = $('link-whatsapp').value.trim() || WHATSAPP_SUPPORT;
 
-                // Galeria automática = fotos das variações (sem duplicatas)
-                const galeriaFinal = [...new Set(variacoes.map(v => v.foto).filter(Boolean))];
+                const dados = {
+                    nome: $('nome').value.trim(),
+                    categoria: $('categoria').value.trim(),
+                    descricao: $('descricao').value.trim(),
+                    imagens: galeria,
+                    linkWhatsapp,
+                    variacoes: variacoesFinais,
+                    estoqueTotal: variacoesFinais.reduce((s, v) => s + Number(v.estoque || 0), 0),
+                    atualizadoEm: new Date()
+                };
 
-                await db.collection('produtos').add({
-                    nome: document.getElementById('nome').value.trim(),
-                    categoria: document.getElementById('categoria').value.trim(),
-                    descricao: document.getElementById('descricao').value.trim(),
-                    imagens: galeriaFinal,
-                    linkWhatsapp: linkWhatsapp,
-                    variacoes: variacoes,
-                    criadoEm: new Date()
-                });
-                document.getElementById('modal-confirmacao').classList.remove('hidden');
+                if (editandoProdutoId) {
+                    await db.collection('produtos').doc(editandoProdutoId).update(dados);
+                    mostrarAlerta('✅ Produto atualizado com sucesso!', 'success');
+                    limparForm();
+                    await carregarProdutos();
+                    mudarTab('listar');
+                } else {
+                    dados.criadoEm = new Date();
+                    await db.collection('produtos').add(dados);
+                    await carregarProdutos();
+                    $('modal-confirmacao').classList.remove('hidden');
+                }
             } catch (error) {
                 console.error(error);
-                mostrarAlerta('❌ Erro: ' + error.message, 'error');
+                let msg = error.message || String(error);
+                if (/permission|insufficient/i.test(msg)) {
+                    msg = 'Sem permissão para gravar no banco. Verifique as regras do Firestore.';
+                } else if (/quota|exceeded|longer than/i.test(msg)) {
+                    msg = 'Produto muito grande. Use menos variações com foto ou fotos menores.';
+                }
+                mostrarAlerta('❌ Erro ao salvar: ' + msg, 'error');
+            } finally {
+                salvando = false;
+                btn.disabled = false;
+                btn.innerHTML = htmlOriginal;
             }
         }
 
         function adicionarOutraVariacao() {
-            document.getElementById('modal-confirmacao').classList.add('hidden');
+            $('modal-confirmacao').classList.add('hidden');
             limparForm();
-            document.getElementById('nome').focus();
+            $('nome').focus();
         }
 
         async function finalizarProduto() {
-            document.getElementById('modal-confirmacao').classList.add('hidden');
+            $('modal-confirmacao').classList.add('hidden');
             mostrarAlerta('✅ Produto criado com sucesso!', 'success');
             limparForm();
             await carregarProdutos();
             mudarTab('listar');
         }
 
-        // CARREGAR PRODUTOS
+        /* ============================================================
+           LISTAGEM
+           ============================================================ */
         async function carregarProdutos() {
+            const container = $('products-container');
+            if (container) container.innerHTML = '<div class="no-products" style="grid-column:1/-1;"><div class="no-products-icon">⏳</div><p>Carregando produtos...</p></div>';
             try {
-                const snapshot = await db.collection('produtos').orderBy('criadoEm','desc').get();
+                let snapshot;
+                try {
+                    snapshot = await db.collection('produtos').orderBy('criadoEm', 'desc').get();
+                } catch (errOrder) {
+                    // Documentos antigos podem não ter "criadoEm"
+                    snapshot = await db.collection('produtos').get();
+                }
                 allProdutos = [];
                 snapshot.forEach(doc => allProdutos.push({ id: doc.id, ...doc.data() }));
                 renderizarProdutos();
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
-                mostrarAlerta('❌ Erro ao carregar produtos', 'error');
+                mostrarAlerta('❌ Erro ao carregar produtos: ' + error.message, 'error');
+                if (container) container.innerHTML = '<div class="no-products" style="grid-column:1/-1;"><div class="no-products-icon">⚠️</div><p>Não foi possível carregar os produtos.</p></div>';
             }
         }
 
-        // RENDERIZAR PRODUTOS (com suporte a foto por variação)
         function renderizarProdutos() {
-            const container = document.getElementById('products-container');
-            if (allProdutos.length === 0) {
+            const container = $('products-container');
+            if (!container) return;
+            const termo = ($('busca-produtos')?.value || '').trim().toLowerCase();
+
+            const lista = allProdutos.filter(p =>
+                !termo ||
+                String(p.nome || '').toLowerCase().includes(termo) ||
+                String(p.categoria || '').toLowerCase().includes(termo)
+            );
+
+            // Estatísticas
+            const totalVar = allProdutos.reduce((s, p) => s + (Array.isArray(p.variacoes) ? p.variacoes.length : 0), 0);
+            const totalEst = allProdutos.reduce((s, p) => s + (Array.isArray(p.variacoes) ? p.variacoes.reduce((a, v) => a + Number(v.estoque || 0), 0) : 0), 0);
+            const semEstoque = allProdutos.filter(p => Array.isArray(p.variacoes) && p.variacoes.reduce((a, v) => a + Number(v.estoque || 0), 0) === 0).length;
+            const stats = $('admin-stats');
+            if (stats) {
+                stats.innerHTML = `
+                    <div class="stat-card"><strong>${allProdutos.length}</strong><span>Produtos</span></div>
+                    <div class="stat-card"><strong>${totalVar}</strong><span>Variações</span></div>
+                    <div class="stat-card"><strong>${totalEst}</strong><span>Peças em estoque</span></div>
+                    <div class="stat-card"><strong>${semEstoque}</strong><span>Sem estoque</span></div>`;
+            }
+
+            if (lista.length === 0) {
                 container.innerHTML = `
                     <div class="no-products" style="grid-column: 1/-1;">
                         <div class="no-products-icon">📦</div>
-                        <p>Nenhum produto cadastrado</p>
+                        <p>${termo ? 'Nenhum produto encontrado para essa busca.' : 'Nenhum produto cadastrado ainda.'}</p>
                     </div>`;
                 return;
             }
-            container.innerHTML = allProdutos.map(produto => {
-                const vs = Array.isArray(produto.variacoes) && produto.variacoes.length ? produto.variacoes : [];
-                const precos = vs.map(v => Number(v.preco||0));
+
+            container.innerHTML = lista.map(produto => {
+                const vs = Array.isArray(produto.variacoes) ? produto.variacoes : [];
+                const precos = vs.map(v => Number(v.preco || 0));
                 const precoMin = precos.length ? Math.min(...precos) : 0;
                 const precoMax = precos.length ? Math.max(...precos) : 0;
-                const precoDisplay = (!precos.length) ? '—' : (precoMin === precoMax ? `R$ ${precoMin.toFixed(2)}` : `R$ ${precoMin.toFixed(2)} - R$ ${precoMax.toFixed(2)}`);
-                const capa = (produto.imagens && produto.imagens[0])
-                    || (vs.find(v=>v.foto) && vs.find(v=>v.foto).foto)
-                    || 'https://via.placeholder.com/250x200?text=Sem+Imagem';
-                const totalEstoque = vs.reduce((s,v)=>s+Number(v.estoque||0),0);
+                const precoDisplay = !precos.length ? '—' : (precoMin === precoMax ? brl(precoMin) : `${brl(precoMin)} – ${brl(precoMax)}`);
+                const capa = (produto.imagens && produto.imagens[0]) || vs.find(v => v.foto)?.foto || 'https://via.placeholder.com/250x200?text=Sem+Imagem';
+                const totalEstoque = vs.reduce((s, v) => s + Number(v.estoque || 0), 0);
                 return `
                     <div class="product-card-admin">
                         <div class="product-image-admin">
-                            <img src="${capa}" alt="${esc(produto.nome)}">
+                            <img src="${esc(capa)}" alt="${esc(produto.nome)}" loading="lazy">
                         </div>
                         <div class="product-info-admin">
                             <div class="product-name-admin">${esc(produto.nome)}</div>
-                            <div class="product-details-admin">${esc(produto.categoria||'—')}</div>
+                            <div class="product-details-admin">${esc(produto.categoria || '—')}</div>
                             <div class="product-price-admin">${precoDisplay}</div>
-                            <div class="product-stock-admin">📦 ${vs.length} variação(ões) • Estoque total: ${totalEstoque}</div>
+                            <div class="product-stock-admin">
+                                📦 ${vs.length} variação(ões) • Estoque: ${totalEstoque}
+                                ${totalEstoque === 0 ? '<span class="badge-sem-estoque">ESGOTADO</span>' : ''}
+                            </div>
                             <div class="product-actions">
                                 <button class="btn-edit" onclick="editarProduto('${produto.id}')">
                                     <i class="fas fa-edit"></i> Editar
                                 </button>
-                                <button class="btn-delete" onclick="deletarProduto('${produto.id}', '${esc(produto.nome)}')">
+                                <button class="btn-delete" onclick="deletarProduto('${produto.id}')">
                                     <i class="fas fa-trash"></i> Deletar
                                 </button>
                             </div>
+                            <button class="btn-edit" style="width:100%;margin-top:8px;" onclick="duplicarProduto('${produto.id}')">
+                                <i class="fas fa-copy"></i> Duplicar
+                            </button>
                         </div>
                     </div>`;
             }).join('');
         }
 
-        // EDITAR PRODUTO
-        async function editarProduto(produtoId) {
-            const produto = allProdutos.find(p => p.id === produtoId);
-            if (!produto) return;
-            document.getElementById('nome').value = produto.nome || '';
-            document.getElementById('categoria').value = produto.categoria || '';
-            document.getElementById('descricao').value = produto.descricao || '';
-            document.getElementById('link-whatsapp').value = produto.linkWhatsapp || '';
-            variacoes = JSON.parse(JSON.stringify(Array.isArray(produto.variacoes)?produto.variacoes:[]));
-            limparFotoVariacao();
+        /* ============================================================
+           EDITAR / DUPLICAR / DELETAR
+           ============================================================ */
+        function preencherFormulario(produto) {
+            $('nome').value = produto.nome || '';
+            $('categoria').value = produto.categoria || '';
+            $('descricao').value = produto.descricao || '';
+            $('link-whatsapp').value = produto.linkWhatsapp === WHATSAPP_SUPPORT ? '' : (produto.linkWhatsapp || '');
+            variacoes = JSON.parse(JSON.stringify(Array.isArray(produto.variacoes) ? produto.variacoes : []));
+            editandoVariacaoIdx = null;
+            limparCamposVariacao();
             renderizarVariacoes();
-            const form = document.getElementById('form-produto');
-            form.onsubmit = (e) => atualizarProduto(e, produtoId);
-            form.querySelector('.btn-submit').innerHTML = '<i class="fas fa-save"></i> Atualizar Produto';
-            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
             mudarTab('adicionar');
         }
 
-        // ATUALIZAR PRODUTO
-        async function atualizarProduto(e, produtoId) {
-            e.preventDefault();
-            if (variacoes.length === 0) {
-                mostrarAlerta('❌ Adicione ao menos uma variação!', 'error');
-                return;
-            }
-            if (!variacoes.every(v => v.foto)) {
-                mostrarAlerta('❌ Todas as variações precisam ter foto!', 'error');
-                return;
-            }
-            try {
-                mostrarAlerta('⏳ Atualizando produto...', 'loading');
-                let linkWhatsapp = document.getElementById('link-whatsapp').value.trim();
-                if (!linkWhatsapp) linkWhatsapp = WHATSAPP_SUPPORT;
-                const galeriaFinal = [...new Set(variacoes.map(v => v.foto).filter(Boolean))];
-                await db.collection('produtos').doc(produtoId).update({
-                    nome: document.getElementById('nome').value.trim(),
-                    categoria: document.getElementById('categoria').value.trim(),
-                    descricao: document.getElementById('descricao').value.trim(),
-                    imagens: galeriaFinal,
-                    linkWhatsapp: linkWhatsapp,
-                    variacoes: variacoes
-                });
-                mostrarAlerta('✅ Produto atualizado!', 'success');
-                limparForm();
-                await carregarProdutos();
-                mudarTab('listar');
-            } catch (error) {
-                console.error(error);
-                mostrarAlerta('❌ Erro ao atualizar: ' + error.message, 'error');
-            }
+        function editarProduto(produtoId) {
+            const produto = allProdutos.find(p => p.id === produtoId);
+            if (!produto) return mostrarAlerta('❌ Produto não encontrado.', 'error');
+            preencherFormulario(produto);
+            editandoProdutoId = produtoId;
+            $('modo-edicao-banner').classList.remove('hidden');
+            $('form-titulo').innerHTML = '<i class="fas fa-pen"></i> Editando: ' + esc(produto.nome || '');
+            document.querySelector('.btn-submit').innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
+            mostrarAlerta('✏️ Editando "' + (produto.nome || '') + '".', 'warning');
         }
 
-        // RESETAR FORMULÁRIO
-        function resetarFormulario() {
-            const form = document.getElementById('form-produto');
-            form.onsubmit = (e) => adicionarProduto(e);
-            form.querySelector('.btn-submit').innerHTML = '<i class="fas fa-plus"></i> Criar Produto';
+        function duplicarProduto(produtoId) {
+            const produto = allProdutos.find(p => p.id === produtoId);
+            if (!produto) return;
+            preencherFormulario(produto);
+            editandoProdutoId = null;
+            $('nome').value = (produto.nome || '') + ' (cópia)';
+            $('modo-edicao-banner').classList.add('hidden');
+            $('form-titulo').innerHTML = '<i class="fas fa-copy"></i> Novo produto (cópia)';
+            document.querySelector('.btn-submit').innerHTML = '<i class="fas fa-plus"></i> Criar Produto';
+            mostrarAlerta('📋 Cópia carregada. Ajuste o que quiser e clique em Criar Produto.', 'success');
         }
 
-        // DELETAR PRODUTO
-        async function deletarProduto(produtoId, nomeProduto) {
-            if (!confirm(`Tem certeza que deseja deletar "${nomeProduto}"?`)) return;
+        async function deletarProduto(produtoId) {
+            const produto = allProdutos.find(p => p.id === produtoId);
+            const nome = produto ? produto.nome : 'este produto';
+            if (!confirm(`Tem certeza que deseja deletar "${nome}"?\n\nEssa ação não pode ser desfeita.`)) return;
             try {
                 await db.collection('produtos').doc(produtoId).delete();
                 mostrarAlerta('✅ Produto deletado!', 'success');
-                carregarProdutos();
+                if (editandoProdutoId === produtoId) limparForm();
+                await carregarProdutos();
             } catch (error) {
                 mostrarAlerta('❌ Erro ao deletar: ' + error.message, 'error');
             }
         }
 
-        // Permite fechar o modal de confirmação com ESC
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                const m = document.getElementById('modal-confirmacao');
-                if (m && !m.classList.contains('hidden')) m.classList.add('hidden');
-            }
+        /* ============================================================
+           ATALHOS / CHIPS / INICIALIZAÇÃO
+           ============================================================ */
+        function montarChips() {
+            const mk = (containerId, valores, inputId) => {
+                const c = $(containerId);
+                if (!c) return;
+                c.innerHTML = valores.map(v => `<button type="button" data-v="${esc(v)}">${esc(v)}</button>`).join('');
+                c.addEventListener('click', ev => {
+                    const b = ev.target.closest('button');
+                    if (!b) return;
+                    ev.preventDefault();
+                    $(inputId).value = b.dataset.v;
+                    $(inputId).focus();
+                });
+            };
+            mk('chips-tamanho', TAMANHOS_RAPIDOS, 'var-tamanho');
+            mk('chips-cor', CORES_RAPIDAS, 'var-cor');
+        }
+
+        function ligarEventos() {
+            // Submit do formulário (funciona com clique e com Enter)
+            $('form-produto').addEventListener('submit', salvarProduto);
+
+            // Enter nos campos de variação adiciona a variação em vez de enviar o form
+            ['var-tamanho', 'var-cor', 'var-preco', 'var-estoque'].forEach(id => {
+                $(id).addEventListener('keydown', e => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        adicionarVariacao();
+                    }
+                });
+            });
+
+            // Upload de foto
+            $('var-foto').addEventListener('change', e => {
+                processarArquivoFoto(e.target.files && e.target.files[0]);
+            });
+
+            // Drag & drop de foto
+            const drop = $('var-foto-drop');
+            ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => {
+                e.preventDefault(); drop.classList.add('dragover');
+            }));
+            ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => {
+                e.preventDefault(); drop.classList.remove('dragover');
+            }));
+            drop.addEventListener('drop', e => {
+                const file = e.dataTransfer?.files && e.dataTransfer.files[0];
+                processarArquivoFoto(file);
+            });
+
+            // ESC fecha o modal
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    const m = $('modal-confirmacao');
+                    if (m && !m.classList.contains('hidden')) m.classList.add('hidden');
+                }
+            });
+
+            // Aviso ao sair com trabalho não salvo
+            window.addEventListener('beforeunload', e => {
+                if (variacoes.length > 0 || $('nome').value.trim()) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        }
+
+        function iniciarPainel() {
+            renderizarVariacoes();
+            carregarProdutos();
+        }
+
+        window.addEventListener('load', () => {
+            montarChips();
+            ligarEventos();
+            renderizarVariacoes();
+            if (verificarAdmin()) iniciarPainel();
         });
     </script>
 </body>
