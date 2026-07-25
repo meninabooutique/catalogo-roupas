@@ -1925,32 +1925,6 @@
     <div class="container">
         <div class="filters-section" id="filters-section">
             <div class="filters-grid">
-                <div class="filter-group">
-                    <label for="filter-category">Categoria</label>
-                    <select id="filter-category" onchange="aplicarFiltros()">
-                        <option value="">Todas</option>
-                        <option value="camiseta">Camiseta</option>
-                        <option value="calça">Calça</option>
-                        <option value="sapato">Sapato</option>
-                        <option value="vestido">Vestido</option>
-                        <option value="jaqueta">Jaqueta</option>
-                        <option value="acessório">Acessório</option>
-                    </select>
-                </div>
-
-
-
-                <div class="filter-group">
-                    <label for="filter-size">Tamanho</label>
-                    <select id="filter-size" onchange="aplicarFiltros()">
-                        <option value="">Todos</option>
-                        <option value="PP">PP</option>
-                        <option value="P">P</option>
-                        <option value="M">M</option>
-                        <option value="G">G</option>
-                        <option value="GG">GG</option>
-                    </select>
-                </div>
 
                 <div class="filter-group">
                     <label>Preço</label>
@@ -2653,7 +2627,14 @@
         function aumentarQuantidade(){const input=document.getElementById('quantity-input');if(+input.value<+selectedVariation.estoque)input.value=+input.value+1;} function diminuirQuantidade(){const input=document.getElementById('quantity-input');if(+input.value>1)input.value=+input.value-1;}
         function toggleCart(){document.getElementById('cart-sidebar').classList.toggle('active');} function adicionarAoCarrinho(){const quantidade=+document.getElementById('quantity-input').value;if(!selectedVariation.estoque){showToast('Produto indisponível.', 'error');return;}const imgCart=selectedVariation.foto||(Array.isArray(currentProduct.imagens)?currentProduct.imagens[0]:'')||'';const item={id:currentProduct.id,nome:currentProduct.nome,preco:+selectedVariation.preco,quantidade,tamanho:selectedVariation.tamanho,cor:selectedVariation.cor,imagem:imgCart};const existing=cartItems.find(x=>x.id===item.id&&x.tamanho===item.tamanho&&x.cor===item.cor);if(existing)existing.quantidade+=quantidade;else cartItems.push(item);salvarCarrinho();atualizarCarrinho();fecharModal();showToast('✅ Adicionado ao carrinho!', 'success');}
         function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoMeninaBoutique',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoMeninaBoutique')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
-        function buscar(){aplicarFiltros();document.getElementById('filters-section').scrollIntoView({behavior:'smooth'});} function aplicarFiltros(){const q=document.getElementById('search-input').value.toLowerCase(),c=document.getElementById('filter-category').value.toLowerCase(),size=document.getElementById('filter-size').value.toLowerCase(),max=+document.getElementById('filter-price').value,sort=document.getElementById('filter-sort').value;filteredProdutos=allProdutos.filter(p=>{const vs=productVariations(p);return (!q||[p.nome,p.categoria,p.descricao,...vs.flatMap(v=>[v.cor,v.tamanho])].join(' ').toLowerCase().includes(q))&&(!c||String(p.categoria).toLowerCase()===c)&&(!size||vs.some(v=>String(v.tamanho).toLowerCase().includes(size)))&&vs.some(v=>+v.preco<=max);});if(sort==='menor-preco')filteredProdutos.sort((a,b)=>Math.min(...productVariations(a).map(v=>v.preco))-Math.min(...productVariations(b).map(v=>v.preco)));if(sort==='maior-preco')filteredProdutos.sort((a,b)=>Math.max(...productVariations(b).map(v=>v.preco))-Math.max(...productVariations(a).map(v=>v.preco)));renderizarProdutos();} function limparFiltros(){document.querySelectorAll('#search-input').forEach(e=>e.value='');document.getElementById('filter-price').value=500;document.getElementById('price-value').textContent='R$ 500';filteredProdutos=[...allProdutos];renderizarProdutos();}
+        function buscar(){
+            const section = document.getElementById('filters-section');
+            if (!section.classList.contains('visible')) {
+                section.classList.add('visible');
+                renderizarChipsFiltros();
+            }
+            aplicarFiltros();
+        }
         /* ============================================================
            FLUXO DE PEDIDO VIA WHATSAPP
            ============================================================ */
