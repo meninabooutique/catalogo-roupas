@@ -927,10 +927,9 @@
 
         /* VARIAÇÕES INDISPONÍVEIS */
         .selector-btn.indisponivel {
-            opacity: 0.35;
+            opacity: 0.4;
             text-decoration: line-through;
-            cursor: not-allowed;
-            pointer-events: none;
+            cursor: pointer;
         }
 
         .selector-btn.indisponivel:hover {
@@ -1930,10 +1929,7 @@
                 <div class="product-details-section">
                     <div class="product-header-modal">
                         <h1 class="product-title-modal" id="modal-title"></h1>
-                        <div class="product-rating">
-                            <i class="fas fa-star" style="color: #FFD700;"></i>
-                            <span id="modal-rating">4.8 (234 vendas)</span>
-                        </div>
+
                     </div>
 
                     <div class="product-price-modal" id="modal-price"></div>
@@ -2081,22 +2077,7 @@
         </div>
     </div>
 
-    <!-- MODAL EMPRÉSTIMO PRODUTO ÚNICO -->
-    <div class="modal-pedido-overlay" id="modal-emprestimo-produto">
-        <div class="modal-pedido-card">
-            <div class="modal-pedido-icon">👗</div>
-            <h3>Experimentar como Empréstimo?</h3>
-            <p>Deseja pedir para <strong>experimentar esta peça como empréstimo</strong>? Assim você prova em casa antes de decidir.</p>
-            <div class="modal-pedido-actions">
-                <button class="btn-modal-primary" onclick="responderEmprestimoProduto(true)">
-                    <i class="fas fa-hand-holding-heart"></i> Sim, quero experimentar
-                </button>
-                <button class="btn-modal-secondary" onclick="responderEmprestimoProduto(false)">
-                    Não, só quero me informar
-                </button>
-            </div>
-        </div>
-    </div>
+
 
 
     <!-- TOAST CONTAINER -->
@@ -2227,11 +2208,8 @@
                 }
                 dx=0; dy=0;
             });
-            // Zoom clique
-            main.addEventListener('click', e => {
-                if (Math.abs(dx) > 8) return;
-                abrirFullscreen();
-            });
+            // Removido: clique na imagem não abre mais fullscreen
+            // Fullscreen só pelo botão dedicado
         }
         // Compatibilidade: o cadastro e o painel administrativo estão em admin.html.
         function verificarAdmin() { if (location.pathname.includes('admin')) location.href = 'admin.html'; }
@@ -2300,30 +2278,25 @@
             document.getElementById('size-options').innerHTML=sizes.map(x => {
                 const disponivel = tamanhosParaCor.has(x);
                 const classeIndisponivel = !disponivel ? 'indisponivel' : '';
-                return `<button class="selector-btn ${x===selectedVariation.tamanho?'active':''} ${classeIndisponivel}" onclick="selecionarTamanho('${esc(x)}')" ${!disponivel ? 'disabled' : ''}>${esc(x)}</button>`;
+                return `<button class="selector-btn ${x===selectedVariation.tamanho?'active':''} ${classeIndisponivel}" onclick="selecionarTamanho('${esc(x)}')" >${esc(x)}</button>`;
             }).join('');
             
             document.getElementById('color-options').innerHTML=colors.map(x => {
                 const v=vs.find(vv=>vv.cor===x&&vv.tamanho===selectedVariation.tamanho)||vs.find(vv=>vv.cor===x);
                 const disponivel = coresParaTamanho.has(x);
                 const classeIndisponivel = !disponivel ? 'indisponivel' : '';
-                return `<button class="selector-btn ${x===selectedVariation.cor?'active':''} ${classeIndisponivel}" onclick="selecionarCor('${esc(x)}')" ${!disponivel ? 'disabled' : ''}><span style="display:inline-flex;align-items:center;gap:6px;">${v&&v.foto?`<span style="width:18px;height:18px;border-radius:50%;overflow:hidden;display:inline-block;vertical-align:middle;border:2px solid rgba(255,255,255,.6);"><img src="${esc(v.foto)}" style="width:100%;height:100%;object-fit:cover;"></span>`:''}${esc(x)}</span></button>`;
+                return `<button class="selector-btn ${x===selectedVariation.cor?'active':''} ${classeIndisponivel}" onclick="selecionarCor('${esc(x)}')" ><span style="display:inline-flex;align-items:center;gap:6px;">${v&&v.foto?`<span style="width:18px;height:18px;border-radius:50%;overflow:hidden;display:inline-block;vertical-align:middle;border:2px solid rgba(255,255,255,.6);"><img src="${esc(v.foto)}" style="width:100%;height:100%;object-fit:cover;"></span>`:''}${esc(x)}</span></button>`;
             }).join('');
         }
         function selecionarTamanho(size){
             const vs=productVariations(currentProduct);
             const novaVariacao = vs.find(v=>v.tamanho===size&&v.cor===selectedVariation.cor);
             if (!novaVariacao) {
-                // Se a cor atual não existe nesse tamanho, pega a primeira cor disponível
-                const primeiraCor = vs.find(v => v.tamanho === size);
-                if (primeiraCor) {
-                    selectedVariation = primeiraCor;
-                } else {
-                    return; // Não faz nada se não houver variação
-                }
-            } else {
-                selectedVariation = novaVariacao;
+                // Variação indisponível - não faz nada, mantém a atual
+                showToast('Variação indisponível', 'error');
+                return;
             }
+            selectedVariation = novaVariacao;
             currentImageIndex=0;
             renderizarSeletores();
             atualizarDetalhesVariacao();
@@ -2398,20 +2371,21 @@
                 return `*${i + 1}. ${x.nome}*\n   📏 ${x.tamanho}  |  🎨 ${x.cor}  |  Qtd: ${x.quantidade}  |  ${brl(x.preco * x.quantidade)}`;
             }).join('\n\n');
 
-            let texto = `✨ *Olá! Vim do site da Menina Boutique* ✨\n\n`;
-            texto += `Selecionei os seguintes produtos e gostaria de mais informações:\n\n`;
-            texto += `🛒 *Meus itens:*\n\n${itens}\n\n`;
-            texto += `━━━━━━━━━━━━━━━━━\n`;
-            texto += `📦 *Total (${totalItens} ${totalItens === 1 ? 'peça' : 'peças'}):* 💰 *${brl(totalValor)}*\n`;
-            texto += `━━━━━━━━━━━━━━━━━`;
+            let texto = '✨ *Olá! Vim do site da Menina Boutique* ✨\n\n';
+            texto += 'Selecionei os seguintes produtos e gostaria de mais informações:\n\n';
+            texto += '🛒 *Meus itens:*\n\n' + itens + '\n\n';
+            texto += '━━━━━━━━━━━━━━━━━\n';
+            texto += '📦 *Total (' + totalItens + (totalItens === 1 ? ' peça' : ' peças') + '):* 💰 *' + brl(totalValor) + '*\n';
+            texto += '━━━━━━━━━━━━━━━━━';
 
             if (emprestimo) {
-                texto += `\n\n🤝 *Gostaria de experimentar as peças como empréstimo.*\nPoderiam me orientar sobre como funciona o processo de empréstimo/prova?`;
+                texto += '\n\n🤝 *Gostaria de experimentar as peças como empréstimo.*\nPoderiam me orientar sobre como funciona o processo de empréstimo/prova?';
             } else {
-                texto += `\n\nPoderiam me dar mais detalhes? 😊`;
+                texto += '\n\nPoderiam me dar mais detalhes? 😊';
             }
 
-            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent(texto)}`, '_blank');
+            const url = getWhatsAppUrl() + '?text=' + encodeURIComponent(texto);
+            window.open(url, '_blank');
         }
 
         // --- PRODUTO ÚNICO: compartilharWhatsApp inicia o fluxo ---
@@ -2426,13 +2400,7 @@
 
         function confirmarProdutoUnico() {
             document.getElementById('modal-confirmar-produto').classList.remove('active');
-            _pendenteTipoEmprestimo = 'produto';
-            document.getElementById('modal-emprestimo-produto').classList.add('active');
-        }
-
-        function responderEmprestimoProduto(sim) {
-            document.getElementById('modal-emprestimo-produto').classList.remove('active');
-            enviarMensagemProdutoUnico(sim);
+            enviarMensagemProdutoUnico(false); // Sempre false - sem empréstimo para produto único
         }
 
         function enviarMensagemProdutoUnico(emprestimo) {
