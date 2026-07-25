@@ -2160,6 +2160,11 @@
             if (value.startsWith('message/')) return `https://wa.me/${value}`;
             return `https://wa.me/${value.replace(/\D/g, '')}`;
         };
+        
+        // URL para mensagem personalizada (abre WhatsApp com texto pré-preenchido)
+        const getWhatsAppUrlWithText = texto => {
+            return 'https://wa.me/?text=' + encodeURIComponent(texto);
+        };
         window.addEventListener('load', () => {
             document.getElementById('filters-section').classList.add('visible');
             carregarProdutos(); carregarCarrinho();
@@ -2371,20 +2376,26 @@
                 return `*${i + 1}. ${x.nome}*\n   📏 ${x.tamanho}  |  🎨 ${x.cor}  |  Qtd: ${x.quantidade}  |  ${brl(x.preco * x.quantidade)}`;
             }).join('\n\n');
 
-            let texto = '✨ *Olá! Vim do site da Menina Boutique* ✨\n\n';
-            texto += 'Selecionei os seguintes produtos e gostaria de mais informações:\n\n';
-            texto += '🛒 *Meus itens:*\n\n' + itens + '\n\n';
+            let texto = '✨ Olá! Vim do site de Catálogo Menina Boutique ✨\n\n';
+            texto += 'Selecionei os seguintes produtos:\n\n';
+
+            cartItems.forEach((x, i) => {
+                texto += '*' + (i + 1) + '. ' + x.nome + '*\n';
+                texto += '    ' + x.tamanho + '  |  🎨 ' + x.cor + '  |  Qtd: ' + x.quantidade + '  |  ' + brl(x.preco * x.quantidade) + '\n\n';
+            });
+
             texto += '━━━━━━━━━━━━━━━━━\n';
-            texto += '📦 *Total (' + totalItens + (totalItens === 1 ? ' peça' : ' peças') + '):* 💰 *' + brl(totalValor) + '*\n';
-            texto += '━━━━━━━━━━━━━━━━━';
+            texto += '📦 Total (' + totalItens + (totalItens === 1 ? ' peça' : ' peças') + '): 💰 ' + brl(totalValor) + '\n';
+            texto += '━━━━━━━━━━━━━━━━━\n\n';
 
             if (emprestimo) {
-                texto += '\n\n🤝 *Gostaria de experimentar as peças como empréstimo.*\nPoderiam me orientar sobre como funciona o processo de empréstimo/prova?';
+                texto += '🤝 Gostaria de experimentar as peças como empréstimo.\n';
+                texto += 'Poderiam me orientar sobre como funciona o processo de empréstimo/prova?';
             } else {
-                texto += '\n\nPoderiam me dar mais detalhes? 😊';
+                texto += 'Poderiam me informar sobre disponibilidade e sobre esses produtos? 😊';
             }
 
-            const url = getWhatsAppUrl() + '?text=' + encodeURIComponent(texto);
+            const url = getWhatsAppUrlWithText(texto);
             window.open(url, '_blank');
         }
 
