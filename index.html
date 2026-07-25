@@ -1900,7 +1900,7 @@
         function renderizarImagensPreview() { document.getElementById('images-preview').innerHTML = imagemSelecionadas.map((img,i) => `<div class="image-preview-item"><img src="${esc(img)}" alt="Preview"><button type="button" class="image-preview-remove" onclick="removerImagem(${i})">×</button></div>`).join(''); }
         function limparForm() { document.getElementById('form-produto').reset(); imagemSelecionadas=[]; renderizarImagensPreview(); }
         async function carregarProdutos() {
-            try { const snapshot = await db.collection('produtos').get(); allProdutos = snapshot.docs.map(doc => ({id:doc.id,...doc.data()})); filteredProdutos=[...allProdutos]; renderizarProdutos(); }
+            try { const snapshot = await db.collection('produtos').get(); allProdutos = snapshot.docs.map(doc => ({id:doc.id,...doc.data()})); allProdutos.sort((a,b)=>{const t=x=>{const c=x.criadoEm;if(!c)return 0;if(typeof c.toMillis==='function')return c.toMillis();const d=new Date(c.seconds?c.seconds*1000:c);return isNaN(d)?0:d.getTime();};return t(b)-t(a);}); filteredProdutos=[...allProdutos]; renderizarProdutos(); }
             catch (error) { console.error(error); document.getElementById('products-container').innerHTML='<div class="no-products"><div class="no-products-icon">⚠️</div><p>Não foi possível carregar os produtos.</p></div>'; }
         }
         function renderizarProdutos() {
