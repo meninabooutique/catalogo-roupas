@@ -378,6 +378,211 @@
             min-height: 100px;
         }
 
+
+        /* SEÇÃO PROMOÇÃO */
+        .promocao-section {
+            background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(168,134,31,0.05) 100%);
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            border: 1px solid var(--border-color);
+        }
+
+        .promocao-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .promocao-header h3 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin: 0;
+            flex: 1;
+        }
+
+        .promo-toggle {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .promo-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .promo-toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--border-color);
+            border-radius: 26px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .promo-toggle-slider::before {
+            content: '';
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .promo-toggle input:checked + .promo-toggle-slider {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+        }
+
+        .promo-toggle input:checked + .promo-toggle-slider::before {
+            transform: translateX(22px);
+        }
+
+        .promocao-body {
+            display: none;
+            animation: slideDown 0.25s ease;
+        }
+
+        .promocao-body.open {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .promo-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .promo-radio {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: #100f14;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .promo-radio:hover {
+            border-color: var(--gold);
+        }
+
+        .promo-radio input[type="radio"] {
+            accent-color: var(--gold);
+            width: 16px;
+            height: 16px;
+            margin: 0;
+        }
+
+        .promo-radio.selected {
+            border-color: var(--gold);
+            background: rgba(212,175,55,0.1);
+        }
+
+        .promo-radio-label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.92rem;
+        }
+
+        .promo-radio-desc {
+            font-size: 0.78rem;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .promo-valor-wrap {
+            display: none;
+            gap: 12px;
+            align-items: end;
+            flex-wrap: wrap;
+        }
+
+        .promo-valor-wrap.open {
+            display: flex;
+        }
+
+        .promo-valor-wrap .form-group {
+            flex: 1;
+            min-width: 140px;
+            margin: 0;
+        }
+
+        .promo-valor-wrap .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .promo-valor-wrap input {
+            padding: 11px 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: #100f14;
+            color: var(--text-dark);
+            font-size: 1rem;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .promo-valor-wrap input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .promo-preview {
+            margin-top: 12px;
+            padding: 12px 14px;
+            background: rgba(212,175,55,0.08);
+            border: 1px dashed var(--gold);
+            border-radius: 8px;
+            font-size: 0.88rem;
+            color: var(--text-dark);
+            display: none;
+        }
+
+        .promo-preview.open {
+            display: block;
+        }
+
+        .promo-preview strong {
+            color: var(--gold);
+        }
+
+        .promo-preview .preco-original {
+            text-decoration: line-through;
+            color: var(--text-light);
+            opacity: 0.6;
+        }
+
+        .promo-preview .preco-final {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+
+        @media (max-width: 600px) {
+            .promo-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* VARIAÇÕES */
         .variacoes-section {
             background: var(--light-bg);
@@ -1052,6 +1257,54 @@
                         </div>
                     </div>
 
+                    <!-- SEÇÃO PROMOÇÃO -->
+                    <div class="promocao-section">
+                        <label class="promocao-header" for="promo-ativa">
+                            <span style="font-size: 1.3rem;">🏷️</span>
+                            <h3>Promoção / Desconto</h3>
+                            <div class="promo-toggle">
+                                <input type="checkbox" id="promo-ativa">
+                                <span class="promo-toggle-slider"></span>
+                            </div>
+                        </label>
+
+                        <div class="promocao-body" id="promo-body">
+                            <div class="promo-options">
+                                <label class="promo-radio" id="promo-radio-pct-wrap">
+                                    <input type="radio" name="promo-tipo" value="percentual" id="promo-tipo-pct" checked>
+                                    <div>
+                                        <div class="promo-radio-label">💯 Porcentagem</div>
+                                        <div class="promo-radio-desc">Desconto de X% no preço</div>
+                                    </div>
+                                </label>
+
+                                <label class="promo-radio" id="promo-radio-fix-wrap">
+                                    <input type="radio" name="promo-tipo" value="fixo" id="promo-tipo-fix">
+                                    <div>
+                                        <div class="promo-radio-label">💰 Valor Fixo (R$)</div>
+                                        <div class="promo-radio-desc">Desconto de R$ X no preço</div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="promo-valor-wrap open" id="promo-valor-wrap">
+                                <div class="form-group">
+                                    <label id="promo-valor-label">Desconto (%)</label>
+                                    <input type="number" id="promo-valor" placeholder="30" min="0" step="0.01" inputmode="decimal">
+                                </div>
+                                <div class="form-group">
+                                    <label>Exemplo com R$ 100,00</label>
+                                    <div class="promo-preview open" id="promo-preview">
+                                        <span class="preco-original">R$ 100,00</span>
+                                        <span style="margin: 0 8px;">→</span>
+                                        <span class="preco-final" id="promo-preview-preco">R$ 70,00</span>
+                                        <span style="margin-left: 10px;" id="promo-preview-badge">(-30%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- SEÇÃO DE VARIAÇÕES -->
                     <div class="variacoes-section">
                         <h3 style="margin-bottom: 15px; font-size: 1.1rem;">
@@ -1171,6 +1424,10 @@
            ============================================================ */
         let variacoes = [];              // variações do produto em edição/criação
         let variacaoFotoDataUrl = null;  // foto (dataURL comprimido) da variação em digitação
+        let promoAtiva = false;            // promoção está ativa?
+        let promoTipo = 'percentual';      // 'percentual' ou 'fixo'
+        let promoValor = 0;                // valor do desconto
+
         let allProdutos = [];
         let editandoProdutoId = null;    // id do produto em edição (null = novo)
         let editandoVariacaoIdx = null;  // índice da variação em edição (null = nova)
@@ -1202,6 +1459,94 @@
             if (tipo !== 'loading') {
                 alertTimer = setTimeout(() => alertBox.classList.remove('show'), 4500);
             }
+        }
+
+
+        /* ============================================================
+           PROMOÇÃO — lógica de UI e cálculo
+           ============================================================ */
+        function atualizarPromoUI() {
+            promoAtiva = $('promo-ativa').checked;
+            const body = $('promo-body');
+            if (promoAtiva) {
+                body.classList.add('open');
+            } else {
+                body.classList.remove('open');
+            }
+        }
+
+        function selecionarTipoPromo(tipo) {
+            promoTipo = tipo;
+            document.querySelectorAll('.promo-radio').forEach(el => el.classList.remove('selected'));
+            if (tipo === 'percentual') {
+                $('promo-radio-pct-wrap').classList.add('selected');
+                $('promo-valor-label').textContent = 'Desconto (%)';
+                $('promo-valor').placeholder = '30';
+            } else {
+                $('promo-radio-fix-wrap').classList.add('selected');
+                $('promo-valor-label').textContent = 'Desconto (R$)';
+                $('promo-valor').placeholder = '30,00';
+            }
+            atualizarPreviewPromo();
+        }
+
+        function atualizarPreviewPromo() {
+            const valorRaw = $('promo-valor').value.trim().replace(',', '.');
+            const valor = parseFloat(valorRaw);
+            const preview = $('promo-preview');
+            const badge = $('promo-preview-badge');
+            const precoFinalEl = $('promo-preview-preco');
+
+            if (!promoAtiva || isNaN(valor) || valor < 0) {
+                preview.classList.remove('open');
+                return;
+            }
+
+            preview.classList.add('open');
+            const precoExemplo = 100;
+            let precoFinal;
+            let descontoLabel;
+
+            if (promoTipo === 'percentual') {
+                precoFinal = precoExemplo * (1 - valor / 100);
+                descontoLabel = `(-${valor}%)`;
+            } else {
+                precoFinal = precoExemplo - valor;
+                const pct = ((valor / precoExemplo) * 100).toFixed(0);
+                descontoLabel = `(-${pct}%)`;
+            }
+
+            if (precoFinal < 0) precoFinal = 0;
+
+            precoFinalEl.textContent = brl(precoFinal);
+            badge.textContent = descontoLabel;
+        }
+
+        function getPromocao() {
+            if (!promoAtiva) return null;
+            const valorRaw = $('promo-valor').value.trim().replace(',', '.');
+            const valor = parseFloat(valorRaw);
+            if (isNaN(valor) || valor <= 0) return null;
+            return {
+                ativa: true,
+                tipo: promoTipo,
+                valor: Math.round(valor * 100) / 100
+            };
+        }
+
+        function setPromocao(promo) {
+            if (!promo || !promo.ativa) {
+                $('promo-ativa').checked = false;
+                atualizarPromoUI();
+                return;
+            }
+            $('promo-ativa').checked = true;
+            promoTipo = promo.tipo || 'percentual';
+            $('promo-tipo-' + (promoTipo === 'percentual' ? 'pct' : 'fix')).checked = true;
+            selecionarTipoPromo(promoTipo);
+            $('promo-valor').value = promo.valor;
+            atualizarPromoUI();
+            atualizarPreviewPromo();
         }
 
         function marcarErro(el) {
@@ -1542,6 +1887,10 @@
             limparCamposVariacao();
             renderizarVariacoes();
             $('btn-add-variacao').innerHTML = '<i class="fas fa-plus"></i> Adicionar Variação';
+            $('promo-ativa').checked = false;
+            $('promo-valor').value = '';
+            atualizarPromoUI();
+            selecionarTipoPromo('percentual');
             $('modo-edicao-banner').classList.add('hidden');
             $('form-titulo').innerHTML = '<i class="fas fa-plus-circle"></i> Adicionar Novo Produto';
             document.querySelector('.btn-submit').innerHTML = '<i class="fas fa-plus"></i> Criar Produto';
@@ -1597,6 +1946,7 @@
                     categoria: $('categoria').value.trim(),
                     descricao: $('descricao').value.trim(),
                     imagens: galeria,
+                    promocao: getPromocao(),
                     variacoes: variacoesFinais,
                     estoqueTotal: variacoesFinais.reduce((s, v) => s + Number(v.estoque || 0), 0),
                     atualizadoEm: new Date()
@@ -1687,12 +2037,14 @@
             const totalVar = allProdutos.reduce((s, p) => s + (Array.isArray(p.variacoes) ? p.variacoes.length : 0), 0);
             const totalEst = allProdutos.reduce((s, p) => s + (Array.isArray(p.variacoes) ? p.variacoes.reduce((a, v) => a + Number(v.estoque || 0), 0) : 0), 0);
             const semEstoque = allProdutos.filter(p => Array.isArray(p.variacoes) && p.variacoes.reduce((a, v) => a + Number(v.estoque || 0), 0) === 0).length;
+            const emPromocao = allProdutos.filter(p => p.promocao && p.promocao.ativa).length;
             const stats = $('admin-stats');
             if (stats) {
                 stats.innerHTML = `
                     <div class="stat-card"><strong>${allProdutos.length}</strong><span>Produtos</span></div>
                     <div class="stat-card"><strong>${totalVar}</strong><span>Variações</span></div>
                     <div class="stat-card"><strong>${totalEst}</strong><span>Peças em estoque</span></div>
+                    <div class="stat-card"><strong>${emPromocao}</strong><span>Em promoção</span></div>
                     <div class="stat-card"><strong>${semEstoque}</strong><span>Sem estoque</span></div>`;
             }
 
@@ -1750,6 +2102,7 @@
             $('categoria').value = produto.categoria || '';
             $('descricao').value = produto.descricao || '';
             // linkWhatsapp de produtos antigos é ignorado (campo removido)
+            setPromocao(produto.promocao || null);
             variacoes = JSON.parse(JSON.stringify(Array.isArray(produto.variacoes) ? produto.variacoes : []));
             editandoVariacaoIdx = null;
             limparCamposVariacao();
@@ -1842,6 +2195,17 @@
         }
 
         function ligarEventos() {
+
+            // Promoção: toggle e eventos
+            $('promo-ativa').addEventListener('change', () => {
+                atualizarPromoUI();
+                atualizarPreviewPromo();
+            });
+            $('promo-tipo-pct').addEventListener('change', () => selecionarTipoPromo('percentual'));
+            $('promo-tipo-fix').addEventListener('change', () => selecionarTipoPromo('fixo'));
+            $('promo-valor').addEventListener('input', atualizarPreviewPromo);
+            selecionarTipoPromo('percentual'); // estado inicial
+
             // Submit do formulário (funciona com clique e com Enter)
             $('form-produto').addEventListener('submit', salvarProduto);
 
