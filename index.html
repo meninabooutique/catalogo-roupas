@@ -351,38 +351,42 @@
 
         .sort-select-wrap {
             position: relative;
-            margin-top: 8px;
+            width: 100%;
         }
 
         .sort-select-wrap select {
             width: 100%;
-            padding: 10px 36px 10px 14px;
+            padding: 12px 40px 12px 16px;
             border: 2px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 10px;
             background: #100f14;
             color: var(--text-dark);
-            font-size: 0.88rem;
+            font-size: 0.92rem;
             font-weight: 600;
             cursor: pointer;
             appearance: none;
             -webkit-appearance: none;
+            -moz-appearance: none;
             transition: all 0.2s;
+            font-family: inherit;
         }
 
         .sort-select-wrap select:focus {
             outline: none;
             border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
         }
 
         .sort-select-wrap::after {
-            content: '\25BE';
+            content: '▾';
             position: absolute;
-            right: 12px;
+            right: 14px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--gold);
-            font-size: 1rem;
+            font-size: 1.2rem;
             pointer-events: none;
+            font-weight: 700;
         }
 
         .filter-price-row {
@@ -2659,8 +2663,39 @@
         function buscarEmTempoReal() {
             clearTimeout(buscaTimer);
             buscaTimer = setTimeout(() => {
-                aplicarFiltros();
-            }, 300); // Espera 300ms após parar de digitar
+                const q = document.getElementById('search-input').value.toLowerCase();
+                const priceMin = parseFloat(document.getElementById('filter-price-min').value) || 0;
+                const priceMax = parseFloat(document.getElementById('filter-price-max').value) || 999999;
+                const sort = document.getElementById('filter-sort-select').value || 'popular';
+
+                filteredProdutos = allProdutos.filter(p => {
+                    const vs = productVariations(p);
+                    const textoCompleto = [p.nome, p.categoria, p.descricao, ...vs.flatMap(v => [v.cor, v.tamanho])].join(' ').toLowerCase();
+                    const textoNormalizado = normalizarTexto(textoCompleto);
+                    const buscaQuery = normalizarTexto(q);
+
+                    const buscaOk = !q || textoCompleto.includes(q) || textoNormalizado.includes(buscaQuery);
+                    const catOk = filtrosAtivos.categorias.length === 0 || filtrosAtivos.categorias.some(c => String(p.categoria || '').toLowerCase().includes(c));
+                    const tamOk = filtrosAtivos.tamanhos.length === 0 || vs.some(v => filtrosAtivos.tamanhos.some(t => String(v.tamanho || '').toLowerCase() === t));
+                    const precoOk = vs.some(v => {
+                        const preco = +v.preco;
+                        return preco >= priceMin && preco <= priceMax;
+                    });
+
+                    return buscaOk && catOk && tamOk && precoOk;
+                });
+
+                // Ordenação
+                if (sort === 'menor-preco') filteredProdutos.sort((a,b) => Math.min(...productVariations(a).map(v=>v.preco)) - Math.min(...productVariations(b).map(v=>v.preco)));
+                if (sort === 'maior-preco') filteredProdutos.sort((a,b) => Math.max(...productVariations(b).map(v=>v.preco)) - Math.max(...productVariations(a).map(v=>v.preco)));
+                if (sort === 'mais-novo') filteredProdutos.sort((a,b) => {
+                    const tA = a.criadoEm ? (typeof a.criadoEm.toMillis === 'function' ? a.criadoEm.toMillis() : new Date(a.criadoEm.seconds * 1000).getTime()) : 0;
+                    const tB = b.criadoEm ? (typeof b.criadoEm.toMillis === 'function' ? b.criadoEm.toMillis() : new Date(b.criadoEm.seconds * 1000).getTime()) : 0;
+                    return tB - tA;
+                });
+
+                renderizarProdutos();
+            }, 200);
         }
 
         function buscar(){
