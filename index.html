@@ -553,7 +553,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: zoom-in;
+            
         }
 
         .gallery-main img {
@@ -563,9 +563,7 @@
             transition: transform 0.3s ease;
         }
 
-        .gallery-main:hover img {
-            transform: scale(1.1);
-        }
+        
 
         .gallery-controls {
             position: absolute;
@@ -884,6 +882,61 @@
                 font-size: 1.8rem;
             }
         }
+
+
+        /* TOAST NOTIFICATION */
+        .toast-container {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: linear-gradient(135deg, #141319, #0a0a0c);
+            border: 1px solid var(--gold);
+            border-radius: 10px;
+            padding: 14px 20px;
+            color: var(--text-dark);
+            font-size: 0.92rem;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            max-width: 320px;
+            pointer-events: auto;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-color: #4caf50;
+            background: linear-gradient(135deg, #0d2818, #0a1f12);
+        }
+
+        .toast.error {
+            border-color: #c0392b;
+            background: linear-gradient(135deg, #2c0d0d, #1f0a0a);
+        }
+
+        /* VARIAÇÕES INDISPONÍVEIS */
+        .selector-btn.indisponivel {
+            opacity: 0.35;
+            text-decoration: line-through;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .selector-btn.indisponivel:hover {
+            border-color: var(--border-color);
+        }
+
 
         /* BOTÕES AÇÃO */
         .action-buttons {
@@ -1868,7 +1921,7 @@
                         <button class="gallery-fullscreen" onclick="abrirFullscreen()">
                             <i class="fas fa-expand"></i>
                         </button>
-                        <img id="gallery-main-image" src="" alt="Produto" style="cursor:zoom-in;pointer-events:none;">
+                        <img id="gallery-main-image" src="" alt="Produto" style="pointer-events:none;">
                     </div>
                     <div class="gallery-thumbnails" id="gallery-thumbnails"></div>
                 </div>
@@ -1921,7 +1974,7 @@
                             <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
                         </button>
                         <button class="btn-share-whatsapp" onclick="compartilharWhatsApp()">
-                            <i class="fab fa-whatsapp"></i> Compartilhar
+                            <i class="fab fa-whatsapp"></i> Tenho Interesse
                         </button>
                     </div>
                 </div>
@@ -2018,7 +2071,7 @@
         <div class="modal-pedido-card">
             <div class="modal-pedido-icon">💬</div>
             <h3>Enviar Mensagem</h3>
-            <p>Deseja enviar os detalhes deste produto pelo WhatsApp?</p>
+            <p>Deseja saber mais sobre esse produto?</p>
             <div class="modal-pedido-actions">
                 <button class="btn-modal-primary" onclick="confirmarProdutoUnico()">
                     <i class="fab fa-whatsapp"></i> Sim, enviar
@@ -2045,11 +2098,31 @@
         </div>
     </div>
 
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
     <!-- SCRIPTS FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
 
     <script>
+
+        // Toast notification system
+        function showToast(mensagem, tipo = '') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${tipo}`;
+            toast.textContent = mensagem;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
         // FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
@@ -2214,8 +2287,48 @@
         function fecharModal(){document.getElementById('product-modal').classList.remove('active'); document.body.style.overflow='';}
         function renderizarGaleria(){const images=galeriaAtual(); if(currentImageIndex>=images.length)currentImageIndex=0; const image=images[currentImageIndex]; document.getElementById('gallery-main-image').src=image;document.getElementById('gallery-fullscreen-image').src=image;document.getElementById('gallery-thumbnails').innerHTML=images.map((img,i)=>`<div class="gallery-thumbnail ${i===currentImageIndex?'active':''}" onclick="mudarImagemGaleria(${i})"><img src="${esc(img)}" alt="Foto ${i+1}"></div>`).join('');}
         function galeriaPrevious(){const n=galeriaAtual().length;if(n){currentImageIndex=(currentImageIndex-1+n)%n;renderizarGaleria();}} function galeriaNext(){const n=galeriaAtual().length;if(n){currentImageIndex=(currentImageIndex+1)%n;renderizarGaleria();}} function mudarImagemGaleria(i){currentImageIndex=i;renderizarGaleria();} function abrirFullscreen(){document.getElementById('gallery-fullscreen-modal').classList.add('active');} function fecharFullscreen(){document.getElementById('gallery-fullscreen-modal').classList.remove('active');}
-        function renderizarSeletores(){const vs=productVariations(currentProduct), sizes=[...new Set(vs.map(v=>v.tamanho))], colors=[...new Set(vs.map(v=>v.cor))]; document.getElementById('size-options').innerHTML=sizes.map(x=>`<button class="selector-btn ${x===selectedVariation.tamanho?'active':''}" onclick="selecionarTamanho('${esc(x)}')">${esc(x)}</button>`).join(''); document.getElementById('color-options').innerHTML=colors.map(x=>{const v=vs.find(vv=>vv.cor===x&&vv.tamanho===selectedVariation.tamanho)||vs.find(vv=>vv.cor===x); return `<button class="selector-btn ${x===selectedVariation.cor?'active':''}" onclick="selecionarCor('${esc(x)}')"><span style="display:inline-flex;align-items:center;gap:6px;">${v&&v.foto?`<span style="width:18px;height:18px;border-radius:50%;overflow:hidden;display:inline-block;vertical-align:middle;border:2px solid rgba(255,255,255,.6);"><img src="${esc(v.foto)}" style="width:100%;height:100%;object-fit:cover;"></span>`:''}${esc(x)}</span></button>`;}).join('');}
-        function selecionarTamanho(size){const vs=productVariations(currentProduct);selectedVariation=vs.find(v=>v.tamanho===size&&v.cor===selectedVariation.cor)||vs.find(v=>v.tamanho===size);currentImageIndex=0;renderizarSeletores();atualizarDetalhesVariacao();renderizarGaleria();} function selecionarCor(color){const vs=productVariations(currentProduct);selectedVariation=vs.find(v=>v.cor===color&&v.tamanho===selectedVariation.tamanho)||vs.find(v=>v.cor===color);const images=galeriaAtual();const idx=selectedVariation.foto?images.indexOf(selectedVariation.foto):0;currentImageIndex=idx>=0?idx:0;renderizarSeletores();atualizarDetalhesVariacao();renderizarGaleria();}
+        function renderizarSeletores(){
+            const vs=productVariations(currentProduct);
+            const sizes=[...new Set(vs.map(v=>v.tamanho))];
+            const colors=[...new Set(vs.map(v=>v.cor))];
+            
+            // Tamanhos disponíveis para a cor selecionada
+            const tamanhosParaCor = new Set(vs.filter(v => v.cor === selectedVariation.cor).map(v => v.tamanho));
+            // Cores disponíveis para o tamanho selecionado
+            const coresParaTamanho = new Set(vs.filter(v => v.tamanho === selectedVariation.tamanho).map(v => v.cor));
+            
+            document.getElementById('size-options').innerHTML=sizes.map(x => {
+                const disponivel = tamanhosParaCor.has(x);
+                const classeIndisponivel = !disponivel ? 'indisponivel' : '';
+                return `<button class="selector-btn ${x===selectedVariation.tamanho?'active':''} ${classeIndisponivel}" onclick="selecionarTamanho('${esc(x)}')" ${!disponivel ? 'disabled' : ''}>${esc(x)}</button>`;
+            }).join('');
+            
+            document.getElementById('color-options').innerHTML=colors.map(x => {
+                const v=vs.find(vv=>vv.cor===x&&vv.tamanho===selectedVariation.tamanho)||vs.find(vv=>vv.cor===x);
+                const disponivel = coresParaTamanho.has(x);
+                const classeIndisponivel = !disponivel ? 'indisponivel' : '';
+                return `<button class="selector-btn ${x===selectedVariation.cor?'active':''} ${classeIndisponivel}" onclick="selecionarCor('${esc(x)}')" ${!disponivel ? 'disabled' : ''}><span style="display:inline-flex;align-items:center;gap:6px;">${v&&v.foto?`<span style="width:18px;height:18px;border-radius:50%;overflow:hidden;display:inline-block;vertical-align:middle;border:2px solid rgba(255,255,255,.6);"><img src="${esc(v.foto)}" style="width:100%;height:100%;object-fit:cover;"></span>`:''}${esc(x)}</span></button>`;
+            }).join('');
+        }
+        function selecionarTamanho(size){
+            const vs=productVariations(currentProduct);
+            const novaVariacao = vs.find(v=>v.tamanho===size&&v.cor===selectedVariation.cor);
+            if (!novaVariacao) {
+                // Se a cor atual não existe nesse tamanho, pega a primeira cor disponível
+                const primeiraCor = vs.find(v => v.tamanho === size);
+                if (primeiraCor) {
+                    selectedVariation = primeiraCor;
+                } else {
+                    return; // Não faz nada se não houver variação
+                }
+            } else {
+                selectedVariation = novaVariacao;
+            }
+            currentImageIndex=0;
+            renderizarSeletores();
+            atualizarDetalhesVariacao();
+            renderizarGaleria();
+        } function selecionarCor(color){const vs=productVariations(currentProduct);selectedVariation=vs.find(v=>v.cor===color&&v.tamanho===selectedVariation.tamanho)||vs.find(v=>v.cor===color);const images=galeriaAtual();const idx=selectedVariation.foto?images.indexOf(selectedVariation.foto):0;currentImageIndex=idx>=0?idx:0;renderizarSeletores();atualizarDetalhesVariacao();renderizarGaleria();}
         function atualizarDetalhesVariacao(){
             const stock=Number(selectedVariation.estoque||0);
             const precoOriginal = selectedVariation.preco;
@@ -2240,7 +2353,7 @@
             document.getElementById('stock-indicator').className=`stock-indicator ${stock===0?'error':stock<=5?'warning':''}`;
         }
         function aumentarQuantidade(){const input=document.getElementById('quantity-input');if(+input.value<+selectedVariation.estoque)input.value=+input.value+1;} function diminuirQuantidade(){const input=document.getElementById('quantity-input');if(+input.value>1)input.value=+input.value-1;}
-        function toggleCart(){document.getElementById('cart-sidebar').classList.toggle('active');} function adicionarAoCarrinho(){const quantidade=+document.getElementById('quantity-input').value;if(!selectedVariation.estoque){alert('Produto indisponível.');return;}const imgCart=selectedVariation.foto||(Array.isArray(currentProduct.imagens)?currentProduct.imagens[0]:'')||'';const item={id:currentProduct.id,nome:currentProduct.nome,preco:+selectedVariation.preco,quantidade,tamanho:selectedVariation.tamanho,cor:selectedVariation.cor,imagem:imgCart};const existing=cartItems.find(x=>x.id===item.id&&x.tamanho===item.tamanho&&x.cor===item.cor);if(existing)existing.quantidade+=quantidade;else cartItems.push(item);salvarCarrinho();atualizarCarrinho();fecharModal();alert('✅ Adicionado ao carrinho!');}
+        function toggleCart(){document.getElementById('cart-sidebar').classList.toggle('active');} function adicionarAoCarrinho(){const quantidade=+document.getElementById('quantity-input').value;if(!selectedVariation.estoque){showToast('Produto indisponível.', 'error');return;}const imgCart=selectedVariation.foto||(Array.isArray(currentProduct.imagens)?currentProduct.imagens[0]:'')||'';const item={id:currentProduct.id,nome:currentProduct.nome,preco:+selectedVariation.preco,quantidade,tamanho:selectedVariation.tamanho,cor:selectedVariation.cor,imagem:imgCart};const existing=cartItems.find(x=>x.id===item.id&&x.tamanho===item.tamanho&&x.cor===item.cor);if(existing)existing.quantidade+=quantidade;else cartItems.push(item);salvarCarrinho();atualizarCarrinho();fecharModal();showToast('✅ Adicionado ao carrinho!', 'success');}
         function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoMeninaBoutique',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoMeninaBoutique')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
         function buscar(){aplicarFiltros();document.getElementById('filters-section').scrollIntoView({behavior:'smooth'});} function aplicarFiltros(){const q=document.getElementById('search-input').value.toLowerCase(),c=document.getElementById('filter-category').value.toLowerCase(),color=document.getElementById('filter-color').value.toLowerCase(),size=document.getElementById('filter-size').value.toLowerCase(),max=+document.getElementById('filter-price').value,sort=document.getElementById('filter-sort').value;filteredProdutos=allProdutos.filter(p=>{const vs=productVariations(p);return (!q||[p.nome,p.categoria,p.descricao,...vs.flatMap(v=>[v.cor,v.tamanho])].join(' ').toLowerCase().includes(q))&&(!c||String(p.categoria).toLowerCase()===c)&&(!color||vs.some(v=>String(v.cor).toLowerCase()===color))&&(!size||vs.some(v=>String(v.tamanho).toLowerCase().includes(size)))&&vs.some(v=>+v.preco<=max);});if(sort==='menor-preco')filteredProdutos.sort((a,b)=>Math.min(...productVariations(a).map(v=>v.preco))-Math.min(...productVariations(b).map(v=>v.preco)));if(sort==='maior-preco')filteredProdutos.sort((a,b)=>Math.max(...productVariations(b).map(v=>v.preco))-Math.max(...productVariations(a).map(v=>v.preco)));renderizarProdutos();} function limparFiltros(){document.querySelectorAll('#search-input').forEach(e=>e.value='');['filter-category','filter-color','filter-size'].forEach(id=>document.getElementById(id).value='');document.getElementById('filter-price').value=500;document.getElementById('price-value').textContent='R$ 500';filteredProdutos=[...allProdutos];renderizarProdutos();}
         /* ============================================================
@@ -2295,7 +2408,7 @@
             if (emprestimo) {
                 texto += `\n\n🤝 *Gostaria de experimentar as peças como empréstimo.*\nPoderiam me orientar sobre como funciona o processo de empréstimo/prova?`;
             } else {
-                texto += `\n\nPoderiam me informar sobre *disponibilidade*, *formas de pagamento* e *prazo de entrega*? 😊`;
+                texto += `\n\nPoderiam me dar mais detalhes? 😊`;
             }
 
             window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent(texto)}`, '_blank');
@@ -2339,7 +2452,7 @@
             if (emprestimo) {
                 texto += `\n\n🤝 *Gostaria de experimentar esta peça como empréstimo.*\nPoderiam me orientar sobre como funciona?`;
             } else {
-                texto += `\n\nPoderiam me informar sobre *disponibilidade* e *formas de pagamento*? 😊`;
+                texto += `\n\nPoderiam me dar mais detalhes? 😊😊`;
             }
 
             window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent(texto)}`, '_blank');
