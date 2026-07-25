@@ -2419,7 +2419,7 @@
             const q = document.getElementById('search-input').value.toLowerCase();
             const priceMin = parseFloat(document.getElementById('filter-price-min').value) || 0;
             const priceMax = parseFloat(document.getElementById('filter-price-max').value) || 999999;
-            const sort = document.getElementById('filter-sort-select').value || filtrosAtivos.ordenacao;
+            const sort = document.getElementById('filter-sort').value || filtrosAtivos.ordenacao;
 
             filtrosAtivos.precoMin = priceMin;
             filtrosAtivos.precoMax = priceMax;
@@ -2459,7 +2459,7 @@
             document.getElementById('filter-price-max').value = '';
             document.getElementById('search-input').value = '';
             
-            document.getElementById('filter-sort-select').value = 'popular';
+            document.getElementById('filter-sort').value = 'popular';
             filteredProdutos = [...allProdutos];
             renderizarProdutos();
             renderizarChipsFiltros();
@@ -2670,7 +2670,7 @@
                 console.log('[BUSCA] Query:', q);
                 const priceMin = parseFloat(document.getElementById('filter-price-min').value) || 0;
                 const priceMax = parseFloat(document.getElementById('filter-price-max').value) || 999999;
-                const sort = document.getElementById('filter-sort-select').value || 'popular';
+                const sort = document.getElementById('filter-sort').value || 'popular';
 
                 filteredProdutos = allProdutos.filter(p => {
                     const vs = productVariations(p);
