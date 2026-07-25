@@ -272,6 +272,21 @@
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
         }
 
+
+        .filter-group input[type="number"] {
+            padding: 10px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: #100f14;
+            color: var(--text-dark);
+            width: 100%;
+        }
+        .filter-group input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
         .filter-group input[type="range"] {
             padding: 0;
             cursor: pointer;
@@ -1749,19 +1764,7 @@
                     </select>
                 </div>
 
-                <div class="filter-group">
-                    <label for="filter-color">Cor</label>
-                    <select id="filter-color" onchange="aplicarFiltros()">
-                        <option value="">Todas</option>
-                        <option value="preto">Preto</option>
-                        <option value="branco">Branco</option>
-                        <option value="azul">Azul</option>
-                        <option value="rosa">Rosa</option>
-                        <option value="vinho">Vinho</option>
-                        <option value="cinza">Cinza</option>
-                        <option value="vermelho">Vermelho</option>
-                    </select>
-                </div>
+
 
                 <div class="filter-group">
                     <label for="filter-size">Tamanho</label>
@@ -1776,11 +1779,11 @@
                 </div>
 
                 <div class="filter-group">
-                    <label for="filter-price">Preço Máximo</label>
-                    <input type="range" id="filter-price" min="0" max="500" value="500" onchange="aplicarFiltros()">
-                    <div class="range-values">
-                        <span>R$ 0</span>
-                        <span id="price-value">R$ 500</span>
+                    <label>Preço</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="number" id="filter-price-min" placeholder="Mín" min="0" step="0.01" style="width: 100%;" oninput="aplicarFiltros()">
+                        <span style="color: var(--text-light);">até</span>
+                        <input type="number" id="filter-price-max" placeholder="Máx" min="0" step="0.01" style="width: 100%;" oninput="aplicarFiltros()">
                     </div>
                 </div>
 
@@ -2152,7 +2155,7 @@
         window.addEventListener('load', () => {
             document.getElementById('filters-section').classList.add('visible');
             carregarProdutos(); carregarCarrinho();
-            document.getElementById('filter-price').addEventListener('input', e => document.getElementById('price-value').textContent = `R$ ${e.target.value}`);
+            
 
             // Zoom da imagem principal do modal (clique = fullscreen nativo com suporte a arrastar)
             instalarSwipeGaleria();
@@ -2317,7 +2320,7 @@
         function aumentarQuantidade(){const input=document.getElementById('quantity-input');if(+input.value<+selectedVariation.estoque)input.value=+input.value+1;} function diminuirQuantidade(){const input=document.getElementById('quantity-input');if(+input.value>1)input.value=+input.value-1;}
         function toggleCart(){document.getElementById('cart-sidebar').classList.toggle('active');} function adicionarAoCarrinho(){const quantidade=+document.getElementById('quantity-input').value;if(!selectedVariation.estoque){showToast('Produto indisponível.', 'error');return;}const imgCart=selectedVariation.foto||(Array.isArray(currentProduct.imagens)?currentProduct.imagens[0]:'')||'';const item={id:currentProduct.id,nome:currentProduct.nome,preco:+selectedVariation.preco,quantidade,tamanho:selectedVariation.tamanho,cor:selectedVariation.cor,imagem:imgCart};const existing=cartItems.find(x=>x.id===item.id&&x.tamanho===item.tamanho&&x.cor===item.cor);if(existing)existing.quantidade+=quantidade;else cartItems.push(item);salvarCarrinho();atualizarCarrinho();fecharModal();showToast('✅ Adicionado ao carrinho!', 'success');}
         function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoMeninaBoutique',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoMeninaBoutique')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
-        function buscar(){aplicarFiltros();document.getElementById('filters-section').scrollIntoView({behavior:'smooth'});} function aplicarFiltros(){const q=document.getElementById('search-input').value.toLowerCase(),c=document.getElementById('filter-category').value.toLowerCase(),color=document.getElementById('filter-color').value.toLowerCase(),size=document.getElementById('filter-size').value.toLowerCase(),max=+document.getElementById('filter-price').value,sort=document.getElementById('filter-sort').value;filteredProdutos=allProdutos.filter(p=>{const vs=productVariations(p);return (!q||[p.nome,p.categoria,p.descricao,...vs.flatMap(v=>[v.cor,v.tamanho])].join(' ').toLowerCase().includes(q))&&(!c||String(p.categoria).toLowerCase()===c)&&(!color||vs.some(v=>String(v.cor).toLowerCase()===color))&&(!size||vs.some(v=>String(v.tamanho).toLowerCase().includes(size)))&&vs.some(v=>+v.preco<=max);});if(sort==='menor-preco')filteredProdutos.sort((a,b)=>Math.min(...productVariations(a).map(v=>v.preco))-Math.min(...productVariations(b).map(v=>v.preco)));if(sort==='maior-preco')filteredProdutos.sort((a,b)=>Math.max(...productVariations(b).map(v=>v.preco))-Math.max(...productVariations(a).map(v=>v.preco)));renderizarProdutos();} function limparFiltros(){document.querySelectorAll('#search-input').forEach(e=>e.value='');['filter-category','filter-color','filter-size'].forEach(id=>document.getElementById(id).value='');document.getElementById('filter-price').value=500;document.getElementById('price-value').textContent='R$ 500';filteredProdutos=[...allProdutos];renderizarProdutos();}
+        function buscar(){aplicarFiltros();document.getElementById('filters-section').scrollIntoView({behavior:'smooth'});} function aplicarFiltros(){const q=document.getElementById('search-input').value.toLowerCase(),c=document.getElementById('filter-category').value.toLowerCase(),size=document.getElementById('filter-size').value.toLowerCase(),max=+document.getElementById('filter-price').value,sort=document.getElementById('filter-sort').value;filteredProdutos=allProdutos.filter(p=>{const vs=productVariations(p);return (!q||[p.nome,p.categoria,p.descricao,...vs.flatMap(v=>[v.cor,v.tamanho])].join(' ').toLowerCase().includes(q))&&(!c||String(p.categoria).toLowerCase()===c)&&(!size||vs.some(v=>String(v.tamanho).toLowerCase().includes(size)))&&vs.some(v=>+v.preco<=max);});if(sort==='menor-preco')filteredProdutos.sort((a,b)=>Math.min(...productVariations(a).map(v=>v.preco))-Math.min(...productVariations(b).map(v=>v.preco)));if(sort==='maior-preco')filteredProdutos.sort((a,b)=>Math.max(...productVariations(b).map(v=>v.preco))-Math.max(...productVariations(a).map(v=>v.preco)));renderizarProdutos();} function limparFiltros(){document.querySelectorAll('#search-input').forEach(e=>e.value='');['filter-category','filter-size'].forEach(id=>document.getElementById(id).value='');document.getElementById('filter-price').value=500;document.getElementById('price-value').textContent='R$ 500';filteredProdutos=[...allProdutos];renderizarProdutos();}
         /* ============================================================
            FLUXO DE PEDIDO VIA WHATSAPP
            ============================================================ */

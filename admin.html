@@ -365,6 +365,13 @@
             color: var(--text-dark);
         }
 
+
+        .form-group select {
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -1433,7 +1440,7 @@
         let editandoVariacaoIdx = null;  // índice da variação em edição (null = nova)
         let salvando = false;
 
-        const TAMANHOS_RAPIDOS = ['PP', 'P', 'M', 'G', 'GG', 'XG', 'Único'];
+        const TAMANHOS_RAPIDOS = ['PP', 'P', 'M', 'G', 'GG', 'XG', 'Único', '34', '36', '38', '40', '42', '44', '46', '48'];
         const CORES_RAPIDAS = ['Preto', 'Branco', 'Rosa', 'Azul', 'Vermelho', 'Bege'];
         const IMG_VAZIA = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
