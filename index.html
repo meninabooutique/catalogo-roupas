@@ -2543,6 +2543,7 @@
                 console.log('[DEBUG] allProdutos populado:', allProdutos.length, 'produtos');
                 filteredProdutos = [...allProdutos];
                 console.log('[DEBUG] Chamando renderizarProdutos...');
+                console.log('[BUSCA] Produtos filtrados:', filteredProdutos.length, 'de', allProdutos.length);
                 renderizarProdutos();
                 console.log('[DEBUG] renderizarProdutos concluído');
             } catch (error) {
@@ -2661,9 +2662,12 @@
         // Busca em tempo real com debounce
         let buscaTimer = null;
         function buscarEmTempoReal() {
+            console.log('[BUSCA] buscarEmTempoReal chamada');
             clearTimeout(buscaTimer);
             buscaTimer = setTimeout(() => {
+                console.log('[BUSCA] Executando filtro...');
                 const q = document.getElementById('search-input').value.toLowerCase();
+                console.log('[BUSCA] Query:', q);
                 const priceMin = parseFloat(document.getElementById('filter-price-min').value) || 0;
                 const priceMax = parseFloat(document.getElementById('filter-price-max').value) || 999999;
                 const sort = document.getElementById('filter-sort-select').value || 'popular';
