@@ -1161,6 +1161,7 @@
 
         const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1";
         const ADMIN_SENHA = "59827630";
+        const UPLOAD_SECRET = "mb-upload-2026-secret-key";
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -1340,7 +1341,10 @@
             try {
                 const resp = await fetch('/api/upload', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${UPLOAD_SECRET}`
+                    },
                     body: JSON.stringify({ dataUrl }),
                     signal: controller.signal
                 });
@@ -1781,7 +1785,34 @@
             const nome = produto ? produto.nome : 'este produto';
             if (!confirm(`Tem certeza que deseja deletar "${nome}"?\n\nEssa ação não pode ser desfeita.`)) return;
             try {
+                // Coleta URLs das imagens antes de deletar (para limpar do Blob)
+                const urlsParaLimpar = [];
+                if (Array.isArray(produto.imagens)) {
+                    urlsParaLimpar.push(...produto.imagens.filter(u => typeof u === 'string' && u.startsWith('http')));
+                }
+                if (Array.isArray(produto.variacoes)) {
+                    produto.variacoes.forEach(v => {
+                        if (v.foto && typeof v.foto === 'string' && v.foto.startsWith('http')) {
+                            urlsParaLimpar.push(v.foto);
+                        }
+                    });
+                }
+
+                // Deleta do Firestore
                 await db.collection('produtos').doc(produtoId).delete();
+
+                // Limpa as imagens do Blob (em segundo plano, sem bloquear)
+                if (urlsParaLimpar.length > 0) {
+                    fetch('/api/cleanup', {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${UPLOAD_SECRET}`
+                        },
+                        body: JSON.stringify({ urls: urlsParaLimpar })
+                    }).catch(err => console.warn('Falha ao limpar imagens do Blob:', err));
+                }
+
                 mostrarAlerta('✅ Produto deletado!', 'success');
                 if (editandoProdutoId === produtoId) limparForm();
                 await carregarProdutos();

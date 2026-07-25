@@ -3,6 +3,10 @@
     "api/upload.js": {
       "memory": 1024,
       "maxDuration": 30
+    },
+    "api/cleanup.js": {
+      "memory": 512,
+      "maxDuration": 30
     }
   },
   "headers": [

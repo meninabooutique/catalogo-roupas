@@ -1,10 +1,13 @@
-const { put } = require('@vercel/blob');
+const { put, del } = require('@vercel/blob');
+
+// Token secreto para proteger o endpoint de uploads não autorizados
+const UPLOAD_SECRET = process.env.UPLOAD_SECRET;
 
 module.exports = async (req, res) => {
-  // CORS headers (good practice even for same-origin)
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -13,6 +16,12 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST, OPTIONS');
     return res.status(405).json({ error: 'Método não permitido. Use POST.' });
+  }
+
+  // Validação do token secreto
+  const authHeader = req.headers.authorization;
+  if (!authHeader || authHeader !== `Bearer ${UPLOAD_SECRET}`) {
+    return res.status(401).json({ error: 'Não autorizado. Token de upload inválido.' });
   }
 
   try {
