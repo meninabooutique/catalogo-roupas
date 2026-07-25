@@ -2045,22 +2045,7 @@
         </div>
     </div>
 
-    <!-- MODAL PERGUNTA EMPRÉSTIMO -->
-    <div class="modal-pedido-overlay" id="modal-emprestimo">
-        <div class="modal-pedido-card">
-            <div class="modal-pedido-icon">👗</div>
-            <h3>Experimentar como Empréstimo?</h3>
-            <p>Deseja <strong>experimentar a peça como empréstimo</strong> antes de decidir pela compra? Assim você pode provar em casa e nos devolver se não ficar bom.</p>
-            <div class="modal-pedido-actions">
-                <button class="btn-modal-primary" onclick="responderEmprestimo(true)">
-                    <i class="fas fa-hand-holding-heart"></i> Sim, quero experimentar
-                </button>
-                <button class="btn-modal-secondary" onclick="responderEmprestimo(false)">
-                    Não, quero comprar direto
-                </button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- MODAL CONFIRMAÇÃO PRODUTO ÚNICO -->
     <div class="modal-pedido-overlay" id="modal-confirmar-produto">
@@ -2120,7 +2105,7 @@
         // DADOS E ESTADO
         let adminMode = false, allProdutos = [], filteredProdutos = [], cartItems = [];
         let currentProduct = null, currentImageIndex = 0, imagemSelecionadas = [], selectedVariation = null;
-        const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1";
+        const WHATSAPP_SUPPORT = "5538991240933";
         const brl = value => Number(value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         const esc = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -2157,7 +2142,6 @@
         const getWhatsAppUrl = link => {
             const value = String(link || WHATSAPP_SUPPORT).trim();
             if (/^https?:\/\//i.test(value)) return value;
-            if (value.startsWith('message/')) return `https://wa.me/${value}`;
             return `https://wa.me/${value.replace(/\D/g, '')}`;
         };
         
@@ -2355,15 +2339,7 @@
 
         function confirmarPedido() {
             document.getElementById('modal-confirmar-pedido').classList.remove('active');
-            _pendenteTipoEmprestimo = 'carrinho';
-            // Pergunta sobre empréstimo
-            document.getElementById('modal-emprestimo').classList.add('active');
-        }
-
-        function responderEmprestimo(sim) {
-            document.getElementById('modal-emprestimo').classList.remove('active');
-            _pendenteEmprestimo = sim;
-            enviarMensagemCarrinho(sim);
+            enviarMensagemCarrinho(false); // Sempre false - sem empréstimo
         }
 
         function enviarMensagemCarrinho(emprestimo) {
@@ -2438,7 +2414,7 @@
         }
 
         function abrirWhatsApp() {
-            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent('Olá! Vim pelo site da Menina Boutique e tenho uma dúvida. Poderiam me ajudar? 😊')}`, '_blank');
+            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent('Olá! Vim pelo site de Catálogo Menina Boutique e tenho uma dúvida. Poderiam me ajudar?')}`, '_blank');
         }
     </script>
 </body>
