@@ -2799,7 +2799,7 @@
             const totalValor = cartItems.reduce((s, x) => s + x.preco * x.quantidade, 0);
 
             let linhas = [];
-            linhas.push('>>> Olá! Vim do site de Catálogo Menina Boutique <<<');
+            linhas.push('Olá!');
             linhas.push('');
             linhas.push('Selecionei os seguintes produtos:');
             linhas.push('');
@@ -2857,7 +2857,7 @@
             const pctDesconto = temPromo ? calcDescontoPct(precoOriginal, promo) : 0;
 
             let linhas = [];
-            linhas.push('>>> Olá! Vim do site de Catálogo Menina Boutique <<<');
+            linhas.push('Olá!');
             linhas.push('');
             linhas.push('Me interessei pelo seguinte produto:');
             linhas.push('');
@@ -2879,7 +2879,7 @@
         }
 
         function abrirWhatsApp() {
-            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent('Olá! Vim pelo site de Catálogo Menina Boutique e tenho uma dúvida. Poderiam me ajudar?')}`, '_blank');
+            window.open(`${getWhatsAppUrl()}?text=${encodeURIComponent('Olá! Tenho uma dúvida. Poderiam me ajudar?')}`, '_blank');
         }
     </script>
 </body>
