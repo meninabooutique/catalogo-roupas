@@ -1,7 +1,8 @@
 {
-  "name": "catalogo-roupas",
+  "name": "catalogo-aryelli-moda-fitness",
   "version": "1.0.0",
   "private": true,
+  "description": "Catálogo Aryelli Moda Fitness - Tudo que você precisa em um só lugar! @aryellimodafitness",
   "dependencies": {
     "@vercel/blob": "^0.27.0"
   }

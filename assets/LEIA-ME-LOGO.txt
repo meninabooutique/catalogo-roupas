@@ -1,0 +1,22 @@
+INSTRUÇÃO LOGO - Aryelli Moda Fitness
+====================================
+
+Você disse que vai colocar a logo exata que anexou.
+
+1. Pegue a imagem que você tem (WhatsApp Image 2026-08-17 at 10.21.18.jpeg)
+2. Renomeie para logo.png
+3. Substitua o arquivo assets/logo.png por ela
+
+O site já está preparado para usar assets/logo.png no header (circular) e no login do admin.
+
+Se quiser uma versão só do ícone (círculo vermelho com A) para o header ficar mais bonito, você pode:
+- Recortar só o círculo vermelho da imagem
+- Salvar como logo-icon.png
+- E no index.html e admin.html trocar src para logo-icon.png no header, mantendo logo.png completo para a página de login.
+
+Mas se quiser usar a logo completa mesmo, já vai funcionar - ela vai aparecer cortada em círculo no header, o que já fica bom.
+
+Cores usadas no site (baseadas na sua logo):
+- Vermelho: #E30613
+- Branco: #FFFFFF
+- Fundo: #f8f8f8

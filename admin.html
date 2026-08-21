@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin - Menina Boutique</title>
+    <title>Admin - Aryelli Moda Fitness</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,19 +14,19 @@
         }
 
         :root {
-            --gold: #d4af37;
-            --gold-light: #f3d77a;
-            --gold-dark: #a8861f;
-            --black: #0b0b0d;
-            --black-soft: #141418;
-            --card: #141319;
+            --gold: #E30613;
+            --gold-light: #ff4d5a;
+            --gold-dark: #b0000d;
+            --black: #ffffff;
+            --black-soft: #fff5f5;
+            --card: #ffffff;
             --primary-pink: var(--gold);
-            --secondary-wine: var(--black);
-            --light-bg: #0a0a0c;
-            --white: var(--card);
-            --text-dark: #f4ecd4;
-            --text-light: #b9ad8a;
-            --border-color: #2b2513;
+            --secondary-wine: #1a1a1a;
+            --light-bg: #f8f8f8;
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-light: #777777;
+            --border-color: #eeeeee;
             --success: #4caf50;
             --warning: var(--gold);
             --error: #c0392b;
@@ -35,7 +35,7 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--light-bg);
-            color: var(--text-dark);
+            color: #1a1a1a;
             overflow-x: hidden;
         }
 
@@ -45,10 +45,10 @@
 
         /* HEADER */
         header {
-            background: linear-gradient(135deg, #000 0%, #1a1408 45%, #000 100%);
-            border-bottom: 2px solid var(--gold);
+            background: #ffffff;
+            border-bottom: 3px solid var(--gold);
             padding: 15px 20px;
-            box-shadow: 0 4px 20px rgba(212,175,55,0.25);
+            box-shadow: 0 4px 20px rgba(227,6,19,0.12);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -67,7 +67,7 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--white);
+            color: #1a1a1a;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -78,11 +78,11 @@
             height: 48px;
             border-radius: 50%;
             overflow: hidden;
-            background: #000;
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 12px rgba(212,175,55,0.35);
+            box-shadow: 0 2px 12px rgba(227,6,19,0.20);
             border: 2px solid var(--gold);
             flex-shrink: 0;
         }
@@ -100,7 +100,7 @@
         }
 
         .admin-info {
-            color: var(--white);
+            color: #1a1a1a;
             font-weight: 600;
             font-size: 0.95rem;
         }
@@ -129,7 +129,7 @@
         .login-overlay {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(212,175,55,0.15), transparent 50%), linear-gradient(135deg, rgba(0,0,0,0.97), rgba(26,20,8,0.98));
+            background: radial-gradient(circle at 30% 20%, rgba(227,6,19,0.10), transparent 50%), linear-gradient(135deg, rgba(255,255,255,0.97), rgba(255,240,240,0.98));
             display: flex;
             align-items: center;
             justify-content: center;
@@ -142,13 +142,13 @@
         }
 
         .login-card {
-            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
-            border: 1px solid var(--gold);
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
             border-radius: 16px;
             padding: 30px;
             width: 100%;
             max-width: 380px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
             text-align: center;
         }
 
@@ -158,9 +158,9 @@
             border-radius: 50%;
             overflow: hidden;
             margin: 0 auto 15px;
-            background: #000;
+            background: #ffffff;
             border: 2px solid var(--gold);
-            box-shadow: 0 4px 16px rgba(212,175,55,0.3);
+            box-shadow: 0 4px 16px rgba(227,6,19,0.18);
         }
 
         .login-logo img {
@@ -191,7 +191,7 @@
         .login-card .form-group label {
             display: block;
             font-weight: 600;
-            color: var(--text-dark);
+            color: #1a1a1a;
             font-size: 0.9rem;
             margin-bottom: 6px;
         }
@@ -199,12 +199,12 @@
         .login-card .form-group input {
             width: 100%;
             padding: 12px 14px;
-            border: 2px solid var(--border-color);
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 1rem;
             transition: all 0.2s;
-            background: #100f14;
-            color: var(--text-dark);
+            background: #ffffff;
+            color: #1a1a1a;
         }
 
         .login-card .form-group input:focus {
@@ -225,7 +225,7 @@
             width: 100%;
             padding: 12px;
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #000;
+            color: #ffffff;
             border: 1px solid var(--gold);
             border-radius: 8px;
             font-weight: 700;
@@ -238,7 +238,7 @@
         .btn-login:hover {
             transform: translateY(-2px);
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            box-shadow: 0 6px 16px rgba(212,175,55,0.3);
+            box-shadow: 0 6px 16px rgba(227,6,19,0.18);
         }
 
         .btn-login:active {
@@ -318,15 +318,15 @@
             background: var(--card);
             padding: 30px;
             border-radius: 12px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            border: 1px solid #eeeeee;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
             margin-bottom: 40px;
         }
 
         .form-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--text-dark);
+            color: #1a1a1a;
             margin-bottom: 25px;
             display: flex;
             align-items: center;
@@ -348,7 +348,7 @@
 
         .form-group label {
             font-weight: 600;
-            color: var(--text-dark);
+            color: #1a1a1a;
             font-size: 0.95rem;
         }
 
@@ -356,13 +356,13 @@
         .form-group select,
         .form-group textarea {
             padding: 12px 14px;
-            border: 2px solid var(--border-color);
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 0.95rem;
             font-family: inherit;
             transition: all 0.3s ease;
-            background: #100f14;
-            color: var(--text-dark);
+            background: #ffffff;
+            color: #1a1a1a;
         }
 
 
@@ -388,11 +388,11 @@
 
         /* SEÇÃO PROMOÇÃO */
         .promocao-section {
-            background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(168,134,31,0.05) 100%);
+            background: linear-gradient(135deg, rgba(227,6,19,0.06) 0%, rgba(227,6,19,0.03) 100%);
             padding: 22px;
             border-radius: 12px;
             margin-bottom: 22px;
-            border: 1px solid var(--border-color);
+            border: 1px solid #eeeeee;
         }
 
         .promocao-header {
@@ -406,7 +406,7 @@
 
         .promocao-header h3 {
             font-size: 1.1rem;
-            color: var(--text-dark);
+            color: #1a1a1a;
             margin: 0;
             flex: 1;
         }
@@ -479,8 +479,8 @@
             align-items: center;
             gap: 10px;
             padding: 12px 14px;
-            background: #100f14;
-            border: 2px solid var(--border-color);
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
@@ -499,12 +499,12 @@
 
         .promo-radio.selected {
             border-color: var(--gold);
-            background: rgba(212,175,55,0.1);
+            background: rgba(227,6,19,0.06);
         }
 
         .promo-radio-label {
             font-weight: 600;
-            color: var(--text-dark);
+            color: #1a1a1a;
             font-size: 0.92rem;
         }
 
@@ -539,10 +539,10 @@
 
         .promo-valor-wrap input {
             padding: 11px 14px;
-            border: 2px solid var(--border-color);
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            background: #100f14;
-            color: var(--text-dark);
+            background: #ffffff;
+            color: #1a1a1a;
             font-size: 1rem;
             width: 100%;
             font-family: inherit;
@@ -556,11 +556,11 @@
         .promo-preview {
             margin-top: 12px;
             padding: 12px 14px;
-            background: rgba(212,175,55,0.08);
+            background: rgba(227,6,19,0.06);
             border: 1px dashed var(--gold);
             border-radius: 8px;
             font-size: 0.88rem;
-            color: var(--text-dark);
+            color: #1a1a1a;
             display: none;
         }
 
@@ -592,18 +592,18 @@
 
         /* VARIAÇÕES */
         .variacoes-section {
-            background: var(--light-bg);
+            background: #fafafa;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
         }
 
         .variacao-item {
-            background: #100f14;
+            background: #ffffff;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 10px;
-            border: 1px solid var(--border-color);
+            border: 1px solid #eeeeee;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -626,7 +626,7 @@
             height: 50px;
             border-radius: 6px;
             overflow: hidden;
-            background: var(--light-bg);
+            background: #fafafa;
             flex-shrink: 0;
         }
 
@@ -647,7 +647,7 @@
 
         .variacao-texto {
             font-weight: 600;
-            color: var(--text-dark);
+            color: #1a1a1a;
         }
 
         .variacao-detalhes {
@@ -672,10 +672,10 @@
         }
 
         .variacao-form {
-            background: #100f14;
+            background: #ffffff;
             padding: 15px;
             border-radius: 8px;
-            border: 1px solid var(--border-color);
+            border: 1px solid #eeeeee;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
             gap: 12px;
@@ -699,12 +699,12 @@
 
         .variacao-form input {
             padding: 10px 12px;
-            border: 2px solid var(--border-color);
+            border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 0.95rem;
             width: 100%;
-            background: #141319;
-            color: var(--text-dark);
+            background: #ffffff;
+            color: #1a1a1a;
         }
         .variacao-form input:focus {
             outline: none;
@@ -722,12 +722,12 @@
             padding: 10px;
             border: 2px dashed var(--gold);
             border-radius: 6px;
-            background: rgba(212,175,55,0.05);
+            background: rgba(227,6,19,0.05);
             cursor: pointer;
             transition: background .2s;
         }
         .variacao-form .var-foto-upload:hover {
-            background: rgba(212,175,55,0.12);
+            background: rgba(227,6,19,0.08);
         }
 
         .variacao-form .var-foto-upload input {
@@ -739,13 +739,13 @@
             height: 48px;
             border-radius: 6px;
             object-fit: cover;
-            background: var(--light-bg);
+            background: #fafafa;
             flex-shrink: 0;
         }
 
         .var-foto-text {
             font-size: 0.9rem;
-            color: var(--text-dark);
+            color: #1a1a1a;
             flex: 1;
         }
 
@@ -758,7 +758,7 @@
 
         .variacao-form > button {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #000;
+            color: #ffffff;
             border: none;
             padding: 12px;
             border-radius: 6px;
@@ -787,7 +787,7 @@
             padding: 2px 8px;
             border-radius: 999px;
             background: var(--gold);
-            color: #000;
+            color: #ffffff;
             font-size: .8rem;
             font-weight: 800;
             text-align: center;
@@ -804,7 +804,7 @@
 
         .quick-chips button {
             background: transparent;
-            border: 1px solid var(--border-color);
+            border: 1px solid #eeeeee;
             color: var(--text-light);
             border-radius: 999px;
             padding: 3px 9px;
@@ -832,7 +832,7 @@
         }
 
         .var-foto-upload.dragover {
-            background: rgba(212,175,55,.22);
+            background: rgba(227,6,19,0.12);
             border-style: solid;
         }
 
@@ -849,7 +849,7 @@
 
         .variacao-item.editando {
             border-color: var(--gold);
-            box-shadow: 0 0 0 2px rgba(212,175,55,.25);
+            box-shadow: 0 0 0 2px rgba(227,6,19,0.18);
         }
 
         .variacao-acoes {
@@ -868,10 +868,10 @@
             font-weight: 600;
         }
 
-        .btn-edit-variacao:hover { background: var(--gold); color: #000; }
+        .btn-edit-variacao:hover { background: var(--gold); color: #ffffff; }
 
         .modo-edicao-banner {
-            background: rgba(212,175,55,.12);
+            background: rgba(227,6,19,0.08);
             border: 1px solid var(--gold);
             color: var(--gold);
             border-radius: 8px;
@@ -906,10 +906,10 @@
             flex: 1;
             min-width: 180px;
             padding: 10px 14px;
-            border: 2px solid var(--border-color);
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            background: #141319;
-            color: var(--text-dark);
+            background: #ffffff;
+            color: #1a1a1a;
             font-size: .95rem;
         }
 
@@ -923,8 +923,8 @@
         }
 
         .stat-card {
-            background: #100f14;
-            border: 1px solid var(--border-color);
+            background: #ffffff;
+            border: 1px solid #eeeeee;
             border-radius: 10px;
             padding: 14px;
             text-align: center;
@@ -974,14 +974,14 @@
 
         .btn-submit {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #000;
+            color: #ffffff;
             border: 1px solid var(--gold);
         }
 
         .btn-submit:hover {
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212,175,55,.3);
+            box-shadow: 0 8px 20px rgba(227,6,19,0.18);
         }
 
         .btn-reset {
@@ -992,7 +992,7 @@
 
         .btn-reset:hover {
             background: var(--gold);
-            color: #000;
+            color: #ffffff;
         }
 
         /* PRODUTOS */
@@ -1003,18 +1003,18 @@
         }
 
         .product-card-admin {
-            background: #100f14;
-            border: 1px solid var(--border-color);
+            background: #ffffff;
+            border: 1px solid #eeeeee;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
         }
 
         .product-card-admin:hover {
             transform: translateY(-4px);
             border-color: var(--gold);
-            box-shadow: 0 10px 24px rgba(212,175,55,0.2);
+            box-shadow: 0 10px 24px rgba(227,6,19,0.12);
         }
 
         .product-image-admin {
@@ -1038,7 +1038,7 @@
             font-weight: 700;
             font-size: 1rem;
             margin-bottom: 6px;
-            color: var(--text-dark);
+            color: #1a1a1a;
         }
 
         .product-details-admin {
@@ -1086,7 +1086,7 @@
             border: 1px solid var(--gold);
         }
 
-        .btn-edit:hover { background: var(--gold); color: #000; }
+        .btn-edit:hover { background: var(--gold); color: #ffffff; }
 
         .btn-delete {
             background: var(--error);
@@ -1121,8 +1121,8 @@
         .modal-confirm.hidden { display: none; }
 
         .modal-body {
-            background: linear-gradient(180deg, #141319, #0a0a0c);
-            border: 1px solid var(--gold);
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
             border-radius: 12px;
             padding: 30px;
             max-width: 400px;
@@ -1152,7 +1152,7 @@
             transition: all 0.2s;
         }
 
-        .modal-body .btn-sim { background: linear-gradient(135deg,var(--gold-dark),var(--gold)); color: #000; border:1px solid var(--gold); }
+        .modal-body .btn-sim { background: linear-gradient(135deg,var(--gold-dark),var(--gold)); color: #ffffff; border:1px solid var(--gold); }
         .modal-body .btn-sim:hover { background: linear-gradient(135deg,var(--gold),var(--gold-light)); }
         .modal-body .btn-nao { background: transparent; color: var(--gold); border:1px solid var(--gold); }
         .modal-body .btn-nao:hover { background: var(--gold); color:#000; }
@@ -1187,7 +1187,7 @@
     <div id="login-overlay" class="login-overlay">
         <div class="login-card">
             <div class="login-logo">
-                <img src="assets/logo.png" alt="Menina Boutique">
+                <img src="assets/logo.png" alt="Aryelli Moda Fitness">
             </div>
             <h2>Acesso Restrito</h2>
             <p>Painel Administrativo</p>
@@ -1209,9 +1209,9 @@
         <div class="header-content">
             <div class="logo">
                 <div class="logo-image">
-                    <img src="assets/logo.png" alt="Menina Boutique Logo">
+                    <img src="assets/logo.png" alt="Aryelli Moda Fitness Logo">
                 </div>
-                <span>Painel Admin</span>
+                <span style="color:#1a1a1a;">Aryelli <span style="color:#E30613;">Moda Fitness</span> - Admin</span>
             </div>
             <div class="admin-controls">
                 <button class="btn-sair-admin" onclick="sairAdmin()">
@@ -1411,17 +1411,21 @@
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
     <script>
+        // TODO: TROCAR PELO SEU NOVO FIREBASE - Aryelli Moda Fitness
+        // Crie um novo projeto em https://console.firebase.google.com
+        // e substitua as credenciais abaixo. Por enquanto usa o mesmo do antigo para teste.
         const firebaseConfig = {
             apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
             authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
             projectId: "catalogo-roupas-8c13e",
+            storageBucket: "catalogo-roupas-8c13e.firebasestorage.app",
             messagingSenderId: "154437834985",
             appId: "1:154437834985:web:bcc927c454f87a4c1ab878"
         };
 
-        const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1";
+        const WHATSAPP_SUPPORT = "5538991528709"; // Aryelli Moda Fitness
         const ADMIN_SENHA = "59827630";
-        const UPLOAD_SECRET = "mb-upload-2026-secret-key";
+        const UPLOAD_SECRET = "aryelli-upload-2026-secret-key";
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -1566,7 +1570,7 @@
            LOGIN
            ============================================================ */
         function verificarAdmin() {
-            if (sessionStorage.getItem('mb_admin_ok') === '1') {
+            if (sessionStorage.getItem('aryelli_admin_ok') === '1') {
                 $('login-overlay').classList.add('hidden');
                 return true;
             }
@@ -1580,7 +1584,7 @@
             const senha = $('login-senha').value;
             const err = $('login-error');
             if (String(senha) === ADMIN_SENHA) {
-                sessionStorage.setItem('mb_admin_ok', '1');
+                sessionStorage.setItem('aryelli_admin_ok', '1');
                 err.textContent = '';
                 $('login-overlay').classList.add('hidden');
                 iniciarPainel();
@@ -1593,7 +1597,7 @@
 
         function sairAdmin() {
             if (confirm('Tem certeza que quer sair do painel admin?')) {
-                sessionStorage.removeItem('mb_admin_ok');
+                sessionStorage.removeItem('aryelli_admin_ok');
                 window.location.href = 'index.html';
             }
         }
