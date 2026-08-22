@@ -224,7 +224,6 @@
 
         /* FILTROS */
 
-
         .filters-section {
             background: var(--card);
             padding: 0;
@@ -351,7 +350,6 @@
             display: inline;
         }
 
-
         .sort-select-wrap {
             position: relative;
             width: 100%;
@@ -465,7 +463,6 @@
         .btn-clear-filters:hover {
             border-color: var(--gold);
         }
-
 
         .filter-group input[type="number"] {
             padding: 10px 12px;
@@ -997,7 +994,6 @@
             color: var(--text-dark);
         }
 
-
         /* PREÇOS PROMOCIONAIS */
         .price-promo-wrap {
             display: flex;
@@ -1092,7 +1088,6 @@
             }
         }
 
-
         /* TOAST NOTIFICATION */
         .toast-container {
             position: fixed;
@@ -1144,7 +1139,6 @@
         .selector-btn.indisponivel:hover {
             border-color: var(--border-color);
         }
-
 
         /* BOTÕES AÇÃO */
         .action-buttons {
@@ -2262,7 +2256,6 @@
         </div>
     </div>
 
-
     <!-- MODAL CONFIRMAÇÃO PEDIDO -->
     <div class="modal-pedido-overlay" id="modal-confirmar-pedido">
         <div class="modal-pedido-card">
@@ -2277,8 +2270,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- MODAL CONFIRMAÇÃO PRODUTO ÚNICO -->
     <div class="modal-pedido-overlay" id="modal-confirmar-produto">
@@ -2295,13 +2286,9 @@
         </div>
     </div>
 
-
-
-
     <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- SCRIPTS - Vercel Blob Storage -->
     <script>
 
         // Toast notification system
@@ -2319,11 +2306,7 @@
             }, 3000);
         }
 
-        // STORAGE CONFIG - Vercel Blob
-        // Produtos agora ficam em Vercel Blob (produtos.json) via /api/produtos
-        // Imagens continuam em Vercel Blob via /api/upload
-        const STORAGE_MODE = "vercel-blob";
-
+        
         // DADOS E ESTADO
         let adminMode = false, allProdutos = [], filteredProdutos = [], cartItems = [];
         let currentProduct = null, currentImageIndex = 0, imagemSelecionadas = [], selectedVariation = null;
@@ -2351,15 +2334,9 @@
                 const aPromo = a.promocao && a.promocao.ativa ? 1 : 0;
                 const bPromo = b.promocao && b.promocao.ativa ? 1 : 0;
                 if (aPromo !== bPromo) return bPromo - aPromo; // promoções primeiro
-                const parseDate = (d) => {
-                    if (!d) return 0;
-                    if (typeof d === 'string') return new Date(d).getTime();
-                    if (typeof d.toMillis === 'function') return d.toMillis();
-                    if (d.seconds) return new Date(d.seconds * 1000).getTime();
-                    return 0;
-                };
-                const tA = parseDate(a.criadoEm);
-                const tB = parseDate(b.criadoEm);
+                // Dentro de cada grupo, mais novo primeiro
+                const tA = a.criadoEm ? (typeof a.criadoEm.toMillis === 'function' ? a.criadoEm.toMillis() : new Date(a.criadoEm.seconds * 1000).getTime()) : 0;
+                const tB = b.criadoEm ? (typeof b.criadoEm.toMillis === 'function' ? b.criadoEm.toMillis() : new Date(b.criadoEm.seconds * 1000).getTime()) : 0;
                 return tB - tA;
             });
         };
@@ -2446,8 +2423,6 @@
             }
             atualizarContadorFiltros();
         }
-
-
 
         function atualizarContadorFiltros() {
             const total = filtrosAtivos.categorias.length + filtrosAtivos.tamanhos.length +
@@ -2589,22 +2564,22 @@
         function removerImagem(index) { imagemSelecionadas.splice(index, 1); renderizarImagensPreview(); }
         function renderizarImagensPreview() { document.getElementById('images-preview').innerHTML = imagemSelecionadas.map((img,i) => `<div class="image-preview-item"><img src="${esc(img)}" alt="Preview"><button type="button" class="image-preview-remove" onclick="removerImagem(${i})">×</button></div>`).join(''); }
         function limparForm() { document.getElementById('form-produto').reset(); imagemSelecionadas=[]; renderizarImagensPreview(); }
-                async function carregarProdutos() {
-            console.log('[DEBUG] carregarProdutos iniciado - Vercel Blob');
+        async function carregarProdutos() {
+            console.log('[DEBUG] carregarProdutos iniciado');
             const container = document.getElementById('products-container');
             try {
-                console.log('[DEBUG] Buscando produtos do Vercel Blob via /api/produtos...');
-                const resp = await fetch('/api/produtos', { cache: 'no-store' });
-                if (!resp.ok) throw new Error('Falha ao buscar produtos: ' + resp.status);
-                allProdutos = await resp.json();
+                                // Firebase removido - sem db
+                console.log('[DEBUG] Snapshot recebido, docs:', snapshot.docs.length);
+                                allProdutos = [];
                 console.log('[DEBUG] allProdutos populado:', allProdutos.length, 'produtos');
                 filteredProdutos = [...allProdutos];
+                console.log('[DEBUG] Chamando renderizarProdutos...');
                 console.log('[BUSCA] Produtos filtrados:', filteredProdutos.length, 'de', allProdutos.length);
                 renderizarProdutos();
                 console.log('[DEBUG] renderizarProdutos concluído');
             } catch (error) {
                 console.error('[DEBUG] ERRO em carregarProdutos:', error);
-                if (container) container.innerHTML = '<div class="no-products"><div class="no-products-icon">⚠️</div><p>Erro ao carregar: ' + error.message + '</p><p style="font-size:0.85rem;margin-top:10px;">Verifique se o Vercel Blob está configurado (BLOB_READ_WRITE_TOKEN)</p></div>';
+                if (container) container.innerHTML = '<div class="no-products"><div class="no-products-icon">⚠️</div><p>Erro ao carregar: ' + error.message + '</p></div>';
             }
         }
         function renderizarProdutos() {
