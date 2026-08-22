@@ -1,71 +1,55 @@
-# Aryelli Moda Fitness - Catálogo
+# Aryelli Moda Fitness - Catálogo (Vercel Blob Only)
 
 **Tudo que você precisa em um só lugar!**
 
 Instagram: [@aryellimodafitness](https://instagram.com/aryellimodafitness)
 WhatsApp: +55 38 99152-8709
 
-Catálogo online de moda fitness - cópia adaptada do projeto Menina Boutique, com identidade visual branco e vermelho.
+Catálogo online 100% Vercel - **SEM Firebase**. Produtos e imagens ficam no Vercel Blob Storage.
 
 ## Cores
 - Vermelho principal: #E30613
 - Branco: #FFFFFF
 - Fundo claro: #f8f8f8
 
-## Como copiar para outra conta do GitHub
+## Arquitetura atual (sem Firebase)
 
-### 1. Criar repositório novo na outra conta
-- Vá em github.com logado na outra conta
-- New repository > Nome: `catalogo-aryelli-moda-fitness`
-- Deixe vazio (sem README)
-
-### 2. Enviar este código para lá
-```bash
-# na pasta do projeto
-git remote rename origin old-origin
-git remote add origin https://github.com/SUA-NOVA-CONTA/catalogo-aryelli-moda-fitness.git
-git push -u origin main
-# ou se estiver na branch arena:
-git push -u origin arena/01a02676-catalogo-roupas:main
-```
-
-### 3. Configurar Firebase novo (recomendado)
-1. Crie um projeto em https://console.firebase.google.com
-2. Ative Firestore
-3. Copie as credenciais e substitua em `index.html` e `admin.html` na const `firebaseConfig`
-4. Regras do Firestore (para teste):
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /produtos/{document=**} {
-      allow read: if true;
-      allow write: if true;
-    }
-  }
-}
-```
-
-### 4. Configurar Vercel + Blob
-1. Importe o novo repo na Vercel
-2. Crie um Blob Store na Vercel
-3. Adicione as Env Vars:
-   - `BLOB_READ_WRITE_TOKEN` (gerado automaticamente)
-   - `UPLOAD_SECRET` = `aryelli-upload-2026-secret-key` (ou outro seguro)
-4. Atualize o `UPLOAD_SECRET` em `api/upload.js`, `api/cleanup.js`, `admin.html`
-
-### 5. Logo
-- Substitua `assets/logo.png` pela logo oficial que você tem (a imagem com o círculo vermelho e letra A)
-- O arquivo deve se chamar exatamente `logo.png`
-
-## Estrutura
-- `index.html` - Catálogo público
-- `admin.html` - Painel admin (senha padrão: 59827630 - troque!)
+- `index.html` - Catálogo público - busca produtos via `GET /api/produtos`
+- `admin.html` - Painel admin - cria/edita/deleta via `POST /api/produtos` e `DELETE /api/produtos?id=`
+- `api/produtos.js` - API que lê/escreve `produtos.json` no Vercel Blob
 - `api/upload.js` - Upload de imagens para Vercel Blob
-- `api/cleanup.js` - Limpeza de imagens
-- `assets/logo.png` - Logo (você vai colocar a oficial)
+- `api/cleanup.js` - Deleta imagens do Blob quando produto é apagado
+- `assets/logo.png` - Logo oficial (coloque a imagem com círculo vermelho A)
 
-## WhatsApp configurado
-+55 38 99152-8709
+## Como rodar local
+```bash
+npm install -g vercel
+vercel dev
+# precisa de .env com BLOB_READ_WRITE_TOKEN e UPLOAD_SECRET
+```
 
-Todos os botões de "Tenho interesse" e "Finalizar pedido" já enviam para esse número.
+## Como copiar para outra conta do GitHub (SEM terminal)
+
+1. Baixe o ZIP deste repo no GitHub: Code > Download ZIP
+2. Descompacte e coloque sua logo oficial como `assets/logo.png`
+3. Na outra conta: github.com/new > cria repo vazio `catalogo-aryelli-moda-fitness`
+4. No repo novo: "uploading an existing file" > arrasta todos os arquivos > Commit
+
+## Configurar Vercel (outra conta)
+
+1. vercel.com/new > Importa o repo `catalogo-aryelli-moda-fitness`
+2. Deploy (primeiro deploy vai sem produtos)
+3. Storage > Create > Blob Store > Create
+4. Settings > Environment Variables:
+   - `BLOB_READ_WRITE_TOKEN` - já vem preenchido quando cria Blob
+   - `UPLOAD_SECRET` = `aryelli-upload-2026-secret-key`
+5. Deployments > ... > Redeploy
+
+Pronto! Acesse `/admin.html` (senha: 59827630) e cadastre produtos. Eles vão para `produtos.json` no Blob.
+
+## WhatsApp
++55 38 99152-8709 - já configurado em todos os botões.
+
+## Migração do antigo (Firebase)
+O código antigo usava Firebase Firestore para produtos. Agora foi removido.
+Se ainda tem produtos no Firebase antigo, exporte e importe manualmente via admin.

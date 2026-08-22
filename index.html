@@ -2296,10 +2296,7 @@
     <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- SCRIPTS FIREBASE -->
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
-
+    <!-- SCRIPTS - Aryelli Moda Fitness - Vercel Blob Storage -->
     <script>
 
         // Toast notification system
@@ -2317,20 +2314,10 @@
             }, 3000);
         }
 
-        // FIREBASE CONFIG - TODO: TROCAR PELO NOVO FIREBASE DA ARYELLI
-        // Crie um novo projeto em https://console.firebase.google.com
-        // e substitua aqui. Mantendo o antigo por enquanto para teste.
-        const firebaseConfig = {
-            apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
-            authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
-            projectId: "catalogo-roupas-8c13e",
-            storageBucket: "catalogo-roupas-8c13e.firebasestorage.app",
-            messagingSenderId: "154437834985",
-            appId: "1:154437834985:web:bcc927c454f87a4c1ab878"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        // STORAGE CONFIG - Vercel Blob
+        // Produtos agora ficam em Vercel Blob (produtos.json) via /api/produtos
+        // Imagens continuam em Vercel Blob via /api/upload
+        const STORAGE_MODE = "vercel-blob";
 
         // DADOS E ESTADO
         let adminMode = false, allProdutos = [], filteredProdutos = [], cartItems = [];
@@ -2359,9 +2346,16 @@
                 const aPromo = a.promocao && a.promocao.ativa ? 1 : 0;
                 const bPromo = b.promocao && b.promocao.ativa ? 1 : 0;
                 if (aPromo !== bPromo) return bPromo - aPromo; // promoções primeiro
-                // Dentro de cada grupo, mais novo primeiro
-                const tA = a.criadoEm ? (typeof a.criadoEm.toMillis === 'function' ? a.criadoEm.toMillis() : new Date(a.criadoEm.seconds * 1000).getTime()) : 0;
-                const tB = b.criadoEm ? (typeof b.criadoEm.toMillis === 'function' ? b.criadoEm.toMillis() : new Date(b.criadoEm.seconds * 1000).getTime()) : 0;
+                // Dentro de cada grupo, mais novo primeiro - suporta ISO string e Timestamp antigo
+                const parseDate = (d) => {
+                    if (!d) return 0;
+                    if (typeof d === 'string') return new Date(d).getTime();
+                    if (typeof d.toMillis === 'function') return d.toMillis();
+                    if (d.seconds) return new Date(d.seconds * 1000).getTime();
+                    return 0;
+                };
+                const tA = parseDate(a.criadoEm);
+                const tB = parseDate(b.criadoEm);
                 return tB - tA;
             });
         };
@@ -2592,22 +2586,21 @@
         function renderizarImagensPreview() { document.getElementById('images-preview').innerHTML = imagemSelecionadas.map((img,i) => `<div class="image-preview-item"><img src="${esc(img)}" alt="Preview"><button type="button" class="image-preview-remove" onclick="removerImagem(${i})">×</button></div>`).join(''); }
         function limparForm() { document.getElementById('form-produto').reset(); imagemSelecionadas=[]; renderizarImagensPreview(); }
         async function carregarProdutos() {
-            console.log('[DEBUG] carregarProdutos iniciado');
+            console.log('[DEBUG] carregarProdutos iniciado - Vercel Blob');
             const container = document.getElementById('products-container');
             try {
-                console.log('[DEBUG] Buscando produtos do Firestore...');
-                const snapshot = await db.collection('produtos').get();
-                console.log('[DEBUG] Snapshot recebido, docs:', snapshot.docs.length);
-                allProdutos = snapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
+                console.log('[DEBUG] Buscando produtos do Vercel Blob via /api/produtos...');
+                const resp = await fetch('/api/produtos', { cache: 'no-store' });
+                if (!resp.ok) throw new Error('Falha ao buscar produtos: ' + resp.status);
+                allProdutos = await resp.json();
                 console.log('[DEBUG] allProdutos populado:', allProdutos.length, 'produtos');
                 filteredProdutos = [...allProdutos];
-                console.log('[DEBUG] Chamando renderizarProdutos...');
                 console.log('[BUSCA] Produtos filtrados:', filteredProdutos.length, 'de', allProdutos.length);
                 renderizarProdutos();
                 console.log('[DEBUG] renderizarProdutos concluído');
             } catch (error) {
                 console.error('[DEBUG] ERRO em carregarProdutos:', error);
-                if (container) container.innerHTML = '<div class="no-products"><div class="no-products-icon">⚠️</div><p>Erro ao carregar: ' + error.message + '</p></div>';
+                if (container) container.innerHTML = '<div class="no-products"><div class="no-products-icon">⚠️</div><p>Erro ao carregar: ' + error.message + '</p><p style="font-size:0.85rem;margin-top:10px;">Verifique se o Vercel Blob está configurado (BLOB_READ_WRITE_TOKEN)</p></div>';
             }
         }
         function renderizarProdutos() {

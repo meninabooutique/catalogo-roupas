@@ -1408,27 +1408,15 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
+    <!-- Aryelli Moda Fitness - Vercel Blob only -->
     <script>
         // TODO: TROCAR PELO SEU NOVO FIREBASE - Aryelli Moda Fitness
         // Crie um novo projeto em https://console.firebase.google.com
         // e substitua as credenciais abaixo. Por enquanto usa o mesmo do antigo para teste.
-        const firebaseConfig = {
-            apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
-            authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
-            projectId: "catalogo-roupas-8c13e",
-            storageBucket: "catalogo-roupas-8c13e.firebasestorage.app",
-            messagingSenderId: "154437834985",
-            appId: "1:154437834985:web:bcc927c454f87a4c1ab878"
-        };
-
-        const WHATSAPP_SUPPORT = "5538991528709"; // Aryelli Moda Fitness
-        const ADMIN_SENHA = "59827630";
-        const UPLOAD_SECRET = "aryelli-upload-2026-secret-key";
-
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        // STORAGE CONFIG - Vercel Blob only
+        // Produtos em Vercel Blob via /api/produtos
+        const STORAGE_MODE = "vercel-blob";
+        const db = null; // não usa mais Firebase
 
         /* ============================================================
            ESTADO
@@ -1925,7 +1913,7 @@
             return true;
         }
 
-        async function salvarProduto(e) {
+                async function salvarProduto(e) {
             if (e) e.preventDefault();
             if (salvando) return;
             if (!validarProduto()) return;
@@ -1937,12 +1925,11 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando...';
 
             try {
-                // Verifica se há fotos para enviar
                 const fotosParaEnviar = variacoes.filter(v => v.foto && v.foto.startsWith('data:'));
                 if (fotosParaEnviar.length > 0) {
                     mostrarAlerta(`📤 Enviando ${fotosParaEnviar.length} foto(s) para o servidor...`, 'loading');
                 } else {
-                    mostrarAlerta('⏳ Salvando produto...', 'loading');
+                    mostrarAlerta('⏳ Salvando produto no Vercel Blob...', 'loading');
                 }
 
                 const variacoesFinais = await publicarFotos(variacoes, (atual, total) => {
@@ -1953,6 +1940,7 @@
                 const galeria = [...new Set(variacoesFinais.map(v => v.foto).filter(Boolean))];
 
                 const dados = {
+                    id: editandoProdutoId || undefined,
                     nome: $('nome').value.trim(),
                     categoria: $('categoria').value.trim(),
                     descricao: $('descricao').value.trim(),
@@ -1960,32 +1948,36 @@
                     promocao: getPromocao(),
                     variacoes: variacoesFinais,
                     estoqueTotal: variacoesFinais.reduce((s, v) => s + Number(v.estoque || 0), 0),
-                    atualizadoEm: new Date()
                 };
 
-                if (editandoProdutoId) {
-                    await db.collection('produtos').doc(editandoProdutoId).update(dados);
-                    mostrarAlerta('✅ Produto atualizado com sucesso!', 'success');
-                    limparForm();
-                    await carregarProdutos();
-                    mudarTab('listar');
-                } else {
-                    dados.criadoEm = new Date();
-                    await db.collection('produtos').add(dados);
-                    await carregarProdutos();
-                    $('modal-confirmacao').classList.remove('hidden');
+                if (editandoProdutoId) dados.atualizadoEm = new Date().toISOString();
+                else dados.criadoEm = new Date().toISOString();
+
+                const resp = await fetch('/api/produtos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${UPLOAD_SECRET}`
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                if (!resp.ok) {
+                    const err = await resp.json().catch(() => ({}));
+                    throw new Error(err.error || 'Falha ao salvar: ' + resp.status);
                 }
+
+                mostrarAlerta(editandoProdutoId ? '✅ Produto atualizado!' : '✅ Produto criado!', 'success');
+                limparForm();
+                await carregarProdutos();
+                if (editandoProdutoId) mudarTab('listar');
+                else $('modal-confirmacao').classList.remove('hidden');
+
             } catch (error) {
                 console.error(error);
                 let msg = error.message || String(error);
-                if (/permission|insufficient/i.test(msg)) {
-                    msg = 'Sem permissão para gravar no banco. Verifique as regras do Firestore.';
-                } else if (/timeout|abort/i.test(msg)) {
-                    msg = 'O upload de imagem demorou demais. Verifique sua conexão e tente novamente.';
-                } else if (/BLOB_READ_WRITE_TOKEN|token|store/i.test(msg)) {
-                    msg = 'Upload não configurado. Peça ao administrador para configurar o Vercel Blob.';
-                } else if (/Failed to fetch|NetworkError|network/i.test(msg)) {
-                    msg = 'Erro de conexão. Verifique sua internet e tente novamente.';
+                if (/BLOB_READ_WRITE_TOKEN|token|store/i.test(msg)) {
+                    msg = 'Vercel Blob não configurado. Configure BLOB_READ_WRITE_TOKEN na Vercel.';
                 }
                 mostrarAlerta('❌ Erro ao salvar: ' + msg, 'error');
             } finally {
@@ -2012,24 +2004,19 @@
         /* ============================================================
            LISTAGEM
            ============================================================ */
-        async function carregarProdutos() {
+                async function carregarProdutos() {
             const container = $('products-container');
-            if (container) container.innerHTML = '<div class="no-products" style="grid-column:1/-1;"><div class="no-products-icon">⏳</div><p>Carregando produtos...</p></div>';
+            if (container) container.innerHTML = '<div class="no-products" style="grid-column:1/-1;"><div class="no-products-icon">⏳</div><p>Carregando produtos do Vercel Blob...</p></div>';
             try {
-                let snapshot;
-                try {
-                    snapshot = await db.collection('produtos').orderBy('criadoEm', 'desc').get();
-                } catch (errOrder) {
-                    // Documentos antigos podem não ter "criadoEm"
-                    snapshot = await db.collection('produtos').get();
-                }
-                allProdutos = [];
-                snapshot.forEach(doc => allProdutos.push({ id: doc.id, ...doc.data() }));
+                const resp = await fetch('/api/produtos', { cache: 'no-store' });
+                if (!resp.ok) throw new Error('Falha ao buscar: ' + resp.status);
+                const lista = await resp.json();
+                allProdutos = lista;
                 renderizarProdutos();
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
                 mostrarAlerta('❌ Erro ao carregar produtos: ' + error.message, 'error');
-                if (container) container.innerHTML = '<div class="no-products" style="grid-column:1/-1;"><div class="no-products-icon">⚠️</div><p>Não foi possível carregar os produtos.</p></div>';
+                if (container) container.innerHTML = '<div class="no-products" style="grid-column:1/-1;"><div class="no-products-icon">⚠️</div><p>Não foi possível carregar os produtos. Verifique Vercel Blob.</p></div>';
             }
         }
 
@@ -2144,12 +2131,11 @@
             mostrarAlerta('📋 Cópia carregada. Ajuste o que quiser e clique em Criar Produto.', 'success');
         }
 
-        async function deletarProduto(produtoId) {
+                async function deletarProduto(produtoId) {
             const produto = allProdutos.find(p => p.id === produtoId);
             const nome = produto ? produto.nome : 'este produto';
             if (!confirm(`Tem certeza que deseja deletar "${nome}"?\n\nEssa ação não pode ser desfeita.`)) return;
             try {
-                // Coleta URLs das imagens antes de deletar (para limpar do Blob)
                 const urlsParaLimpar = [];
                 if (Array.isArray(produto.imagens)) {
                     urlsParaLimpar.push(...produto.imagens.filter(u => typeof u === 'string' && u.startsWith('http')));
@@ -2162,10 +2148,19 @@
                     });
                 }
 
-                // Deleta do Firestore
-                await db.collection('produtos').doc(produtoId).delete();
+                // Deleta do Vercel Blob via API
+                const resp = await fetch(`/api/produtos?id=${encodeURIComponent(produtoId)}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${UPLOAD_SECRET}`
+                    }
+                });
 
-                // Limpa as imagens do Blob (em segundo plano, sem bloquear)
+                if (!resp.ok) {
+                    const err = await resp.json().catch(() => ({}));
+                    throw new Error(err.error || 'Falha ao deletar: ' + resp.status);
+                }
+
                 if (urlsParaLimpar.length > 0) {
                     fetch('/api/cleanup', {
                         method: 'POST',
@@ -2174,7 +2169,7 @@
                             'Authorization': `Bearer ${UPLOAD_SECRET}`
                         },
                         body: JSON.stringify({ urls: urlsParaLimpar })
-                    }).catch(err => console.warn('Falha ao limpar imagens do Blob:', err));
+                    }).catch(err => console.warn('Falha ao limpar imagens:', err));
                 }
 
                 mostrarAlerta('✅ Produto deletado!', 'success');

@@ -1,0 +1,1575 @@
+From 6282f7ed0416b690f35bd9f7e591ead31a2afb73 Mon Sep 17 00:00:00 2001
+From: meninabooutique <308558435+meninabooutique@users.noreply.github.com>
+Date: Fri, 21 Aug 2026 23:39:51 +0000
+Subject: [PATCH] Aryelli Moda Fitness: transforma Menina Boutique -> Aryelli
+ (branco/vermelho #E30613, WhatsApp 38 99152-8709, nome, cores, localStorage,
+ UPLOAD_SECRET)
+
+Co-authored-by: arena-agent <297053741+arena-agent@users.noreply.github.com>
+---
+ COMO-COPIAR-PARA-OUTRA-CONTA.md |  91 ++++++++++++++
+ README.md                       |  70 +++++++++++
+ admin.html                      | 200 ++++++++++++++---------------
+ assets/LEIA-ME-LOGO.txt         |  22 ++++
+ index.html                      | 215 ++++++++++++++++----------------
+ package.json                    |   3 +-
+ 6 files changed, 393 insertions(+), 208 deletions(-)
+ create mode 100644 COMO-COPIAR-PARA-OUTRA-CONTA.md
+ create mode 100644 assets/LEIA-ME-LOGO.txt
+
+diff --git a/COMO-COPIAR-PARA-OUTRA-CONTA.md b/COMO-COPIAR-PARA-OUTRA-CONTA.md
+new file mode 100644
+index 0000000..0daf88a
+--- /dev/null
++++ b/COMO-COPIAR-PARA-OUTRA-CONTA.md
+@@ -0,0 +1,91 @@
++# Como copiar este projeto para outra conta do GitHub
++
++Você já está com o projeto transformado para **Aryelli Moda Fitness** (branco e vermelho, WhatsApp 38 99152-8709).
++
++Agora para levar para a outra conta:
++
++## Opção 1: Pelo GitHub (mais fácil, sem terminal)
++
++1. Logue na **outra conta** do GitHub
++2. Vá em https://github.com/new
++3. Nome do repositório: `catalogo-aryelli-moda-fitness` (ou outro)
++4. Deixe **vazio**, sem README, sem .gitignore
++5. Crie
++6. Na página do repo novo, clique em `uploading an existing file` ou copie a URL do repo: `https://github.com/SUA-OUTRA-CONTA/catalogo-aryelli-moda-fitness.git`
++
++7. No seu computador, na pasta deste projeto:
++```bash
++git remote -v
++# vai mostrar origin = meninabooutique/catalogo-roupas
++
++git remote rename origin old-origin
++git remote add origin https://github.com/SUA-OUTRA-CONTA/catalogo-aryelli-moda-fitness.git
++
++git add .
++git commit -m "Aryelli Moda Fitness - versão inicial branco e vermelho"
++git push -u origin main
++# Se sua branch atual for arena/... use:
++# git push -u origin HEAD:main
++```
++
++## Opção 2: Copiar pasta limpa (sem histórico)
++
++Se quiser começar do zero, sem levar histórico da Menina Boutique:
++
++```bash
++# fora da pasta atual
++mkdir catalogo-aryelli-moda-fitness
++cp -r catalogo-roupas/index.html catalogo-roupas/admin.html catalogo-roupas/api catalogo-roupas/assets catalogo-roupas/package.json catalogo-roupas/vercel.json catalogo-roupas/.gitignore catalogo-aryelli-moda-fitness/
++
++cd catalogo-aryelli-moda-fitness
++# COLOQUE SUA LOGO OFICIAL AQUI como assets/logo.png
++
++git init
++git add .
++git commit -m "Aryelli Moda Fitness - inicial"
++git remote add origin https://github.com/SUA-OUTRA-CONTA/catalogo-aryelli-moda-fitness.git
++git branch -M main
++git push -u origin main
++```
++
++## Depois do push, configure:
++
++### 1. Firebase novo (importante - loja independente)
++- https://console.firebase.google.com > Add project > nome: aryelli-moda-fitness
++- Firestore Database > Create > Start in test mode
++- Project Settings > Your apps > Web app > copie o firebaseConfig
++- Substitua em `index.html` e `admin.html`
++
++### 2. Vercel
++- https://vercel.com/new > Importe o repo `catalogo-aryelli-moda-fitness`
++- Storage > Create Blob Store
++- Settings > Environment Variables:
++  - `BLOB_READ_WRITE_TOKEN` (auto)
++  - `UPLOAD_SECRET` = `aryelli-upload-2026-secret-key`
++- Deploy
++
++### 3. Logo
++- Substitua `assets/logo.png` pela sua imagem oficial (a que você anexou)
++- Commit + push de novo, Vercel redeploya automaticamente
++
++### 4. Teste
++- Abra o site
++- Teste adicionar produto no /admin.html (senha: 59827630)
++- Teste carrinho > Finalizar pedido > deve abrir WhatsApp 5538991528709
++
++## O que já foi alterado nesta cópia:
++
++✅ Nome: Menina Boutique → Aryelli Moda Fitness
++✅ Título das páginas
++✅ Cores: preto/dourado → branco/vermelho (#E30613)
++✅ WhatsApp: 5538991240933 → 5538991528709 (em todos os lugares)
++✅ Package.json name
++✅ LocalStorage key: carrinhoMeninaBoutique → carrinhoAryelliModaFitness
++✅ Admin session key: mb_admin_ok → aryelli_admin_ok
++✅ UPLOAD_SECRET: mb-upload... → aryelli-upload...
++✅ README com instruções
++✅ Comentários TODO para trocar Firebase
++
++Falta só você colocar a logo.png oficial.
++
++Qualquer dúvida me chama!
+diff --git a/README.md b/README.md
+index 8b13789..21eda24 100644
+--- a/README.md
++++ b/README.md
+@@ -1 +1,71 @@
++# Aryelli Moda Fitness - Catálogo
+ 
++**Tudo que você precisa em um só lugar!**
++
++Instagram: [@aryellimodafitness](https://instagram.com/aryellimodafitness)
++WhatsApp: +55 38 99152-8709
++
++Catálogo online de moda fitness - cópia adaptada do projeto Menina Boutique, com identidade visual branco e vermelho.
++
++## Cores
++- Vermelho principal: #E30613
++- Branco: #FFFFFF
++- Fundo claro: #f8f8f8
++
++## Como copiar para outra conta do GitHub
++
++### 1. Criar repositório novo na outra conta
++- Vá em github.com logado na outra conta
++- New repository > Nome: `catalogo-aryelli-moda-fitness`
++- Deixe vazio (sem README)
++
++### 2. Enviar este código para lá
++```bash
++# na pasta do projeto
++git remote rename origin old-origin
++git remote add origin https://github.com/SUA-NOVA-CONTA/catalogo-aryelli-moda-fitness.git
++git push -u origin main
++# ou se estiver na branch arena:
++git push -u origin arena/01a02676-catalogo-roupas:main
++```
++
++### 3. Configurar Firebase novo (recomendado)
++1. Crie um projeto em https://console.firebase.google.com
++2. Ative Firestore
++3. Copie as credenciais e substitua em `index.html` e `admin.html` na const `firebaseConfig`
++4. Regras do Firestore (para teste):
++```
++rules_version = '2';
++service cloud.firestore {
++  match /databases/{database}/documents {
++    match /produtos/{document=**} {
++      allow read: if true;
++      allow write: if true;
++    }
++  }
++}
++```
++
++### 4. Configurar Vercel + Blob
++1. Importe o novo repo na Vercel
++2. Crie um Blob Store na Vercel
++3. Adicione as Env Vars:
++   - `BLOB_READ_WRITE_TOKEN` (gerado automaticamente)
++   - `UPLOAD_SECRET` = `aryelli-upload-2026-secret-key` (ou outro seguro)
++4. Atualize o `UPLOAD_SECRET` em `api/upload.js`, `api/cleanup.js`, `admin.html`
++
++### 5. Logo
++- Substitua `assets/logo.png` pela logo oficial que você tem (a imagem com o círculo vermelho e letra A)
++- O arquivo deve se chamar exatamente `logo.png`
++
++## Estrutura
++- `index.html` - Catálogo público
++- `admin.html` - Painel admin (senha padrão: 59827630 - troque!)
++- `api/upload.js` - Upload de imagens para Vercel Blob
++- `api/cleanup.js` - Limpeza de imagens
++- `assets/logo.png` - Logo (você vai colocar a oficial)
++
++## WhatsApp configurado
+++55 38 99152-8709
++
++Todos os botões de "Tenho interesse" e "Finalizar pedido" já enviam para esse número.
+diff --git a/admin.html b/admin.html
+index 5c73bd8..d1642fb 100644
+--- a/admin.html
++++ b/admin.html
+@@ -4,7 +4,7 @@
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+-    <title>Admin - Menina Boutique</title>
++    <title>Admin - Aryelli Moda Fitness</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <style>
+         * {
+@@ -14,19 +14,19 @@
+         }
+ 
+         :root {
+-            --gold: #d4af37;
+-            --gold-light: #f3d77a;
+-            --gold-dark: #a8861f;
+-            --black: #0b0b0d;
+-            --black-soft: #141418;
+-            --card: #141319;
++            --gold: #E30613;
++            --gold-light: #ff4d5a;
++            --gold-dark: #b0000d;
++            --black: #ffffff;
++            --black-soft: #fff5f5;
++            --card: #ffffff;
+             --primary-pink: var(--gold);
+-            --secondary-wine: var(--black);
+-            --light-bg: #0a0a0c;
+-            --white: var(--card);
+-            --text-dark: #f4ecd4;
+-            --text-light: #b9ad8a;
+-            --border-color: #2b2513;
++            --secondary-wine: #1a1a1a;
++            --light-bg: #f8f8f8;
++            --white: #ffffff;
++            --text-dark: #1a1a1a;
++            --text-light: #777777;
++            --border-color: #eeeeee;
+             --success: #4caf50;
+             --warning: var(--gold);
+             --error: #c0392b;
+@@ -35,7 +35,7 @@
+         body {
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+             background-color: var(--light-bg);
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             overflow-x: hidden;
+         }
+ 
+@@ -45,10 +45,10 @@
+ 
+         /* HEADER */
+         header {
+-            background: linear-gradient(135deg, #000 0%, #1a1408 45%, #000 100%);
+-            border-bottom: 2px solid var(--gold);
++            background: #ffffff;
++            border-bottom: 3px solid var(--gold);
+             padding: 15px 20px;
+-            box-shadow: 0 4px 20px rgba(212,175,55,0.25);
++            box-shadow: 0 4px 20px rgba(227,6,19,0.12);
+             position: sticky;
+             top: 0;
+             z-index: 1000;
+@@ -67,7 +67,7 @@
+         .logo {
+             font-size: 1.5rem;
+             font-weight: 700;
+-            color: var(--white);
++            color: #1a1a1a;
+             display: flex;
+             align-items: center;
+             gap: 12px;
+@@ -78,11 +78,11 @@
+             height: 48px;
+             border-radius: 50%;
+             overflow: hidden;
+-            background: #000;
++            background: #ffffff;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+-            box-shadow: 0 2px 12px rgba(212,175,55,0.35);
++            box-shadow: 0 2px 12px rgba(227,6,19,0.20);
+             border: 2px solid var(--gold);
+             flex-shrink: 0;
+         }
+@@ -100,7 +100,7 @@
+         }
+ 
+         .admin-info {
+-            color: var(--white);
++            color: #1a1a1a;
+             font-weight: 600;
+             font-size: 0.95rem;
+         }
+@@ -129,7 +129,7 @@
+         .login-overlay {
+             position: fixed;
+             inset: 0;
+-            background: radial-gradient(circle at 30% 20%, rgba(212,175,55,0.15), transparent 50%), linear-gradient(135deg, rgba(0,0,0,0.97), rgba(26,20,8,0.98));
++            background: radial-gradient(circle at 30% 20%, rgba(227,6,19,0.10), transparent 50%), linear-gradient(135deg, rgba(255,255,255,0.97), rgba(255,240,240,0.98));
+             display: flex;
+             align-items: center;
+             justify-content: center;
+@@ -142,13 +142,13 @@
+         }
+ 
+         .login-card {
+-            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
+-            border: 1px solid var(--gold);
++            background: #ffffff;
++            border: 1px solid #e0e0e0;
+             border-radius: 16px;
+             padding: 30px;
+             width: 100%;
+             max-width: 380px;
+-            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2);
++            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+             text-align: center;
+         }
+ 
+@@ -158,9 +158,9 @@
+             border-radius: 50%;
+             overflow: hidden;
+             margin: 0 auto 15px;
+-            background: #000;
++            background: #ffffff;
+             border: 2px solid var(--gold);
+-            box-shadow: 0 4px 16px rgba(212,175,55,0.3);
++            box-shadow: 0 4px 16px rgba(227,6,19,0.18);
+         }
+ 
+         .login-logo img {
+@@ -191,7 +191,7 @@
+         .login-card .form-group label {
+             display: block;
+             font-weight: 600;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             font-size: 0.9rem;
+             margin-bottom: 6px;
+         }
+@@ -199,12 +199,12 @@
+         .login-card .form-group input {
+             width: 100%;
+             padding: 12px 14px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 8px;
+             font-size: 1rem;
+             transition: all 0.2s;
+-            background: #100f14;
+-            color: var(--text-dark);
++            background: #ffffff;
++            color: #1a1a1a;
+         }
+ 
+         .login-card .form-group input:focus {
+@@ -225,7 +225,7 @@
+             width: 100%;
+             padding: 12px;
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: 1px solid var(--gold);
+             border-radius: 8px;
+             font-weight: 700;
+@@ -238,7 +238,7 @@
+         .btn-login:hover {
+             transform: translateY(-2px);
+             background: linear-gradient(135deg, var(--gold), var(--gold-light));
+-            box-shadow: 0 6px 16px rgba(212,175,55,0.3);
++            box-shadow: 0 6px 16px rgba(227,6,19,0.18);
+         }
+ 
+         .btn-login:active {
+@@ -318,15 +318,15 @@
+             background: var(--card);
+             padding: 30px;
+             border-radius: 12px;
+-            border: 1px solid var(--border-color);
+-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
++            border: 1px solid #eeeeee;
++            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+             margin-bottom: 40px;
+         }
+ 
+         .form-title {
+             font-size: 1.5rem;
+             font-weight: 700;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             margin-bottom: 25px;
+             display: flex;
+             align-items: center;
+@@ -348,7 +348,7 @@
+ 
+         .form-group label {
+             font-weight: 600;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             font-size: 0.95rem;
+         }
+ 
+@@ -356,13 +356,13 @@
+         .form-group select,
+         .form-group textarea {
+             padding: 12px 14px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 8px;
+             font-size: 0.95rem;
+             font-family: inherit;
+             transition: all 0.3s ease;
+-            background: #100f14;
+-            color: var(--text-dark);
++            background: #ffffff;
++            color: #1a1a1a;
+         }
+ 
+ 
+@@ -388,11 +388,11 @@
+ 
+         /* SEÇÃO PROMOÇÃO */
+         .promocao-section {
+-            background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(168,134,31,0.05) 100%);
++            background: linear-gradient(135deg, rgba(227,6,19,0.06) 0%, rgba(227,6,19,0.03) 100%);
+             padding: 22px;
+             border-radius: 12px;
+             margin-bottom: 22px;
+-            border: 1px solid var(--border-color);
++            border: 1px solid #eeeeee;
+         }
+ 
+         .promocao-header {
+@@ -406,7 +406,7 @@
+ 
+         .promocao-header h3 {
+             font-size: 1.1rem;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             margin: 0;
+             flex: 1;
+         }
+@@ -479,8 +479,8 @@
+             align-items: center;
+             gap: 10px;
+             padding: 12px 14px;
+-            background: #100f14;
+-            border: 2px solid var(--border-color);
++            background: #ffffff;
++            border: 2px solid #e0e0e0;
+             border-radius: 8px;
+             cursor: pointer;
+             transition: all 0.2s;
+@@ -499,12 +499,12 @@
+ 
+         .promo-radio.selected {
+             border-color: var(--gold);
+-            background: rgba(212,175,55,0.1);
++            background: rgba(227,6,19,0.06);
+         }
+ 
+         .promo-radio-label {
+             font-weight: 600;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             font-size: 0.92rem;
+         }
+ 
+@@ -539,10 +539,10 @@
+ 
+         .promo-valor-wrap input {
+             padding: 11px 14px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 8px;
+-            background: #100f14;
+-            color: var(--text-dark);
++            background: #ffffff;
++            color: #1a1a1a;
+             font-size: 1rem;
+             width: 100%;
+             font-family: inherit;
+@@ -556,11 +556,11 @@
+         .promo-preview {
+             margin-top: 12px;
+             padding: 12px 14px;
+-            background: rgba(212,175,55,0.08);
++            background: rgba(227,6,19,0.06);
+             border: 1px dashed var(--gold);
+             border-radius: 8px;
+             font-size: 0.88rem;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             display: none;
+         }
+ 
+@@ -592,18 +592,18 @@
+ 
+         /* VARIAÇÕES */
+         .variacoes-section {
+-            background: var(--light-bg);
++            background: #fafafa;
+             padding: 20px;
+             border-radius: 8px;
+             margin-bottom: 20px;
+         }
+ 
+         .variacao-item {
+-            background: #100f14;
++            background: #ffffff;
+             padding: 15px;
+             border-radius: 8px;
+             margin-bottom: 10px;
+-            border: 1px solid var(--border-color);
++            border: 1px solid #eeeeee;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+@@ -626,7 +626,7 @@
+             height: 50px;
+             border-radius: 6px;
+             overflow: hidden;
+-            background: var(--light-bg);
++            background: #fafafa;
+             flex-shrink: 0;
+         }
+ 
+@@ -647,7 +647,7 @@
+ 
+         .variacao-texto {
+             font-weight: 600;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+         }
+ 
+         .variacao-detalhes {
+@@ -672,10 +672,10 @@
+         }
+ 
+         .variacao-form {
+-            background: #100f14;
++            background: #ffffff;
+             padding: 15px;
+             border-radius: 8px;
+-            border: 1px solid var(--border-color);
++            border: 1px solid #eeeeee;
+             display: grid;
+             grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+             gap: 12px;
+@@ -699,12 +699,12 @@
+ 
+         .variacao-form input {
+             padding: 10px 12px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 6px;
+             font-size: 0.95rem;
+             width: 100%;
+-            background: #141319;
+-            color: var(--text-dark);
++            background: #ffffff;
++            color: #1a1a1a;
+         }
+         .variacao-form input:focus {
+             outline: none;
+@@ -722,12 +722,12 @@
+             padding: 10px;
+             border: 2px dashed var(--gold);
+             border-radius: 6px;
+-            background: rgba(212,175,55,0.05);
++            background: rgba(227,6,19,0.05);
+             cursor: pointer;
+             transition: background .2s;
+         }
+         .variacao-form .var-foto-upload:hover {
+-            background: rgba(212,175,55,0.12);
++            background: rgba(227,6,19,0.08);
+         }
+ 
+         .variacao-form .var-foto-upload input {
+@@ -739,13 +739,13 @@
+             height: 48px;
+             border-radius: 6px;
+             object-fit: cover;
+-            background: var(--light-bg);
++            background: #fafafa;
+             flex-shrink: 0;
+         }
+ 
+         .var-foto-text {
+             font-size: 0.9rem;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+             flex: 1;
+         }
+ 
+@@ -758,7 +758,7 @@
+ 
+         .variacao-form > button {
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: none;
+             padding: 12px;
+             border-radius: 6px;
+@@ -787,7 +787,7 @@
+             padding: 2px 8px;
+             border-radius: 999px;
+             background: var(--gold);
+-            color: #000;
++            color: #ffffff;
+             font-size: .8rem;
+             font-weight: 800;
+             text-align: center;
+@@ -804,7 +804,7 @@
+ 
+         .quick-chips button {
+             background: transparent;
+-            border: 1px solid var(--border-color);
++            border: 1px solid #eeeeee;
+             color: var(--text-light);
+             border-radius: 999px;
+             padding: 3px 9px;
+@@ -832,7 +832,7 @@
+         }
+ 
+         .var-foto-upload.dragover {
+-            background: rgba(212,175,55,.22);
++            background: rgba(227,6,19,0.12);
+             border-style: solid;
+         }
+ 
+@@ -849,7 +849,7 @@
+ 
+         .variacao-item.editando {
+             border-color: var(--gold);
+-            box-shadow: 0 0 0 2px rgba(212,175,55,.25);
++            box-shadow: 0 0 0 2px rgba(227,6,19,0.18);
+         }
+ 
+         .variacao-acoes {
+@@ -868,10 +868,10 @@
+             font-weight: 600;
+         }
+ 
+-        .btn-edit-variacao:hover { background: var(--gold); color: #000; }
++        .btn-edit-variacao:hover { background: var(--gold); color: #ffffff; }
+ 
+         .modo-edicao-banner {
+-            background: rgba(212,175,55,.12);
++            background: rgba(227,6,19,0.08);
+             border: 1px solid var(--gold);
+             color: var(--gold);
+             border-radius: 8px;
+@@ -906,10 +906,10 @@
+             flex: 1;
+             min-width: 180px;
+             padding: 10px 14px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 8px;
+-            background: #141319;
+-            color: var(--text-dark);
++            background: #ffffff;
++            color: #1a1a1a;
+             font-size: .95rem;
+         }
+ 
+@@ -923,8 +923,8 @@
+         }
+ 
+         .stat-card {
+-            background: #100f14;
+-            border: 1px solid var(--border-color);
++            background: #ffffff;
++            border: 1px solid #eeeeee;
+             border-radius: 10px;
+             padding: 14px;
+             text-align: center;
+@@ -974,14 +974,14 @@
+ 
+         .btn-submit {
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: 1px solid var(--gold);
+         }
+ 
+         .btn-submit:hover {
+             background: linear-gradient(135deg, var(--gold), var(--gold-light));
+             transform: translateY(-2px);
+-            box-shadow: 0 8px 20px rgba(212,175,55,.3);
++            box-shadow: 0 8px 20px rgba(227,6,19,0.18);
+         }
+ 
+         .btn-reset {
+@@ -992,7 +992,7 @@
+ 
+         .btn-reset:hover {
+             background: var(--gold);
+-            color: #000;
++            color: #ffffff;
+         }
+ 
+         /* PRODUTOS */
+@@ -1003,18 +1003,18 @@
+         }
+ 
+         .product-card-admin {
+-            background: #100f14;
+-            border: 1px solid var(--border-color);
++            background: #ffffff;
++            border: 1px solid #eeeeee;
+             border-radius: 12px;
+             overflow: hidden;
+-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
++            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+             transition: all 0.3s ease;
+         }
+ 
+         .product-card-admin:hover {
+             transform: translateY(-4px);
+             border-color: var(--gold);
+-            box-shadow: 0 10px 24px rgba(212,175,55,0.2);
++            box-shadow: 0 10px 24px rgba(227,6,19,0.12);
+         }
+ 
+         .product-image-admin {
+@@ -1038,7 +1038,7 @@
+             font-weight: 700;
+             font-size: 1rem;
+             margin-bottom: 6px;
+-            color: var(--text-dark);
++            color: #1a1a1a;
+         }
+ 
+         .product-details-admin {
+@@ -1086,7 +1086,7 @@
+             border: 1px solid var(--gold);
+         }
+ 
+-        .btn-edit:hover { background: var(--gold); color: #000; }
++        .btn-edit:hover { background: var(--gold); color: #ffffff; }
+ 
+         .btn-delete {
+             background: var(--error);
+@@ -1121,8 +1121,8 @@
+         .modal-confirm.hidden { display: none; }
+ 
+         .modal-body {
+-            background: linear-gradient(180deg, #141319, #0a0a0c);
+-            border: 1px solid var(--gold);
++            background: #ffffff;
++            border: 1px solid #e0e0e0;
+             border-radius: 12px;
+             padding: 30px;
+             max-width: 400px;
+@@ -1152,7 +1152,7 @@
+             transition: all 0.2s;
+         }
+ 
+-        .modal-body .btn-sim { background: linear-gradient(135deg,var(--gold-dark),var(--gold)); color: #000; border:1px solid var(--gold); }
++        .modal-body .btn-sim { background: linear-gradient(135deg,var(--gold-dark),var(--gold)); color: #ffffff; border:1px solid var(--gold); }
+         .modal-body .btn-sim:hover { background: linear-gradient(135deg,var(--gold),var(--gold-light)); }
+         .modal-body .btn-nao { background: transparent; color: var(--gold); border:1px solid var(--gold); }
+         .modal-body .btn-nao:hover { background: var(--gold); color:#000; }
+@@ -1187,7 +1187,7 @@
+     <div id="login-overlay" class="login-overlay">
+         <div class="login-card">
+             <div class="login-logo">
+-                <img src="assets/logo.png" alt="Menina Boutique">
++                <img src="assets/logo.png" alt="Aryelli Moda Fitness">
+             </div>
+             <h2>Acesso Restrito</h2>
+             <p>Painel Administrativo</p>
+@@ -1209,9 +1209,9 @@
+         <div class="header-content">
+             <div class="logo">
+                 <div class="logo-image">
+-                    <img src="assets/logo.png" alt="Menina Boutique Logo">
++                    <img src="assets/logo.png" alt="Aryelli Moda Fitness Logo">
+                 </div>
+-                <span>Painel Admin</span>
++                <span style="color:#1a1a1a;">Aryelli <span style="color:#E30613;">Moda Fitness</span> - Admin</span>
+             </div>
+             <div class="admin-controls">
+                 <button class="btn-sair-admin" onclick="sairAdmin()">
+@@ -1411,17 +1411,21 @@
+     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
+     <script>
++        // TODO: TROCAR PELO SEU NOVO FIREBASE - Aryelli Moda Fitness
++        // Crie um novo projeto em https://console.firebase.google.com
++        // e substitua as credenciais abaixo. Por enquanto usa o mesmo do antigo para teste.
+         const firebaseConfig = {
+             apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
+             authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
+             projectId: "catalogo-roupas-8c13e",
++            storageBucket: "catalogo-roupas-8c13e.firebasestorage.app",
+             messagingSenderId: "154437834985",
+             appId: "1:154437834985:web:bcc927c454f87a4c1ab878"
+         };
+ 
+-        const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1";
++        const WHATSAPP_SUPPORT = "5538991528709"; // Aryelli Moda Fitness
+         const ADMIN_SENHA = "59827630";
+-        const UPLOAD_SECRET = "mb-upload-2026-secret-key";
++        const UPLOAD_SECRET = "aryelli-upload-2026-secret-key";
+ 
+         firebase.initializeApp(firebaseConfig);
+         const db = firebase.firestore();
+@@ -1566,7 +1570,7 @@
+            LOGIN
+            ============================================================ */
+         function verificarAdmin() {
+-            if (sessionStorage.getItem('mb_admin_ok') === '1') {
++            if (sessionStorage.getItem('aryelli_admin_ok') === '1') {
+                 $('login-overlay').classList.add('hidden');
+                 return true;
+             }
+@@ -1580,7 +1584,7 @@
+             const senha = $('login-senha').value;
+             const err = $('login-error');
+             if (String(senha) === ADMIN_SENHA) {
+-                sessionStorage.setItem('mb_admin_ok', '1');
++                sessionStorage.setItem('aryelli_admin_ok', '1');
+                 err.textContent = '';
+                 $('login-overlay').classList.add('hidden');
+                 iniciarPainel();
+@@ -1593,7 +1597,7 @@
+ 
+         function sairAdmin() {
+             if (confirm('Tem certeza que quer sair do painel admin?')) {
+-                sessionStorage.removeItem('mb_admin_ok');
++                sessionStorage.removeItem('aryelli_admin_ok');
+                 window.location.href = 'index.html';
+             }
+         }
+diff --git a/assets/LEIA-ME-LOGO.txt b/assets/LEIA-ME-LOGO.txt
+new file mode 100644
+index 0000000..ff49e3f
+--- /dev/null
++++ b/assets/LEIA-ME-LOGO.txt
+@@ -0,0 +1,22 @@
++INSTRUÇÃO LOGO - Aryelli Moda Fitness
++====================================
++
++Você disse que vai colocar a logo exata que anexou.
++
++1. Pegue a imagem que você tem (WhatsApp Image 2026-08-17 at 10.21.18.jpeg)
++2. Renomeie para logo.png
++3. Substitua o arquivo assets/logo.png por ela
++
++O site já está preparado para usar assets/logo.png no header (circular) e no login do admin.
++
++Se quiser uma versão só do ícone (círculo vermelho com A) para o header ficar mais bonito, você pode:
++- Recortar só o círculo vermelho da imagem
++- Salvar como logo-icon.png
++- E no index.html e admin.html trocar src para logo-icon.png no header, mantendo logo.png completo para a página de login.
++
++Mas se quiser usar a logo completa mesmo, já vai funcionar - ela vai aparecer cortada em círculo no header, o que já fica bom.
++
++Cores usadas no site (baseadas na sua logo):
++- Vermelho: #E30613
++- Branco: #FFFFFF
++- Fundo: #f8f8f8
+diff --git a/index.html b/index.html
+index c6aafe4..7878717 100644
+--- a/index.html
++++ b/index.html
+@@ -4,7 +4,7 @@
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+-    <title>Catálogo Menina Boutique</title>
++    <title>Catálogo Aryelli Moda Fitness</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <style>
+         * {
+@@ -14,23 +14,23 @@
+         }
+ 
+         :root {
+-            --gold: #d4af37;
+-            --gold-light: #f3d77a;
+-            --gold-dark: #a8861f;
+-            --black: #0b0b0d;
+-            --black-soft: #141418;
+-            --black-elev: #1c1c22;
+-            --card: #141319;
+-            --light-bg: #0a0a0c;
+-            --white: #141319;
+-            --text-dark: #f4ecd4;
+-            --text-light: #b9ad8a;
+-            --border-color: #2b2513;
++            --gold: #E30613;
++            --gold-light: #ff4d5a;
++            --gold-dark: #b0000d;
++            --black: #ffffff;
++            --black-soft: #fff5f5;
++            --black-elev: #ffe6e6;
++            --card: #ffffff;
++            --light-bg: #f8f8f8;
++            --white: #ffffff;
++            --text-dark: #1a1a1a;
++            --text-light: #777777;
++            --border-color: #eeeeee;
+             --success: #4caf50;
+-            --warning: #d4af37;
++            --warning: #E30613;
+             --error: #c0392b;
+             --primary-pink: var(--gold);
+-            --secondary-wine: var(--black);
++            --secondary-wine: #1a1a1a;
+         }
+ 
+         body {
+@@ -44,15 +44,15 @@
+             scroll-behavior: smooth;
+         }
+ 
+-        /* HEADER */
++        /* HEADER - Aryelli Branco + Vermelho */
+         header {
+-            background: linear-gradient(135deg, #000 0%, #1a1408 45%, #000 100%);
+-            border-bottom: 2px solid var(--gold);
++            background: #ffffff;
++            border-bottom: 3px solid var(--gold);
+             padding: 15px 20px;
+             position: sticky;
+             top: 0;
+             z-index: 1000;
+-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
++            box-shadow: 0 4px 20px rgba(227, 6, 19, 0.12);
+         }
+ 
+         .header-content {
+@@ -68,7 +68,7 @@
+         .logo {
+             font-size: 1.8rem;
+             font-weight: 700;
+-            color: var(--white);
++            color: #1a1a1a;
+             display: flex;
+             align-items: center;
+             gap: 12px;
+@@ -85,11 +85,11 @@
+             height: 50px;
+             border-radius: 50%;
+             overflow: hidden;
+-            background: #000;
++            background: #ffffff;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+-            box-shadow: 0 2px 12px rgba(212,175,55,0.35);
++            box-shadow: 0 2px 12px rgba(227,6,19,0.20);
+             border: 2px solid var(--gold);
+         }
+ 
+@@ -116,11 +116,11 @@
+             min-width: 250px;
+             display: flex;
+             gap: 8px;
+-            background: #1a1610;
+-            border: 1px solid var(--gold);
++            background: #f5f5f5;
++            border: 1px solid #e0e0e0;
+             padding: 8px 12px;
+             border-radius: 25px;
+-            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
++            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+         }
+ 
+         .search-bar input {
+@@ -131,7 +131,7 @@
+             color: var(--text-dark);
+             background: transparent;
+         }
+-        .search-bar input::placeholder { color: #8a7d58; }
++        .search-bar input::placeholder { color: #999; }
+ 
+         .search-bar input::placeholder {
+             color: var(--text-light);
+@@ -159,18 +159,16 @@
+         .icon-btn {
+             background: none;
+             border: none;
+-            color: #ffffff;
++            color: #E30613;
+             font-size: 1.3rem;
+             cursor: pointer;
+             position: relative;
+             transition: all 0.3s ease;
+-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
+         }
+ 
+         .icon-btn:hover {
+             transform: scale(1.1);
+-            color: var(--gold-light);
+-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
++            color: var(--gold-dark);
+         }
+ 
+         .cart-badge {
+@@ -230,8 +228,8 @@
+             padding: 0;
+             margin-bottom: 30px;
+             border-radius: 12px;
+-            border: 1px solid var(--border-color);
+-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
++            border: 1px solid #e0e0e0;
++            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+             display: none;
+             overflow: hidden;
+         }
+@@ -241,12 +239,12 @@
+         }
+ 
+         .filters-header {
+-            background: linear-gradient(135deg, #000 0%, #1a1408 100%);
++            background: #ffffff;
+             padding: 15px 20px;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+-            border-bottom: 1px solid var(--border-color);
++            border-bottom: 1px solid #e0e0e0;
+         }
+ 
+         .filters-header h3 {
+@@ -267,7 +265,7 @@
+         }
+ 
+         .filter-accordion-header {
+-            background: #100f14;
++            background: #fafafa;
+             padding: 12px 16px;
+             display: flex;
+             justify-content: space-between;
+@@ -281,7 +279,7 @@
+         }
+ 
+         .filter-accordion-header:hover {
+-            background: #16151c;
++            background: #fff0f0;
+         }
+ 
+         .filter-accordion-header .arrow {
+@@ -295,7 +293,7 @@
+ 
+         .filter-accordion-header .count-badge {
+             background: var(--gold);
+-            color: #000;
++            color: #ffffff;
+             font-size: 0.72rem;
+             font-weight: 800;
+             padding: 2px 7px;
+@@ -308,7 +306,7 @@
+             padding: 10px 16px 14px;
+             flex-wrap: wrap;
+             gap: 8px;
+-            background: #0d0c10;
++            background: #ffffff;
+         }
+ 
+         .filter-accordion-body.open {
+@@ -320,9 +318,9 @@
+             align-items: center;
+             gap: 6px;
+             padding: 7px 14px;
+-            border: 1px solid var(--border-color);
++            border: 1px solid #e0e0e0;
+             border-radius: 99px;
+-            background: #100f14;
++            background: #ffffff;
+             color: var(--text-light);
+             font-size: 0.82rem;
+             font-weight: 600;
+@@ -338,7 +336,7 @@
+ 
+         .filter-chip.selected {
+             background: var(--gold);
+-            color: #000;
++            color: #ffffff;
+             border-color: var(--gold);
+         }
+ 
+@@ -360,9 +358,9 @@
+         .sort-select-wrap select {
+             width: 100%;
+             padding: 12px 40px 12px 16px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 10px;
+-            background: #100f14;
++            background: #ffffff;
+             color: var(--text-dark);
+             font-size: 0.92rem;
+             font-weight: 600;
+@@ -377,7 +375,7 @@
+         .sort-select-wrap select:focus {
+             outline: none;
+             border-color: var(--gold);
+-            box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
++            box-shadow: 0 0 0 3px rgba(227,6,19,0.12);
+         }
+ 
+         .sort-select-wrap::after {
+@@ -397,7 +395,7 @@
+             gap: 10px;
+             align-items: center;
+             padding: 10px 16px 14px;
+-            background: #0d0c10;
++            background: #ffffff;
+             flex-wrap: wrap;
+         }
+ 
+@@ -409,9 +407,9 @@
+ 
+         .filter-price-row input {
+             padding: 8px 10px;
+-            border: 1px solid var(--border-color);
++            border: 1px solid #e0e0e0;
+             border-radius: 6px;
+-            background: #100f14;
++            background: #ffffff;
+             color: var(--text-dark);
+             font-size: 0.85rem;
+             width: 100px;
+@@ -426,8 +424,8 @@
+             display: flex;
+             gap: 10px;
+             padding: 14px 20px;
+-            border-top: 1px solid var(--border-color);
+-            background: #100f14;
++            border-top: 1px solid #e0e0e0;
++            background: #fafafa;
+             flex-wrap: wrap;
+         }
+ 
+@@ -436,7 +434,7 @@
+             min-width: 140px;
+             padding: 11px 20px;
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: none;
+             border-radius: 8px;
+             cursor: pointer;
+@@ -469,10 +467,10 @@
+ 
+         .filter-group input[type="number"] {
+             padding: 10px 12px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 8px;
+             font-size: 0.9rem;
+-            background: #100f14;
++            background: #ffffff;
+             color: var(--text-dark);
+             width: 100%;
+         }
+@@ -536,10 +534,10 @@
+ 
+         .product-card {
+             background: var(--card);
+-            border: 1px solid var(--border-color);
++            border: 1px solid #eeeeee;
+             border-radius: 12px;
+             overflow: hidden;
+-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
++            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+             transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+             cursor: pointer;
+             position: relative;
+@@ -548,13 +546,13 @@
+         .product-card:hover {
+             transform: translateY(-6px);
+             border-color: var(--gold);
+-            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.25);
++            box-shadow: 0 12px 28px rgba(227, 6, 19, 0.18);
+         }
+ 
+         .product-image {
+             width: 100%;
+             height: 280px;
+-            background: linear-gradient(135deg, #1a1408 0%, #0a0a0c 100%);
++            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+             display: flex;
+             align-items: center;
+             justify-content: center;
+@@ -653,7 +651,7 @@
+             width: 100%;
+             padding: 10px;
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: none;
+             border-radius: 8px;
+             cursor: pointer;
+@@ -665,15 +663,10 @@
+ 
+         .btn-view:hover {
+             background: linear-gradient(135deg, var(--gold), var(--gold-light));
+-            color: #000;
++            color: #ffffff;
+             transform: translateY(-1px);
+         }
+ 
+-        .btn-view:hover {
+-            background: var(--secondary-wine);
+-            transform: translateY(-2px);
+-        }
+-
+         /* MODAL PRODUTO */
+         .modal {
+             display: none;
+@@ -700,8 +693,8 @@
+         }
+ 
+         .modal-content {
+-            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
+-            border: 1px solid var(--gold);
++            background: #ffffff;
++            border: 1px solid #e0e0e0;
+             border-radius: 16px;
+             width: 100%;
+             max-width: 1000px;
+@@ -712,7 +705,7 @@
+             grid-template-columns: 1fr 1fr;
+             gap: 30px;
+             padding: 30px;
+-            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2);
++            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+         }
+ 
+         @keyframes slideUp {
+@@ -724,7 +717,7 @@
+             position: absolute;
+             top: 20px;
+             right: 20px;
+-            background: rgba(0,0,0,0.6);
++            background: rgba(255,255,255,0.9);
+             border: 1px solid var(--gold);
+             font-size: 1.2rem;
+             cursor: pointer;
+@@ -756,8 +749,8 @@
+             aspect-ratio: 1;
+             border-radius: 12px;
+             overflow: hidden;
+-            background: #000;
+-            border: 1px solid var(--border-color);
++            background: #ffffff;
++            border: 1px solid #eeeeee;
+             position: relative;
+             display: flex;
+             align-items: center;
+@@ -938,8 +931,8 @@
+ 
+         .selector-btn {
+             padding: 10px 16px;
+-            border: 2px solid var(--border-color);
+-            background: var(--card);
++            border: 2px solid #eeeeee;
++            background: #ffffff;
+             color: var(--text-dark);
+             border-radius: 8px;
+             cursor: pointer;
+@@ -962,7 +955,7 @@
+             display: flex;
+             align-items: center;
+             gap: 10px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #eeeeee;
+             border-radius: 8px;
+             width: fit-content;
+             padding: 5px;
+@@ -1106,14 +1099,14 @@
+         }
+ 
+         .toast {
+-            background: linear-gradient(135deg, #141319, #0a0a0c);
++            background: #ffffff;
+             border: 1px solid var(--gold);
+             border-radius: 10px;
+             padding: 14px 20px;
+             color: var(--text-dark);
+             font-size: 0.92rem;
+             font-weight: 600;
+-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
++            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+             transform: translateX(120%);
+             transition: transform 0.3s ease;
+             max-width: 320px;
+@@ -1126,12 +1119,14 @@
+ 
+         .toast.success {
+             border-color: #4caf50;
+-            background: linear-gradient(135deg, #0d2818, #0a1f12);
++            background: #e8f5e9;
++            color: #2e7d32;
+         }
+ 
+         .toast.error {
+             border-color: #c0392b;
+-            background: linear-gradient(135deg, #2c0d0d, #1f0a0a);
++            background: #ffebee;
++            color: #c62828;
+         }
+ 
+         /* VARIAÇÕES INDISPONÍVEIS */
+@@ -1172,14 +1167,14 @@
+ 
+         .btn-add-cart {
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: 1px solid var(--gold);
+         }
+ 
+         .btn-add-cart:hover {
+             background: linear-gradient(135deg, var(--gold), var(--gold-light));
+             transform: translateY(-2px);
+-            box-shadow: 0 8px 20px rgba(212,175,55,.3);
++            box-shadow: 0 8px 20px rgba(227,6,19,.25);
+         }
+ 
+         .btn-share-whatsapp {
+@@ -1190,20 +1185,20 @@
+ 
+         .btn-share-whatsapp:hover {
+             background: var(--gold);
+-            color: #000;
++            color: #ffffff;
+             transform: translateY(-2px);
+         }
+ 
+-        /* CARRINHO SIDEBAR */
++        /* CARRINHO SIDEBAR - Aryelli */
+         .cart-sidebar {
+             position: fixed;
+             right: -420px;
+             top: 0;
+             width: 400px;
+             height: 100vh;
+-            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
++            background: #ffffff;
+             border-left: 2px solid var(--gold);
+-            box-shadow: -8px 0 30px rgba(0,0,0,0.6);
++            box-shadow: -8px 0 30px rgba(0,0,0,0.12);
+             z-index: 1500;
+             transition: right 0.3s ease;
+             display: flex;
+@@ -1216,9 +1211,9 @@
+         }
+ 
+         .cart-header {
+-            background: linear-gradient(135deg, #000 0%, #1a1408 100%);
++            background: #ffffff;
+             color: var(--gold);
+-            border-bottom: 1px solid var(--gold);
++            border-bottom: 2px solid var(--gold);
+             padding: 20px;
+             display: flex;
+             justify-content: space-between;
+@@ -1233,7 +1228,7 @@
+         .cart-close {
+             background: none;
+             border: none;
+-            color: white;
++            color: #1a1a1a;
+             font-size: 1.5rem;
+             cursor: pointer;
+             transition: all 0.3s ease;
+@@ -1256,8 +1251,8 @@
+             display: flex;
+             gap: 12px;
+             padding: 12px;
+-            background: #100f14;
+-            border: 1px solid var(--border-color);
++            background: #fafafa;
++            border: 1px solid #eeeeee;
+             border-radius: 8px;
+             position: relative;
+         }
+@@ -1359,7 +1354,7 @@
+         .cart-footer {
+             padding: 20px;
+             border-top: 2px solid var(--gold);
+-            background: #0a0a0c;
++            background: #fafafa;
+         }
+ 
+         .cart-total {
+@@ -1381,7 +1376,7 @@
+             width: 100%;
+             padding: 14px;
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: 1px solid var(--gold);
+             border-radius: 8px;
+             font-weight: 700;
+@@ -1397,7 +1392,7 @@
+         .btn-checkout:hover {
+             background: linear-gradient(135deg, var(--gold), var(--gold-light));
+             transform: translateY(-2px);
+-            box-shadow: 0 8px 20px rgba(212,175,55,.3);
++            box-shadow: 0 8px 20px rgba(227,6,19,.25);
+         }
+ 
+         .btn-checkout:disabled {
+@@ -1445,7 +1440,7 @@
+             position: absolute;
+             bottom: 70px;
+             right: 0;
+-            background: var(--text-dark);
++            background: #1a1a1a;
+             color: white;
+             padding: 10px 14px;
+             border-radius: 8px;
+@@ -1505,12 +1500,12 @@
+         .form-group select,
+         .form-group textarea {
+             padding: 12px 14px;
+-            border: 2px solid var(--border-color);
++            border: 2px solid #e0e0e0;
+             border-radius: 8px;
+             font-size: 0.95rem;
+             font-family: inherit;
+             transition: all 0.3s ease;
+-            background: #100f14;
++            background: #ffffff;
+             color: var(--text-dark);
+         }
+ 
+@@ -1519,7 +1514,7 @@
+         .form-group textarea:focus {
+             outline: none;
+             border-color: var(--gold);
+-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
++            box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.12);
+         }
+ 
+         .form-group textarea {
+@@ -1682,7 +1677,7 @@
+             position: absolute;
+             top: -15px;
+             right: -15px;
+-            background: var(--black);
++            background: #ffffff;
+             border: 2px solid var(--gold);
+             color: var(--gold);
+             font-size: 1.5rem;
+@@ -1824,14 +1819,14 @@
+         }
+ 
+         .modal-pedido-card {
+-            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
+-            border: 1px solid var(--gold);
++            background: #ffffff;
++            border: 1px solid #e0e0e0;
+             border-radius: 16px;
+             padding: 30px 28px;
+             width: 100%;
+             max-width: 420px;
+             text-align: center;
+-            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2);
++            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+             transform: translateY(20px) scale(0.97);
+             transition: transform 0.25s ease;
+         }
+@@ -1872,7 +1867,7 @@
+ 
+         .modal-pedido-actions .btn-modal-primary {
+             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+-            color: #000;
++            color: #ffffff;
+             border: 1px solid var(--gold);
+             padding: 13px 20px;
+             border-radius: 10px;
+@@ -1889,7 +1884,7 @@
+         .modal-pedido-actions .btn-modal-primary:hover {
+             background: linear-gradient(135deg, var(--gold), var(--gold-light));
+             transform: translateY(-1px);
+-            box-shadow: 0 6px 16px rgba(212,175,55,0.3);
++            box-shadow: 0 6px 16px rgba(227,6,19,0.25);
+         }
+ 
+         .modal-pedido-actions .btn-modal-secondary {
+@@ -1931,16 +1926,16 @@
+     </style>
+ </head>
+ <body>
+-    <!-- HEADER -->
++    <!-- HEADER - Aryelli Moda Fitness -->
+     <header>
+         <div class="header-content">
+             <div class="logo" onclick="window.location.href='/'">
+                 <div class="logo-image">
+-                    <img src="assets/logo.png" alt="Menina Boutique Logo">
++                    <img src="assets/logo.png" alt="Aryelli Moda Fitness Logo">
+                 </div>
+                 <div class="logo-text">
+-                    <span>✨</span>
+-                    <span>Menina Boutique</span>
++                    <span style="font-size:1.1rem;font-weight:800;color:#E30613;">Aryelli</span>
++                    <span>Moda Fitness</span>
+                 </div>
+             </div>
+             <div class="search-bar">
+@@ -2322,7 +2317,9 @@
+             }, 3000);
+         }
+ 
+-        // FIREBASE CONFIG
++        // FIREBASE CONFIG - TODO: TROCAR PELO NOVO FIREBASE DA ARYELLI
++        // Crie um novo projeto em https://console.firebase.google.com
++        // e substitua aqui. Mantendo o antigo por enquanto para teste.
+         const firebaseConfig = {
+             apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
+             authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
+@@ -2338,7 +2335,7 @@
+         // DADOS E ESTADO
+         let adminMode = false, allProdutos = [], filteredProdutos = [], cartItems = [];
+         let currentProduct = null, currentImageIndex = 0, imagemSelecionadas = [], selectedVariation = null;
+-        const WHATSAPP_SUPPORT = "5538991240933";
++        const WHATSAPP_SUPPORT = "5538991528709";
+         const brl = value => Number(value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+         const esc = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+ 
+@@ -2719,7 +2716,7 @@
+         }
+         function aumentarQuantidade(){const input=document.getElementById('quantity-input');if(+input.value<+selectedVariation.estoque)input.value=+input.value+1;} function diminuirQuantidade(){const input=document.getElementById('quantity-input');if(+input.value>1)input.value=+input.value-1;}
+         function toggleCart(){document.getElementById('cart-sidebar').classList.toggle('active');} function adicionarAoCarrinho(){const quantidade=+document.getElementById('quantity-input').value;if(!selectedVariation.estoque){showToast('Produto indisponível.', 'error');return;}const imgCart=selectedVariation.foto||(Array.isArray(currentProduct.imagens)?currentProduct.imagens[0]:'')||'';const precoOriginal=+selectedVariation.preco;const promo=currentProduct.promocao;const temPromo=promo&&promo.ativa;const precoFinal=temPromo?calcPrecoPromo(precoOriginal,promo):precoOriginal;const item={id:currentProduct.id,nome:currentProduct.nome,preco:precoFinal,precoOriginal:temPromo?precoOriginal:null,descontoPct:temPromo?calcDescontoPct(precoOriginal,promo):0,quantidade,tamanho:selectedVariation.tamanho,cor:selectedVariation.cor,imagem:imgCart};const existing=cartItems.find(x=>x.id===item.id&&x.tamanho===item.tamanho&&x.cor===item.cor);if(existing)existing.quantidade+=quantidade;else cartItems.push(item);salvarCarrinho();atualizarCarrinho();fecharModal();showToast('✅ Adicionado ao carrinho!', 'success');}
+-        function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${x.precoOriginal&&x.precoOriginal>x.preco?`<span class="cart-price-old">${brl(x.precoOriginal*x.quantidade)}</span>${brl(x.preco*x.quantidade)}<span class="cart-price-off">-${x.descontoPct}%</span>`:brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoMeninaBoutique',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoMeninaBoutique')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
++        function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${x.precoOriginal&&x.precoOriginal>x.preco?`<span class="cart-price-old">${brl(x.precoOriginal*x.quantidade)}</span>${brl(x.preco*x.quantidade)}<span class="cart-price-off">-${x.descontoPct}%</span>`:brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoAryelliModaFitness',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoAryelliModaFitness')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
+ 
+         // Busca em tempo real com debounce
+         let buscaTimer = null;
+@@ -2821,7 +2818,7 @@
+             linhas.push('Poderiam me informar sobre disponibilidade e sobre esses produtos?');
+ 
+             const texto = linhas.join('\n');
+-            const url = 'https://wa.me/5538991240933?text=' + encodeURIComponent(texto);
++            const url = 'https://wa.me/5538991528709?text=' + encodeURIComponent(texto);
+             window.open(url, '_blank');
+ 
+             // Limpar carrinho após enviar
+@@ -2874,7 +2871,7 @@
+             linhas.push('Poderiam me informar sobre disponibilidade e sobre esse produto?');
+ 
+             const texto = linhas.join('\n');
+-            const url = 'https://wa.me/5538991240933?text=' + encodeURIComponent(texto);
++            const url = 'https://wa.me/5538991528709?text=' + encodeURIComponent(texto);
+             window.open(url, '_blank');
+         }
+ 
+diff --git a/package.json b/package.json
+index bba6c67..ed86eca 100644
+--- a/package.json
++++ b/package.json
+@@ -1,7 +1,8 @@
+ {
+-  "name": "catalogo-roupas",
++  "name": "catalogo-aryelli-moda-fitness",
+   "version": "1.0.0",
+   "private": true,
++  "description": "Catálogo Aryelli Moda Fitness - Tudo que você precisa em um só lugar! @aryellimodafitness",
+   "dependencies": {
+     "@vercel/blob": "^0.27.0"
+   }
+-- 
+2.39.5
+
