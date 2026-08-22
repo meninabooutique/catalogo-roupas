@@ -365,7 +365,6 @@
             color: #1a1a1a;
         }
 
-
         .form-group select {
             appearance: none;
             -webkit-appearance: none;
@@ -384,7 +383,6 @@
             resize: vertical;
             min-height: 100px;
         }
-
 
         /* SEÇÃO PROMOÇÃO */
         .promocao-section {
@@ -1410,13 +1408,8 @@
 
     <!-- Aryelli Moda Fitness - Vercel Blob only -->
     <script>
-        // TODO: TROCAR PELO SEU NOVO FIREBASE - Aryelli Moda Fitness
-        // Crie um novo projeto em https://console.firebase.google.com
-        // e substitua as credenciais abaixo. Por enquanto usa o mesmo do antigo para teste.
-        // STORAGE CONFIG - Vercel Blob only
-        // Produtos em Vercel Blob via /api/produtos
+        // STORAGE - Vercel Blob only - produtos.json via /api/produtos
         const STORAGE_MODE = "vercel-blob";
-        const db = null; // não usa mais Firebase
 
         /* ============================================================
            ESTADO
@@ -1459,7 +1452,6 @@
                 alertTimer = setTimeout(() => alertBox.classList.remove('show'), 4500);
             }
         }
-
 
         /* ============================================================
            PROMOÇÃO — lógica de UI e cálculo
