@@ -224,6 +224,7 @@
 
         /* FILTROS */
 
+
         .filters-section {
             background: var(--card);
             padding: 0;
@@ -350,6 +351,7 @@
             display: inline;
         }
 
+
         .sort-select-wrap {
             position: relative;
             width: 100%;
@@ -463,6 +465,7 @@
         .btn-clear-filters:hover {
             border-color: var(--gold);
         }
+
 
         .filter-group input[type="number"] {
             padding: 10px 12px;
@@ -994,6 +997,7 @@
             color: var(--text-dark);
         }
 
+
         /* PREÇOS PROMOCIONAIS */
         .price-promo-wrap {
             display: flex;
@@ -1088,6 +1092,7 @@
             }
         }
 
+
         /* TOAST NOTIFICATION */
         .toast-container {
             position: fixed;
@@ -1139,6 +1144,7 @@
         .selector-btn.indisponivel:hover {
             border-color: var(--border-color);
         }
+
 
         /* BOTÕES AÇÃO */
         .action-buttons {
@@ -2256,6 +2262,7 @@
         </div>
     </div>
 
+
     <!-- MODAL CONFIRMAÇÃO PEDIDO -->
     <div class="modal-pedido-overlay" id="modal-confirmar-pedido">
         <div class="modal-pedido-card">
@@ -2270,6 +2277,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- MODAL CONFIRMAÇÃO PRODUTO ÚNICO -->
     <div class="modal-pedido-overlay" id="modal-confirmar-produto">
@@ -2286,8 +2295,15 @@
         </div>
     </div>
 
+
+
+
     <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toast-container"></div>
+
+    <!-- SCRIPTS FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
 
     <script>
 
@@ -2306,7 +2322,19 @@
             }, 3000);
         }
 
-        
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
+            authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
+            projectId: "catalogo-roupas-8c13e",
+            storageBucket: "catalogo-roupas-8c13e.firebasestorage.app",
+            messagingSenderId: "154437834985",
+            appId: "1:154437834985:web:bcc927c454f87a4c1ab878"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // DADOS E ESTADO
         let adminMode = false, allProdutos = [], filteredProdutos = [], cartItems = [];
         let currentProduct = null, currentImageIndex = 0, imagemSelecionadas = [], selectedVariation = null;
@@ -2423,6 +2451,8 @@
             }
             atualizarContadorFiltros();
         }
+
+
 
         function atualizarContadorFiltros() {
             const total = filtrosAtivos.categorias.length + filtrosAtivos.tamanhos.length +
@@ -2568,9 +2598,10 @@
             console.log('[DEBUG] carregarProdutos iniciado');
             const container = document.getElementById('products-container');
             try {
-                                // Firebase removido - sem db
+                console.log('[DEBUG] Buscando produtos do Firestore...');
+                const snapshot = await db.collection('produtos').get();
                 console.log('[DEBUG] Snapshot recebido, docs:', snapshot.docs.length);
-                                allProdutos = [];
+                allProdutos = snapshot.docs.map(doc => ({id:doc.id,...doc.data()}));
                 console.log('[DEBUG] allProdutos populado:', allProdutos.length, 'produtos');
                 filteredProdutos = [...allProdutos];
                 console.log('[DEBUG] Chamando renderizarProdutos...');

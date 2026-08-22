@@ -365,6 +365,7 @@
             color: var(--text-dark);
         }
 
+
         .form-group select {
             appearance: none;
             -webkit-appearance: none;
@@ -383,6 +384,7 @@
             resize: vertical;
             min-height: 100px;
         }
+
 
         /* SEÇÃO PROMOÇÃO */
         .promocao-section {
@@ -1406,8 +1408,24 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
     <script>
-        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDkq9W9CGLa-1UjFeIDphR2loSs9c_mA2Y",
+            authDomain: "catalogo-roupas-8c13e.firebaseapp.com",
+            projectId: "catalogo-roupas-8c13e",
+            messagingSenderId: "154437834985",
+            appId: "1:154437834985:web:bcc927c454f87a4c1ab878"
+        };
+
+        const WHATSAPP_SUPPORT = "message/BHFK37DNQGMJM1";
+        const ADMIN_SENHA = "59827630";
+        const UPLOAD_SECRET = "mb-upload-2026-secret-key";
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         /* ============================================================
            ESTADO
            ============================================================ */
@@ -1449,6 +1467,7 @@
                 alertTimer = setTimeout(() => alertBox.classList.remove('show'), 4500);
             }
         }
+
 
         /* ============================================================
            PROMOÇÃO — lógica de UI e cálculo
@@ -1941,14 +1960,14 @@
                 };
 
                 if (editandoProdutoId) {
-                                    // Firebase removido - db.collection deletado
+                    await db.collection('produtos').doc(editandoProdutoId).update(dados);
                     mostrarAlerta('✅ Produto atualizado com sucesso!', 'success');
                     limparForm();
                     await carregarProdutos();
                     mudarTab('listar');
                 } else {
                     dados.criadoEm = new Date();
-                                    // Firebase removido - db.collection deletado
+                    await db.collection('produtos').add(dados);
                     await carregarProdutos();
                     $('modal-confirmacao').classList.remove('hidden');
                 }
@@ -1956,6 +1975,7 @@
                 console.error(error);
                 let msg = error.message || String(error);
                 if (/permission|insufficient/i.test(msg)) {
+                    msg = 'Sem permissão para gravar no banco. Verifique as regras do Firestore.';
                 } else if (/timeout|abort/i.test(msg)) {
                     msg = 'O upload de imagem demorou demais. Verifique sua conexão e tente novamente.';
                 } else if (/BLOB_READ_WRITE_TOKEN|token|store/i.test(msg)) {
@@ -1994,13 +2014,14 @@
             try {
                 let snapshot;
                 try {
-                                    // Firebase removido
+                    snapshot = await db.collection('produtos').orderBy('criadoEm', 'desc').get();
                 } catch (errOrder) {
                     // Documentos antigos podem não ter "criadoEm"
-                                    // Firebase removido
+                    snapshot = await db.collection('produtos').get();
                 }
                 allProdutos = [];
-                                renderizarProdutos();
+                snapshot.forEach(doc => allProdutos.push({ id: doc.id, ...doc.data() }));
+                renderizarProdutos();
             } catch (error) {
                 console.error('Erro ao carregar produtos:', error);
                 mostrarAlerta('❌ Erro ao carregar produtos: ' + error.message, 'error');
@@ -2137,7 +2158,8 @@
                     });
                 }
 
-                                // Firebase removido - db.collection deletado
+                // Deleta do Firestore
+                await db.collection('produtos').doc(produtoId).delete();
 
                 // Limpa as imagens do Blob (em segundo plano, sem bloquear)
                 if (urlsParaLimpar.length > 0) {
