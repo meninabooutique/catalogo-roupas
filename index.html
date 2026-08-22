@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Catálogo Aryelli Moda Fitness</title>
+    <title>Catálogo Menina Boutique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -14,23 +14,23 @@
         }
 
         :root {
-            --gold: #E30613;
-            --gold-light: #ff4d5a;
-            --gold-dark: #b0000d;
-            --black: #ffffff;
-            --black-soft: #fff5f5;
-            --black-elev: #ffe6e6;
-            --card: #ffffff;
-            --light-bg: #f8f8f8;
-            --white: #ffffff;
-            --text-dark: #1a1a1a;
-            --text-light: #777777;
-            --border-color: #eeeeee;
+            --gold: #d4af37;
+            --gold-light: #f3d77a;
+            --gold-dark: #a8861f;
+            --black: #0b0b0d;
+            --black-soft: #141418;
+            --black-elev: #1c1c22;
+            --card: #141319;
+            --light-bg: #0a0a0c;
+            --white: #141319;
+            --text-dark: #f4ecd4;
+            --text-light: #b9ad8a;
+            --border-color: #2b2513;
             --success: #4caf50;
-            --warning: #E30613;
+            --warning: #d4af37;
             --error: #c0392b;
             --primary-pink: var(--gold);
-            --secondary-wine: #1a1a1a;
+            --secondary-wine: var(--black);
         }
 
         body {
@@ -44,15 +44,15 @@
             scroll-behavior: smooth;
         }
 
-        /* HEADER - Aryelli Branco + Vermelho */
+        /* HEADER */
         header {
-            background: #ffffff;
-            border-bottom: 3px solid var(--gold);
+            background: linear-gradient(135deg, #000 0%, #1a1408 45%, #000 100%);
+            border-bottom: 2px solid var(--gold);
             padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 20px rgba(227, 6, 19, 0.12);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.25);
         }
 
         .header-content {
@@ -68,7 +68,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #1a1a1a;
+            color: var(--white);
             display: flex;
             align-items: center;
             gap: 12px;
@@ -85,11 +85,11 @@
             height: 50px;
             border-radius: 50%;
             overflow: hidden;
-            background: #ffffff;
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 12px rgba(227,6,19,0.20);
+            box-shadow: 0 2px 12px rgba(212,175,55,0.35);
             border: 2px solid var(--gold);
         }
 
@@ -116,11 +116,11 @@
             min-width: 250px;
             display: flex;
             gap: 8px;
-            background: #f5f5f5;
-            border: 1px solid #e0e0e0;
+            background: #1a1610;
+            border: 1px solid var(--gold);
             padding: 8px 12px;
             border-radius: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
         .search-bar input {
@@ -131,7 +131,7 @@
             color: var(--text-dark);
             background: transparent;
         }
-        .search-bar input::placeholder { color: #999; }
+        .search-bar input::placeholder { color: #8a7d58; }
 
         .search-bar input::placeholder {
             color: var(--text-light);
@@ -159,16 +159,18 @@
         .icon-btn {
             background: none;
             border: none;
-            color: #E30613;
+            color: #ffffff;
             font-size: 1.3rem;
             cursor: pointer;
             position: relative;
             transition: all 0.3s ease;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.35);
         }
 
         .icon-btn:hover {
             transform: scale(1.1);
-            color: var(--gold-dark);
+            color: var(--gold-light);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
         }
 
         .cart-badge {
@@ -228,8 +230,8 @@
             padding: 0;
             margin-bottom: 30px;
             border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
             display: none;
             overflow: hidden;
         }
@@ -239,12 +241,12 @@
         }
 
         .filters-header {
-            background: #ffffff;
+            background: linear-gradient(135deg, #000 0%, #1a1408 100%);
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .filters-header h3 {
@@ -265,7 +267,7 @@
         }
 
         .filter-accordion-header {
-            background: #fafafa;
+            background: #100f14;
             padding: 12px 16px;
             display: flex;
             justify-content: space-between;
@@ -279,7 +281,7 @@
         }
 
         .filter-accordion-header:hover {
-            background: #fff0f0;
+            background: #16151c;
         }
 
         .filter-accordion-header .arrow {
@@ -293,7 +295,7 @@
 
         .filter-accordion-header .count-badge {
             background: var(--gold);
-            color: #ffffff;
+            color: #000;
             font-size: 0.72rem;
             font-weight: 800;
             padding: 2px 7px;
@@ -306,7 +308,7 @@
             padding: 10px 16px 14px;
             flex-wrap: wrap;
             gap: 8px;
-            background: #ffffff;
+            background: #0d0c10;
         }
 
         .filter-accordion-body.open {
@@ -318,9 +320,9 @@
             align-items: center;
             gap: 6px;
             padding: 7px 14px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-color);
             border-radius: 99px;
-            background: #ffffff;
+            background: #100f14;
             color: var(--text-light);
             font-size: 0.82rem;
             font-weight: 600;
@@ -336,7 +338,7 @@
 
         .filter-chip.selected {
             background: var(--gold);
-            color: #ffffff;
+            color: #000;
             border-color: var(--gold);
         }
 
@@ -358,9 +360,9 @@
         .sort-select-wrap select {
             width: 100%;
             padding: 12px 40px 12px 16px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
-            background: #ffffff;
+            background: #100f14;
             color: var(--text-dark);
             font-size: 0.92rem;
             font-weight: 600;
@@ -375,7 +377,7 @@
         .sort-select-wrap select:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(227,6,19,0.12);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
         }
 
         .sort-select-wrap::after {
@@ -395,7 +397,7 @@
             gap: 10px;
             align-items: center;
             padding: 10px 16px 14px;
-            background: #ffffff;
+            background: #0d0c10;
             flex-wrap: wrap;
         }
 
@@ -407,9 +409,9 @@
 
         .filter-price-row input {
             padding: 8px 10px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-color);
             border-radius: 6px;
-            background: #ffffff;
+            background: #100f14;
             color: var(--text-dark);
             font-size: 0.85rem;
             width: 100px;
@@ -424,8 +426,8 @@
             display: flex;
             gap: 10px;
             padding: 14px 20px;
-            border-top: 1px solid #e0e0e0;
-            background: #fafafa;
+            border-top: 1px solid var(--border-color);
+            background: #100f14;
             flex-wrap: wrap;
         }
 
@@ -434,7 +436,7 @@
             min-width: 140px;
             padding: 11px 20px;
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #ffffff;
+            color: #000;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -467,10 +469,10 @@
 
         .filter-group input[type="number"] {
             padding: 10px 12px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 0.9rem;
-            background: #ffffff;
+            background: #100f14;
             color: var(--text-dark);
             width: 100%;
         }
@@ -534,10 +536,10 @@
 
         .product-card {
             background: var(--card);
-            border: 1px solid #eeeeee;
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
             transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
             cursor: pointer;
             position: relative;
@@ -546,13 +548,13 @@
         .product-card:hover {
             transform: translateY(-6px);
             border-color: var(--gold);
-            box-shadow: 0 12px 28px rgba(227, 6, 19, 0.18);
+            box-shadow: 0 12px 28px rgba(212, 175, 55, 0.25);
         }
 
         .product-image {
             width: 100%;
             height: 280px;
-            background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #1a1408 0%, #0a0a0c 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -651,7 +653,7 @@
             width: 100%;
             padding: 10px;
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #ffffff;
+            color: #000;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -663,8 +665,13 @@
 
         .btn-view:hover {
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            color: #ffffff;
+            color: #000;
             transform: translateY(-1px);
+        }
+
+        .btn-view:hover {
+            background: var(--secondary-wine);
+            transform: translateY(-2px);
         }
 
         /* MODAL PRODUTO */
@@ -693,8 +700,8 @@
         }
 
         .modal-content {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
+            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
+            border: 1px solid var(--gold);
             border-radius: 16px;
             width: 100%;
             max-width: 1000px;
@@ -705,7 +712,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 30px;
             padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2);
         }
 
         @keyframes slideUp {
@@ -717,7 +724,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(255,255,255,0.9);
+            background: rgba(0,0,0,0.6);
             border: 1px solid var(--gold);
             font-size: 1.2rem;
             cursor: pointer;
@@ -749,8 +756,8 @@
             aspect-ratio: 1;
             border-radius: 12px;
             overflow: hidden;
-            background: #ffffff;
-            border: 1px solid #eeeeee;
+            background: #000;
+            border: 1px solid var(--border-color);
             position: relative;
             display: flex;
             align-items: center;
@@ -931,8 +938,8 @@
 
         .selector-btn {
             padding: 10px 16px;
-            border: 2px solid #eeeeee;
-            background: #ffffff;
+            border: 2px solid var(--border-color);
+            background: var(--card);
             color: var(--text-dark);
             border-radius: 8px;
             cursor: pointer;
@@ -955,7 +962,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 2px solid #eeeeee;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             width: fit-content;
             padding: 5px;
@@ -1099,14 +1106,14 @@
         }
 
         .toast {
-            background: #ffffff;
+            background: linear-gradient(135deg, #141319, #0a0a0c);
             border: 1px solid var(--gold);
             border-radius: 10px;
             padding: 14px 20px;
             color: var(--text-dark);
             font-size: 0.92rem;
             font-weight: 600;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
             transform: translateX(120%);
             transition: transform 0.3s ease;
             max-width: 320px;
@@ -1119,14 +1126,12 @@
 
         .toast.success {
             border-color: #4caf50;
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: linear-gradient(135deg, #0d2818, #0a1f12);
         }
 
         .toast.error {
             border-color: #c0392b;
-            background: #ffebee;
-            color: #c62828;
+            background: linear-gradient(135deg, #2c0d0d, #1f0a0a);
         }
 
         /* VARIAÇÕES INDISPONÍVEIS */
@@ -1167,14 +1172,14 @@
 
         .btn-add-cart {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #ffffff;
+            color: #000;
             border: 1px solid var(--gold);
         }
 
         .btn-add-cart:hover {
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(227,6,19,.25);
+            box-shadow: 0 8px 20px rgba(212,175,55,.3);
         }
 
         .btn-share-whatsapp {
@@ -1185,20 +1190,20 @@
 
         .btn-share-whatsapp:hover {
             background: var(--gold);
-            color: #ffffff;
+            color: #000;
             transform: translateY(-2px);
         }
 
-        /* CARRINHO SIDEBAR - Aryelli */
+        /* CARRINHO SIDEBAR */
         .cart-sidebar {
             position: fixed;
             right: -420px;
             top: 0;
             width: 400px;
             height: 100vh;
-            background: #ffffff;
+            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
             border-left: 2px solid var(--gold);
-            box-shadow: -8px 0 30px rgba(0,0,0,0.12);
+            box-shadow: -8px 0 30px rgba(0,0,0,0.6);
             z-index: 1500;
             transition: right 0.3s ease;
             display: flex;
@@ -1211,9 +1216,9 @@
         }
 
         .cart-header {
-            background: #ffffff;
+            background: linear-gradient(135deg, #000 0%, #1a1408 100%);
             color: var(--gold);
-            border-bottom: 2px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
             padding: 20px;
             display: flex;
             justify-content: space-between;
@@ -1228,7 +1233,7 @@
         .cart-close {
             background: none;
             border: none;
-            color: #1a1a1a;
+            color: white;
             font-size: 1.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -1251,8 +1256,8 @@
             display: flex;
             gap: 12px;
             padding: 12px;
-            background: #fafafa;
-            border: 1px solid #eeeeee;
+            background: #100f14;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             position: relative;
         }
@@ -1354,7 +1359,7 @@
         .cart-footer {
             padding: 20px;
             border-top: 2px solid var(--gold);
-            background: #fafafa;
+            background: #0a0a0c;
         }
 
         .cart-total {
@@ -1376,7 +1381,7 @@
             width: 100%;
             padding: 14px;
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #ffffff;
+            color: #000;
             border: 1px solid var(--gold);
             border-radius: 8px;
             font-weight: 700;
@@ -1392,7 +1397,7 @@
         .btn-checkout:hover {
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(227,6,19,.25);
+            box-shadow: 0 8px 20px rgba(212,175,55,.3);
         }
 
         .btn-checkout:disabled {
@@ -1440,7 +1445,7 @@
             position: absolute;
             bottom: 70px;
             right: 0;
-            background: #1a1a1a;
+            background: var(--text-dark);
             color: white;
             padding: 10px 14px;
             border-radius: 8px;
@@ -1500,12 +1505,12 @@
         .form-group select,
         .form-group textarea {
             padding: 12px 14px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             font-size: 0.95rem;
             font-family: inherit;
             transition: all 0.3s ease;
-            background: #ffffff;
+            background: #100f14;
             color: var(--text-dark);
         }
 
@@ -1514,7 +1519,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.12);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18);
         }
 
         .form-group textarea {
@@ -1677,7 +1682,7 @@
             position: absolute;
             top: -15px;
             right: -15px;
-            background: #ffffff;
+            background: var(--black);
             border: 2px solid var(--gold);
             color: var(--gold);
             font-size: 1.5rem;
@@ -1819,14 +1824,14 @@
         }
 
         .modal-pedido-card {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
+            background: linear-gradient(180deg, #141319 0%, #0a0a0c 100%);
+            border: 1px solid var(--gold);
             border-radius: 16px;
             padding: 30px 28px;
             width: 100%;
             max-width: 420px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(212,175,55,0.2);
             transform: translateY(20px) scale(0.97);
             transition: transform 0.25s ease;
         }
@@ -1867,7 +1872,7 @@
 
         .modal-pedido-actions .btn-modal-primary {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-            color: #ffffff;
+            color: #000;
             border: 1px solid var(--gold);
             padding: 13px 20px;
             border-radius: 10px;
@@ -1884,7 +1889,7 @@
         .modal-pedido-actions .btn-modal-primary:hover {
             background: linear-gradient(135deg, var(--gold), var(--gold-light));
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(227,6,19,0.25);
+            box-shadow: 0 6px 16px rgba(212,175,55,0.3);
         }
 
         .modal-pedido-actions .btn-modal-secondary {
@@ -1926,16 +1931,16 @@
     </style>
 </head>
 <body>
-    <!-- HEADER - Aryelli Moda Fitness -->
+    <!-- HEADER -->
     <header>
         <div class="header-content">
             <div class="logo" onclick="window.location.href='/'">
                 <div class="logo-image">
-                    <img src="assets/logo.png" alt="Aryelli Moda Fitness Logo">
+                    <img src="assets/logo.png" alt="Menina Boutique Logo">
                 </div>
                 <div class="logo-text">
-                    <span style="font-size:1.1rem;font-weight:800;color:#E30613;">Aryelli</span>
-                    <span>Moda Fitness</span>
+                    <span>✨</span>
+                    <span>Menina Boutique</span>
                 </div>
             </div>
             <div class="search-bar">
@@ -2296,7 +2301,7 @@
     <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- SCRIPTS - Aryelli Moda Fitness - Vercel Blob Storage -->
+    <!-- SCRIPTS - Vercel Blob Storage -->
     <script>
 
         // Toast notification system
@@ -2322,7 +2327,7 @@
         // DADOS E ESTADO
         let adminMode = false, allProdutos = [], filteredProdutos = [], cartItems = [];
         let currentProduct = null, currentImageIndex = 0, imagemSelecionadas = [], selectedVariation = null;
-        const WHATSAPP_SUPPORT = "5538991528709";
+        const WHATSAPP_SUPPORT = "5538991240933";
         const brl = value => Number(value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         const esc = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -2346,7 +2351,6 @@
                 const aPromo = a.promocao && a.promocao.ativa ? 1 : 0;
                 const bPromo = b.promocao && b.promocao.ativa ? 1 : 0;
                 if (aPromo !== bPromo) return bPromo - aPromo; // promoções primeiro
-                // Dentro de cada grupo, mais novo primeiro - suporta ISO string e Timestamp antigo
                 const parseDate = (d) => {
                     if (!d) return 0;
                     if (typeof d === 'string') return new Date(d).getTime();
@@ -2585,7 +2589,7 @@
         function removerImagem(index) { imagemSelecionadas.splice(index, 1); renderizarImagensPreview(); }
         function renderizarImagensPreview() { document.getElementById('images-preview').innerHTML = imagemSelecionadas.map((img,i) => `<div class="image-preview-item"><img src="${esc(img)}" alt="Preview"><button type="button" class="image-preview-remove" onclick="removerImagem(${i})">×</button></div>`).join(''); }
         function limparForm() { document.getElementById('form-produto').reset(); imagemSelecionadas=[]; renderizarImagensPreview(); }
-        async function carregarProdutos() {
+                async function carregarProdutos() {
             console.log('[DEBUG] carregarProdutos iniciado - Vercel Blob');
             const container = document.getElementById('products-container');
             try {
@@ -2709,7 +2713,7 @@
         }
         function aumentarQuantidade(){const input=document.getElementById('quantity-input');if(+input.value<+selectedVariation.estoque)input.value=+input.value+1;} function diminuirQuantidade(){const input=document.getElementById('quantity-input');if(+input.value>1)input.value=+input.value-1;}
         function toggleCart(){document.getElementById('cart-sidebar').classList.toggle('active');} function adicionarAoCarrinho(){const quantidade=+document.getElementById('quantity-input').value;if(!selectedVariation.estoque){showToast('Produto indisponível.', 'error');return;}const imgCart=selectedVariation.foto||(Array.isArray(currentProduct.imagens)?currentProduct.imagens[0]:'')||'';const precoOriginal=+selectedVariation.preco;const promo=currentProduct.promocao;const temPromo=promo&&promo.ativa;const precoFinal=temPromo?calcPrecoPromo(precoOriginal,promo):precoOriginal;const item={id:currentProduct.id,nome:currentProduct.nome,preco:precoFinal,precoOriginal:temPromo?precoOriginal:null,descontoPct:temPromo?calcDescontoPct(precoOriginal,promo):0,quantidade,tamanho:selectedVariation.tamanho,cor:selectedVariation.cor,imagem:imgCart};const existing=cartItems.find(x=>x.id===item.id&&x.tamanho===item.tamanho&&x.cor===item.cor);if(existing)existing.quantidade+=quantidade;else cartItems.push(item);salvarCarrinho();atualizarCarrinho();fecharModal();showToast('✅ Adicionado ao carrinho!', 'success');}
-        function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${x.precoOriginal&&x.precoOriginal>x.preco?`<span class="cart-price-old">${brl(x.precoOriginal*x.quantidade)}</span>${brl(x.preco*x.quantidade)}<span class="cart-price-off">-${x.descontoPct}%</span>`:brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoAryelliModaFitness',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoAryelliModaFitness')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
+        function atualizarCarrinho(){const el=document.getElementById('cart-items'),badge=document.getElementById('cart-badge'),total=cartItems.reduce((s,x)=>s+x.preco*x.quantidade,0);document.getElementById('cart-total-price').textContent=brl(total);document.getElementById('btn-checkout').disabled=!cartItems.length;if(!cartItems.length){el.innerHTML='<div class="cart-empty"><i class="fas fa-shopping-bag"></i><p>Seu carrinho está vazio</p></div>';badge.style.display='none';return;}badge.textContent=cartItems.reduce((s,x)=>s+x.quantidade,0);badge.style.display='flex';el.innerHTML=cartItems.map((x,i)=>`<div class="cart-item"><div class="cart-item-image"><img src="${esc(x.imagem)}" alt="${esc(x.nome)}"></div><div class="cart-item-info"><div class="cart-item-name">${esc(x.nome)}</div><div class="cart-item-details">${esc(x.tamanho)} • ${esc(x.cor)} • Qtd: ${x.quantidade}</div><div class="cart-item-price">${x.precoOriginal&&x.precoOriginal>x.preco?`<span class="cart-price-old">${brl(x.precoOriginal*x.quantidade)}</span>${brl(x.preco*x.quantidade)}<span class="cart-price-off">-${x.descontoPct}%</span>`:brl(x.preco*x.quantidade)}</div></div><button class="cart-item-remove" onclick="removerDoCarrinho(${i})">×</button></div>`).join('');} function removerDoCarrinho(i){cartItems.splice(i,1);salvarCarrinho();atualizarCarrinho();} function salvarCarrinho(){localStorage.setItem('carrinhoMeninaBoutique',JSON.stringify(cartItems));} function carregarCarrinho(){try{cartItems=JSON.parse(localStorage.getItem('carrinhoMeninaBoutique')||'[]');}catch{cartItems=[]}atualizarCarrinho();}
 
         // Busca em tempo real com debounce
         let buscaTimer = null;
@@ -2811,7 +2815,7 @@
             linhas.push('Poderiam me informar sobre disponibilidade e sobre esses produtos?');
 
             const texto = linhas.join('\n');
-            const url = 'https://wa.me/5538991528709?text=' + encodeURIComponent(texto);
+            const url = 'https://wa.me/5538991240933?text=' + encodeURIComponent(texto);
             window.open(url, '_blank');
 
             // Limpar carrinho após enviar
@@ -2864,7 +2868,7 @@
             linhas.push('Poderiam me informar sobre disponibilidade e sobre esse produto?');
 
             const texto = linhas.join('\n');
-            const url = 'https://wa.me/5538991528709?text=' + encodeURIComponent(texto);
+            const url = 'https://wa.me/5538991240933?text=' + encodeURIComponent(texto);
             window.open(url, '_blank');
         }
 
